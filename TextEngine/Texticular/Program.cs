@@ -16,7 +16,7 @@ namespace Texticular
 
             List<Room> rooms= new List<Room>();
 
-            using (StreamReader file = File.OpenText(@"D:\Users\Jon\GitHub\Texticular\TextEngine\Texticular\JsonFiles\JsonRoomTest.json"))
+            using (StreamReader file = File.OpenText(@"..\..\JsonFiles\JsonRoomTest.json"))
             {
                 JsonSerializer serializer = new JsonSerializer();
                 rooms = (List<Room>)serializer.Deserialize(file, typeof(List<Room>));
@@ -46,7 +46,7 @@ namespace Texticular
             JsonSerializer Saveserializer = new JsonSerializer();
             Saveserializer.NullValueHandling = NullValueHandling.Ignore;
 
-            using (StreamWriter sw = new StreamWriter(@"D:\Users\Jon\GitHub\Texticular\TextEngine\Texticular\JsonFiles\JsonRoomTest_Out.json")) 
+            using (StreamWriter sw = new StreamWriter(@"..\..\JsonFiles\JsonRoomTest_Out.json")) 
             using (JsonWriter writer = new JsonTextWriter(sw))
             {
                 Saveserializer.Serialize(writer, rooms);
