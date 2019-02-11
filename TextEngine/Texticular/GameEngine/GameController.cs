@@ -15,7 +15,7 @@ namespace Texticular
         public StringBuilder InputResponse;
         Dictionary<string, Action<string[]>> commands;
         List<StoryItem> ItemsinInventory;
-        List<StoryItem> ItemsinRoom;
+        List<GameObject> ItemsinRoom;
 
         public GameController(Game game)
         {
@@ -23,7 +23,7 @@ namespace Texticular
             this.InputResponse = new StringBuilder();
             this.commands = new Dictionary<string, Action<string[]>>();
             this.ItemsinInventory = new List<StoryItem>();
-            this.ItemsinRoom = new List<StoryItem>();
+            this.ItemsinRoom = new List<GameObject>();
 
 
             commands["go"] = go;
@@ -81,18 +81,19 @@ namespace Texticular
         public void Parse(String userInput)
         {
 
+
             ItemsinInventory.Clear();
-            foreach (StoryItem item in game.Items)
+            foreach (GameObject item in game.Items)
             {
                 if (item.LocationKey == "inventory")
                 {
-                    ItemsinInventory.Add(item);
+                    ItemsinInventory.Add((StoryItem)item);
                 }
             }
 
 
             ItemsinRoom.Clear();
-            foreach (StoryItem item in game.Items)
+            foreach (GameObject item in game.Items)
             {
                 if (item.LocationKey == game.Player.PlayerLocation.KeyValue)
                 {
@@ -243,7 +244,7 @@ namespace Texticular
             //list items
             InputResponse.Append("You see: \n");
             string itemString = "";
-            foreach (StoryItem item in game.Items)
+            foreach (GameObject item in game.Items)
             {
                 if (item.LocationKey == player.PlayerLocation.KeyValue)
                 {
@@ -251,6 +252,7 @@ namespace Texticular
                 }
 
             }
+
 
             InputResponse.Append(itemString != "" ? itemString + "\n" : "Nothing\n\n");
 

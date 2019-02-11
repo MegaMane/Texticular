@@ -25,6 +25,8 @@ namespace Texticular
         [JsonProperty(ItemIsReference = true)]
         public List <StoryItem> Items = new List<StoryItem>();
 
+        public List<GameObject> Props = new List<GameObject>();
+
         [JsonProperty(ItemIsReference = true)]
         public Dictionary<string, Exit> Exits = new Dictionary<string,Exit>();
 
@@ -61,6 +63,13 @@ namespace Texticular
             //Set the items location to this room
             item.LocationKey = this.LocationKey;
             Items.Add(item);
+        }
+
+        public void AddItem(GameObject item)
+        {
+            //Set the items location to this room
+            item.LocationKey = this.LocationKey;
+            Props.Add(item);
         }
 
         public override string ToString()

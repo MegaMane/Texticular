@@ -12,7 +12,7 @@ namespace Texticular
     {
 
         public Dictionary<string, Room> Rooms;
-        public List<StoryItem> Items;
+        public List<GameObject> Items;
         private List<Room> gameRooms;
         public Player Player;
         //public Dictionary<string, int> Location;

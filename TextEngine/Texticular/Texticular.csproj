@@ -50,6 +50,7 @@
     <Compile Include="Environment\GameObject.cs" />
     <Compile Include="Environment\ItemType.cs" />
     <Compile Include="Environment\MovementDirection.cs" />
+    <Compile Include="Environment\TV.cs" />
     <Compile Include="GameEngine\ActionResponse.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />

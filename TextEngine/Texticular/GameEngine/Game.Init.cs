@@ -13,7 +13,7 @@ namespace Texticular
 
 
             this.Rooms = new Dictionary<string, Room>();
-            this.Items = new List<StoryItem> ();
+            this.Items = new List<GameObject> ();
             this.gameRooms = new List<Room> ();
             this.Gamestats = new Gamestats();
             this.GameLog = new List<string>(50);
@@ -48,6 +48,9 @@ namespace Texticular
             AddPlayer(player);
             Rooms["diningRoom"].TimesVisited += 1;
 
+            var testTv = new TV("livingRoom", "A large  flat screen tv");
+            Items.Add(testTv);
+            Rooms["livingRoom"].AddItem(testTv);
             Gamestats.player = player;
 
             #region useItems

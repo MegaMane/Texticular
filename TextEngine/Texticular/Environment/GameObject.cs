@@ -35,6 +35,16 @@ namespace Texticular
             Description = description;
         }
 
+
+        public GameObject(string name, string description, string LocationKey, string KeyValue="")
+        {
+            this.KeyValue = KeyValue == "" ? createStringKey(name) : KeyValue;
+            ID = ++_nextGameID;
+            Name = name;
+            Description = description;
+            this.LocationKey = LocationKey;
+        }
+
         public GameObject(string name, string description, string keyValue)
         {
             ID = ++_nextGameID;
