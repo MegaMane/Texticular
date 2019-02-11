@@ -49,6 +49,7 @@ namespace Texticular
             Rooms["diningRoom"].TimesVisited += 1;
 
             var testTv = new TV("livingRoom", "A large  flat screen tv");
+            testTv.TurnOffResponse = "The TV goes black";
             Items.Add(testTv);
             Rooms["livingRoom"].AddItem(testTv);
             Gamestats.player = player;

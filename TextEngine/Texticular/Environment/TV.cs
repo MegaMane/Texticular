@@ -22,7 +22,7 @@ namespace Texticular
 
         int currentChannel = 0;
 
-        Dictionary<string, Action<GameController>> commands;
+        public Dictionary<string, Action<GameController>> commands;
         bool isON = false;
 
         public TV(string locationKey, string description, string name = "TV", string keyValue="")
@@ -42,13 +42,14 @@ namespace Texticular
 
         void turnOn (GameController controller)
         {
+            controller.InputResponse.Append("\nYou turn on the TV...\n");
             controller.InputResponse.Append( Channel );
             isON = true;
         }
 
         void turnOff(GameController controller)
         {
-            controller.InputResponse.Append(TurnOffResponse + "\n");
+            controller.InputResponse.Append("\n" + TurnOffResponse + "\n");
             isON = false;
         }
 

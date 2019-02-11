@@ -16,9 +16,33 @@ namespace Texticular
         Dictionary<string, Action<string[]>> commands;
         List<StoryItem> ItemsinInventory;
         List<GameObject> ItemsinRoom;
+        List<String> knownCommands = new List<string> {
+                                                        "backpack",
+                                                        "change channel",
+                                                        "drop",
+                                                        "examine",
+                                                        "get",
+                                                        "go" ,
+                                                        "grab",
+                                                        "help",
+                                                        "inv",
+                                                        "inventory",
+                                                        "look",
+                                                        "move",
+                                                        "pick up",
+                                                        "power off",
+                                                        "power on",
+                                                        "take",
+                                                        "use",
+                                                        "turn off",
+                                                        "turn on",
+                                                        "walk"
+
+                                                       };
 
         public GameController(Game game)
         {
+
             this.game = game;
             this.InputResponse = new StringBuilder();
             this.commands = new Dictionary<string, Action<string[]>>();
@@ -47,7 +71,6 @@ namespace Texticular
 
             commands["help"] = help;
 
-            commands["use"] = use;
 
 
         }
@@ -80,8 +103,7 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
-
-
+         
             ItemsinInventory.Clear();
             foreach (GameObject item in game.Items)
             {
@@ -106,17 +128,36 @@ namespace Texticular
 
             if (commandParts.Length == 0) return ; //the player just hit enter without typing anything
 
-            int offset = 1;
-            
-            // Name of the method we want to call.
-            string name = commandParts[0];
 
-            //two word verbs
-            if (name == "pick")//pick up
+            int offset = 0;
+            string name="";
+            bool commandFound = false;
+
+            // Name of the method we want to call.
+            foreach (string command in knownCommands)
             {
-                name += " " + commandParts[1];
-                offset = 2;
+                name = "";
+
+                for (int i = 0; i < commandParts.Length; i++)
+                {
+                    name = String.Join(" ", commandParts, 0, i + 1);
+                    offset = i + 1;
+
+                    if (name == command)
+                    {
+
+                        commandFound = true;
+                        break;
+                    }
+                }
+
+                if (commandFound)
+                {
+                    break;
+                }
+
             }
+            
 
             // Get the nouns after the verb (the objects to act on)
             //need to remove articles and parse adjectives
@@ -134,11 +175,69 @@ namespace Texticular
             Action<string[]> parsedCommand;
             bool validCommand = commands.TryGetValue(name, out parsedCommand);
 
+            //basic commands
             if (validCommand)
                 parsedCommand(parameters);
 
+            //context sensitive commands
+            else if (!validCommand && knownCommands.Contains(name))
+            {
+                //check if a there is an object that matches 
+                //the tokens left in the parameters array
+                string noun = "";
+                bool objectFound = false;
+                GameObject target = null;
+
+                for ( int i = 0; i < ItemsinRoom.Count; i++)
+                {
+                    noun = "";
+
+                    for (int j = 0; j < parameters.Length; j++)
+                    {
+                        noun = String.Join(" ", parameters, 0, j + 1);
+
+                        if (noun == ItemsinRoom[i].Name.ToLower())
+                        {
+
+                            objectFound = true;
+                            target = ItemsinRoom[i];
+                            break;
+                        }
+                    }
+
+                    if (objectFound)
+                    {
+                        break;
+                    }
+                }
+
+                if (objectFound)
+                {
+                    //implement interface
+                    TV myTv = (TV)target;
+
+                    Action<GameController> contextCommand;
+                    bool validcontextCommand = myTv.commands.TryGetValue(name, out contextCommand);
+
+                    if (validcontextCommand)
+                    {
+                        contextCommand(this);
+                    }
+                }
+
+                else
+                {
+                    InputResponse.Append($"There is no {noun} here.\n");
+                }
+
+            }
+
             else
-               InputResponse.Append("I dont understand\n");
+            {
+                //bogus command not understood
+                InputResponse.Append("I dont understand\n");
+            }
+
 
             game.GameLog.Add(InputResponse.ToString() + "\n");
         }

@@ -61,14 +61,14 @@ namespace Texticular
         public void AddItem(StoryItem item)
         {
             //Set the items location to this room
-            item.LocationKey = this.LocationKey;
+            item.LocationKey = this.KeyValue;
             Items.Add(item);
         }
 
         public void AddItem(GameObject item)
         {
             //Set the items location to this room
-            item.LocationKey = this.LocationKey;
+            item.LocationKey = this.KeyValue;
             Props.Add(item);
         }
 
