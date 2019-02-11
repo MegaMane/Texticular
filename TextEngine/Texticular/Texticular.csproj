@@ -50,7 +50,13 @@
     <Compile Include="Environment\GameObject.cs" />
     <Compile Include="Environment\ItemType.cs" />
     <Compile Include="Environment\MovementDirection.cs" />
+    <Compile Include="GameEngine\ActionResponse.cs" />
+    <Compile Include="GameEngine\Game.cs" />
+    <Compile Include="GameEngine\Game.Init.cs" />
+    <Compile Include="GameEngine\GameController.cs" />
+    <Compile Include="GameEngine\GameController.UseObject.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
+    <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -26,7 +26,7 @@ namespace Texticular
         public List <StoryItem> Items = new List<StoryItem>();
 
         [JsonProperty(ItemIsReference = true)]
-        public List<Exit> Exits = new List<Exit>();
+        public Dictionary<string, Exit> Exits = new Dictionary<string,Exit>();
 
         public Room() : this( "Test Room", "Test Description")
         {

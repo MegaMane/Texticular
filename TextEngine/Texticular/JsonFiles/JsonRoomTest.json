@@ -1,107 +1,96 @@
 [
-{ 
-	"KeyValue": "diningRoom",
-	"Name": "Dining Room",
-	"Description": "The place where meals should be eaten, instead of in front of the tv.",
-	"TimesVisited": 0,
-	"Exits": [
-				{
-					"LocationKey": "diningRoom",
-					"ExitPosition": "Northwest",
-					"DestinationKey": "aidensRoom",
-					"IsLocked": true,
-					"KeyName": "aidensKey",
-					"Name": "diningRoom_Ex_aidensRoom",
-					"Description": "A white painted door with caution tape and a do not enter sign taped to it"
-					
+	{ 
+		"KeyValue": "diningRoom",
+		"Name": "the Dining Room",
+		"Description": "The place where meals should be eaten, instead of in front of the tv.",
+		"TimesVisited": 0,
+		"Exits": {"Northwest":
+					{
+						"LocationKey": "diningRoom",
+						"DestinationKey": "aidensRoom",
+						"IsLocked": true,
+						"KeyName": "aidensKey",
+						"Name": "Aiden's Bedroom Door",
+						"Description": "A white painted door with caution tape and a do not enter sign taped to it"
+						
+					},
+					"North":
+					{
+						"LocationKey": "diningRoom",
+						"DestinationKey": "livingRoom",
+						"IsLocked": false,
+						"Name": "diningRoom_Ex_livingRoom"
+						
+					}
 				},
-				{
-					"LocationKey": "diningRoom",
-					"ExitPosition": "North",
-					"DestinationKey": "livingRoom",
-					"IsLocked": false,
-					"Name": "diningRoom_Ex_livingRoom"
-					
-				}
-	         ],
-	"Items": [
-				{
-					"LocationKey": "diningRoom",
-					"Name": "Skeleton Key",
-					"Description": "An old skeleton key that looks like it might fit into a door",
-					"TypeOfItem": "DoorKey",
-					"IsPortable": true,
-					"ExamineResponse": "The key is bent and rusted but it still works. If only you could find a door with a skeleton keyhole..."
-					
-				}
-	        ]
+		"Items": [
+					{
+						"LocationKey": "diningRoom",
+						"Name": "SkeletonKey",
+						"Description": "An old skeleton key that looks like it might fit into a door",
+						"TypeOfItem": "DoorKey",
+						"IsPortable": true,
+						"ExamineResponse": "The key is bent and rusted but it still works. If only you could find a door with a skeleton keyhole..."
+						
+					}
+				]
+				
+	},
+	{ 
+		"KeyValue": "livingRoom",
+		"Name": "the Living Room",
+		"Description": "A large tv, old Ikea coffee table that looks like it's seen better days, and a weathered blue couch sitting on a carpet used for pooping by the beloved dogs.",
+		"TimesVisited": 0,
+		"Exits": {"South":
+					{
+						"LocationKey": "livingRoom",
+						"DestinationKey": "diningRoom",
+						"IsLocked": false,
+						"Name": "livingRoom_Ex_diningRoom"
+	
+					}
+				},
+		"Items": [
+					{
+						"LocationKey": "livingRoom",
+						"Name": "aidensKey",
+						"Description": "Aiden's room key",
+						"TypeOfItem": "DoorKey",
+						"IsPortable": true,
+						"ExamineResponse": "A simple key that fits in the lock to Aiden's door..."
+						
+					},
+					{
+						"LocationKey": "livingRoom",
+						"Name": "Medicine",
+						"Description": "Magic Medicine.",
+						"TypeOfItem": "Consumable",
+						"IsPortable": true,
+						"ExamineResponse": "Magic Medicine: just what the doctor ordered! Full recovery from all that ails ya."
+						
+					}
+				]
+	
 			
-
-		
-},
-
-{ 
-	"KeyValue": "livingRoom",
-	"Name": "Living Room",
-	"Description": "A large tv, old Ikea coffee table that looks like it's seen better days, and a weathered blue couch sitting on a carpet used for pooping by the beloved dogs.",
-	"TimesVisited": 0,
-	"Exits": [
-				{
-					"LocationKey": "livingRoom",
-					"ExitPosition": "South",
-					"DestinationKey": "diningRoom",
-					"IsLocked": false,
-					"Name": "livingRoom_Ex_diningRoom"
-
+	},
+	{ 
+		"KeyValue": "aidensRoom",
+		"Name": "Aiden's Room",
+		"Description": "The ultimate gamers nest and puppy safehaven.",
+		"TimesVisited": 0,
+		"Exits": {"Southwest":
+					{
+						"LocationKey": "aidensRoom",
+						"DestinationKey": "diningRoom",
+						"IsLocked": false,
+						"Name": "aidensRoom_Ex_diningRoom"
+	
+					}
+						
 				}
-			],
-	"Items": [
-				{
-					"LocationKey": "livingRoom",
-					"Name": "Simple Key",
-					"Description": "Aiden's room key",
-					"TypeOfItem": "DoorKey",
-					"IsPortable": true,
-					"ExamineResponse": "A simple key that fits in the lock to Aiden's door..."
-					
-				},
-				{
-					"LocationKey": "livingRoom",
-					"Name": "Medicine",
-					"Description": "Magic Medicine.",
-					"TypeOfItem": "Consumable",
-					"IsPortable": true,
-					"ExamineResponse": "Magic Medicine: just what the doctor ordered! Full recovery from all that ails ya."
-					
-				}
-	        ]
-
-		
-},
-
-{ 
-	"KeyValue": "aidensRoom",
-	"Name": "Aiden's Room",
-	"Description": "The ultimate gamers nest and puppy safehaven.",
-	"TimesVisited": 0,
-	"Exits": [
-				{
-					"LocationKey": "aidensRoom",
-					"ExitPosition": "Southwest",
-					"DestinationKey": "diningRoom",
-					"IsLocked": false,
-					"Name": "aidensRoom_Ex_diningRoom"
-
-				}
-					
-			 ]
-
-		
-}
-
-
-]
-
-
-
-
+	
+			
+	}
+	
+	]
+	

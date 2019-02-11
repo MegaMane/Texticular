@@ -15,7 +15,7 @@ namespace Texticular
         public String ExamineResponse { get; set; }
         public int Weight { get; set; }
         //actions verb => resulting action 
-        public Dictionary<string, string> Actions;
+        public Dictionary<string, ActionResponse> Actions;
         public ItemType TypeOfItem;
 
 
@@ -24,7 +24,6 @@ namespace Texticular
             this.IsPortable = false;
             this.ExamineResponse = description;
             this.Weight = 999;
-            Actions = new Dictionary<string, string>();
         }
 
         [JsonConstructor]

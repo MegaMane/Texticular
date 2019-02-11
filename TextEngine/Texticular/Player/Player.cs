@@ -10,7 +10,7 @@ namespace Texticular
     {
         public Room PlayerLocation { get; set; }
         public int Health { get; set; }
-        //public Inventory BackPack;
+        public Inventory BackPack;
 
         public Player(string name, string description, Room playerlocation, int health):
             base(name, description)

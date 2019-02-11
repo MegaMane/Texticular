@@ -9,6 +9,7 @@ namespace Texticular
     public enum ItemType
     {
        DoorKey,
-       Consumable
+       Consumable,
+       Special
     }
 }
