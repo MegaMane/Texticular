@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
+using Texticular.Environment;
 
 namespace Texticular
 {
@@ -80,7 +81,9 @@ namespace Texticular
 
         public void AddPlayer(Player newPlayer)
         {
-            this.Player = newPlayer;
+            Player = newPlayer;
+            Rooms[Player.PlayerLocation.KeyValue].TimesVisited += 1;
+            Gamestats.player = this.Player;
         }
 
         public void Save(string saveName)

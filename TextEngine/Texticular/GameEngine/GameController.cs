@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Media;
+using Texticular.Environment;
 
 namespace Texticular
 {
@@ -78,9 +79,7 @@ namespace Texticular
 
 
 
-        //commands["unlock"] = unlock;
-        //commands["open"]
-        // commands["talk"]
+  
 
 
         public void Start()

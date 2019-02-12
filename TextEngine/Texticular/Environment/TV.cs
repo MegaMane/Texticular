@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Texticular
+namespace Texticular.Environment
 {
     class TV: StoryItem
     {
@@ -28,6 +28,7 @@ namespace Texticular
             : base(name, description, locationKey, isPortable, examineResponse, weight , keyValue)
 
         {
+            TurnOffResponse = "The TV flickers then goes black";
             
             Commands["turn on"] = turnOn;
             Commands["power on"] = turnOn;
@@ -40,14 +41,14 @@ namespace Texticular
 
         void turnOn (GameController controller)
         {
-            controller.InputResponse.Append("\nYou turn on the TV...\n");
+            controller.InputResponse.Append("You turn on the TV...\n");
             controller.InputResponse.Append( Channel );
             isON = true;
         }
 
         void turnOff(GameController controller)
         {
-            controller.InputResponse.Append("\n" + TurnOffResponse + "\n");
+            controller.InputResponse.Append(TurnOffResponse + "\n");
             isON = false;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.Environment;
 
 namespace Texticular
 {
@@ -56,12 +57,37 @@ namespace Texticular
                                          {
                                              {
                                                  new TV(locationKey:"livingRoom", description:"A flat screen tv")
+                                             },
+                                             {
+                                                 new DoorKey(locationKey:"livingRoom", name:"aidensKey" , description:"Aiden's room key",examineResponse:"A simple key that fits in the lock to Aiden's door...")
                                              }
                                          }
 
                                         }
         
                 },
+                { "aidensRoom",new Room {
+                                         KeyValue ="aidensRoom",
+                                         Name="Aiden's Room",
+                                         Description="The ultimate gamers nest and puppy safehaven.",
+                                         TimesVisited=0,
+                                         Exits=new Dictionary<string, Exit>
+                                         {
+                                            {
+                                                "Southwest", new Exit(locationKey:"aidensRoom", destinationKey:"diningRoom", isLocked:false, name:"aidensRoom_Ex_diningRoom")
+                                            }
+
+                                         },
+                                         RoomItems=new List<StoryItem>
+                                         {
+                                             {
+                                                 new TV(locationKey:"aidensRoom", description:"Another  flat screen tv")
+                                             }
+                                         }
+
+                                        }
+
+                }
             };
                 
 
@@ -77,18 +103,23 @@ namespace Texticular
 
 
             //Default inventory items
+            player.BackPack.AddItem(new StoryItem(name:"Lint", description:"Your favorite piece of pocket lint, don't spend it all in one place!", locationKey:"inventory",isPortable:true, examine:"Your favorite piece of pocket lint, don't spend it all in one place!"));
 
 
-
-            //Add any inentory items to the global list of game items
-            foreach (StoryItem item in player.BackPack.RoomItems)
+            //Add any room and inventory items to the global list of game items
+            foreach (Room room in Rooms.Values)
             {
-                Items.Add(item);
+                foreach(StoryItem item in room.RoomItems)
+                {
+                    Items.Add(item);
+                }
+                
             }
 
+
             AddPlayer(player);
-            Rooms[player.LocationKey].TimesVisited += 1;
-            Gamestats.player = player;
+            
+            
 
             #region useItems
 

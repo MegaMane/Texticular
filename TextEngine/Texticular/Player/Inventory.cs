@@ -1,4 +1,6 @@
-﻿namespace Texticular
+﻿using Texticular.Environment;
+
+namespace Texticular
 {
     public class Inventory:Room
     {
@@ -11,6 +13,32 @@
         {
             this.Slots = slots;
             this.ItemCount = itemCount;
+        }
+
+        new public bool AddItem(StoryItem item)
+        {
+            if (ItemCount < Slots)
+            {
+                RoomItems.Add(item);
+                ItemCount++;
+                return true;
+            }
+
+            return false;
+        }
+
+
+        public bool RemoveItem(StoryItem item)
+        {
+
+            if (ItemCount < Slots)
+            {
+                RoomItems.Add(item);
+                ItemCount++;
+                return true;
+            }
+
+            return false;
         }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 
-namespace Texticular
+namespace Texticular.Environment
 {
     public class Exit : GameObject
     {
