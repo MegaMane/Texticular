@@ -10,31 +10,26 @@ namespace Texticular
     public class StoryItem : GameObject
     {
         public bool IsPortable { get; set; }
-        public bool IsEdible { get; set; }
-        public int HealthBoost { get; set; }
-        public String ExamineResponse { get; set; }
         public int Weight { get; set; }
-        //actions verb => resulting action 
-        public Dictionary<string, ActionResponse> Actions;
-        public ItemType TypeOfItem;
+
+        Dictionary<string, Action<GameController>> commands;
+        public Dictionary<string, Action<GameController>> Commands { get { return commands; } protected set { commands = value; } }
 
 
         public StoryItem(string name, string description) :base(name, description)
         {
-            this.IsPortable = false;
-            this.ExamineResponse = description;
-            this.Weight = 999;
+            commands = new Dictionary<string, Action<GameController>>();
+            IsPortable = false;
+            Weight = 999;
         }
 
         [JsonConstructor]
-        public StoryItem(string locationKey, string name, string description, string typeOfItem, bool isPortable, string examine, int weight = 0 ) : base(name, description)
+        public StoryItem(string name, string description, string locationKey = null, bool isPortable = false, string examine="", int weight = 0, string keyValue="") 
+            :base(name, description, examine, locationKey, keyValue)
         {
-            LocationKey = locationKey;
+            commands = new Dictionary<string, Action<GameController>>();
             IsPortable = isPortable;
-            ExamineResponse = examine;
             Weight = weight;
-            TypeOfItem = (ItemType)Enum.Parse(typeof(ItemType), typeOfItem);
-            //Actions = new Dictionary<string, string>();
         }
 
         

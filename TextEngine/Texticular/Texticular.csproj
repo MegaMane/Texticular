@@ -48,14 +48,11 @@
   <ItemGroup>
     <Compile Include="Environment\Exit.cs" />
     <Compile Include="Environment\GameObject.cs" />
-    <Compile Include="Environment\ItemType.cs" />
     <Compile Include="Environment\MovementDirection.cs" />
     <Compile Include="Environment\TV.cs" />
-    <Compile Include="GameEngine\ActionResponse.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
-    <Compile Include="GameEngine\GameController.UseObject.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />

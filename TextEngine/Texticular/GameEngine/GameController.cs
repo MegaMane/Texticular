@@ -7,7 +7,7 @@ using System.Media;
 
 namespace Texticular
 {
-    public partial class GameController
+    public class GameController
     {
         //add the rest of the exits for the map
         //add simple interactable object like use key
@@ -159,7 +159,6 @@ namespace Texticular
             }
             
 
-            // Get the nouns after the verb (the objects to act on)
             //need to remove articles and parse adjectives
             string[] parameters = new string[commandParts.Length - offset];
 
@@ -217,7 +216,7 @@ namespace Texticular
                     TV myTv = (TV)target;
 
                     Action<GameController> contextCommand;
-                    bool validcontextCommand = myTv.commands.TryGetValue(name, out contextCommand);
+                    bool validcontextCommand = myTv.Commands.TryGetValue(name, out contextCommand);
 
                     if (validcontextCommand)
                     {

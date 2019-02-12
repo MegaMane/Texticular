@@ -25,10 +25,9 @@ namespace Texticular
         //}
 
         [JsonConstructor]
-        public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit") :
-           base(name, description)
+        public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit", string KeyValue="") 
+            :base(name, description, locationKey, KeyValue)
         {
-            LocationKey = locationKey;
             DestinationKey = destinationKey;
             IsLocked = isLocked;
             KeyName = keyName;

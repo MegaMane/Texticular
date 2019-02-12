@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticular
 {
-    class TV: GameObject
+    class TV: StoryItem
     {
         private static List<string> channels = new List<string>
         {   
@@ -22,22 +22,20 @@ namespace Texticular
 
         int currentChannel = 0;
 
-        public Dictionary<string, Action<GameController>> commands;
         bool isON = false;
 
-        public TV(string locationKey, string description, string name = "TV", string keyValue="")
-            : base(name, description, locationKey, keyValue)
+        public TV(string locationKey, string description, string name = "TV", string keyValue="", bool isPortable = false, string examineResponse="", int weight = 999)
+            : base(name, description, locationKey, isPortable, examineResponse, weight , keyValue)
 
         {
-            this.LocationKey = locationKey;
-            commands = new Dictionary<string, Action<GameController>>();
-            commands["turn on"] = turnOn;
-            commands["power on"] = turnOn;
+            
+            Commands["turn on"] = turnOn;
+            Commands["power on"] = turnOn;
 
-            commands["turn off"] = turnOff;
-            commands["power off"] = turnOff;
+            Commands["turn off"] = turnOff;
+            Commands["power off"] = turnOff;
 
-            commands["change channel"] = changeChannel;
+            Commands["change channel"] = changeChannel;
         }
 
         void turnOn (GameController controller)

@@ -23,9 +23,9 @@ namespace Texticular
         public int TimesVisited { get; set; }
 
         [JsonProperty(ItemIsReference = true)]
-        public List <StoryItem> Items = new List<StoryItem>();
+        public List<StoryItem> RoomItems = new List<StoryItem>();
 
-        public List<GameObject> Props = new List<GameObject>();
+        //public List<GameObject> Props = new List<GameObject>();
 
         [JsonProperty(ItemIsReference = true)]
         public Dictionary<string, Exit> Exits = new Dictionary<string,Exit>();
@@ -42,11 +42,6 @@ namespace Texticular
             roomCount++;
         }
 
-        public Room(string name, string description, string keyValue ) : base(name, description, keyValue)
-        {
-            TimesVisited = 0;
-            roomCount++;
-        }
 
         [JsonConstructor]
         public Room(string name, string description, string keyValue, int timeVisited) : base(name, description, keyValue)
@@ -62,15 +57,10 @@ namespace Texticular
         {
             //Set the items location to this room
             item.LocationKey = this.KeyValue;
-            Items.Add(item);
+            RoomItems.Add(item);
         }
 
-        public void AddItem(GameObject item)
-        {
-            //Set the items location to this room
-            item.LocationKey = this.KeyValue;
-            Props.Add(item);
-        }
+
 
         public override string ToString()
         {

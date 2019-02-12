@@ -12,14 +12,14 @@ namespace Texticular
     {
 
         public Dictionary<string, Room> Rooms;
-        public List<GameObject> Items;
+        public List<StoryItem> Items;
         private List<Room> gameRooms;
         public Player Player;
         //public Dictionary<string, int> Location;
         public List<string> GameLog;
         //public List<Scene> Scenes;
         public Gamestats Gamestats;
-        GameController Controller;
+
 
 
         public Game()
@@ -27,10 +27,7 @@ namespace Texticular
             GameInit();
         }
 
-        public Game(string filePath)
-        {
-            GameInit(filePath);
-        }
+
 
         public void LoadGameObjects(string filePath)
         {
@@ -48,7 +45,7 @@ namespace Texticular
                 Rooms[gameRoom.KeyValue] = gameRoom;
 
                 //populate the items list with any items that exist in the room
-                foreach(StoryItem item in gameRoom.Items)
+                foreach(StoryItem item in gameRoom.RoomItems)
                 {
                     Items.Add(item);
                 }

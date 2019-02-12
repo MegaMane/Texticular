@@ -18,7 +18,7 @@ namespace Texticular.Tests
            // Game expectedRooms
             
             //Act
-            Game ActiveGame = new Game(@"..\..\..\Texticular\JsonFiles\ExitTest.json");
+            Game ActiveGame = new Game();
 
             foreach (KeyValuePair<string, Room> gameRoom in ActiveGame.Rooms)
             {
@@ -29,7 +29,7 @@ namespace Texticular.Tests
                     Console.Write($"{door.Key.ToString()}: {door.Value.ToString()}\n\n");
                 }
 
-                foreach (StoryItem item in currentRoom.Items)
+                foreach (StoryItem item in currentRoom.RoomItems)
                 {
                     Console.Write(item.ToString());
                 }

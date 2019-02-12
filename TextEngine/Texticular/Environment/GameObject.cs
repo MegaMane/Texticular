@@ -15,8 +15,10 @@ namespace Texticular
         public String KeyValue { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
-        //a reference to another objects KeyValue
+        public String ExamineResponse { get; set; }
         public String LocationKey { get; set; }
+
+
 
         private GameObject()
         {
@@ -29,34 +31,36 @@ namespace Texticular
 
         public GameObject(string name, string description)
         {
-            KeyValue = createStringKey(name);
             ID = ++_nextGameID;
+            KeyValue = createStringKey(name) + "_" + this.ID.ToString();
             Name = name;
             Description = description;
+            ExamineResponse = description;
         }
 
 
-        public GameObject(string name, string description, string LocationKey, string KeyValue="")
+        public GameObject(string name, string description, string LocationKey=null, string KeyValue="")
         {
-            this.KeyValue = KeyValue == "" ? createStringKey(name) : KeyValue;
+            this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
             ID = ++_nextGameID;
             Name = name;
             Description = description;
             this.LocationKey = LocationKey;
         }
 
-        public GameObject(string name, string description, string keyValue)
+        public GameObject(string name, string description, string examineResponse, string LocationKey, string KeyValue = "")
         {
+            this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
             ID = ++_nextGameID;
             Name = name;
             Description = description;
-            KeyValue = keyValue;
+            this.LocationKey = LocationKey;
+            ExamineResponse = examineResponse;
         }
-
 
         public override string ToString()
         {
-            return $"{this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\n";
+            return $"Class: {this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\nExamine Response: {ExamineResponse}\n";
         }
 
 
