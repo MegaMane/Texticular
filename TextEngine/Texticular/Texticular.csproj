@@ -55,6 +55,7 @@
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
+    <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Media;
 using Texticular.Environment;
+using Texticular.GameEngine;
 
 namespace Texticular
 {
@@ -12,34 +13,13 @@ namespace Texticular
     {
         //add the rest of the exits for the map
         //add simple interactable object like use key
-        Game game;
+        public Game game;
         public StringBuilder InputResponse;
         Dictionary<string, Action<string[]>> commands;
         List<StoryItem> ItemsinInventory;
-        List<GameObject> ItemsinRoom;
-        List<String> knownCommands = new List<string> {
-                                                        "backpack",
-                                                        "change channel",
-                                                        "drop",
-                                                        "examine",
-                                                        "get",
-                                                        "go" ,
-                                                        "grab",
-                                                        "help",
-                                                        "inv",
-                                                        "inventory",
-                                                        "look",
-                                                        "move",
-                                                        "pick up",
-                                                        "power off",
-                                                        "power on",
-                                                        "take",
-                                                        "use",
-                                                        "turn off",
-                                                        "turn on",
-                                                        "walk"
-
-                                                       };
+        List<StoryItem> ItemsinRoom;
+        Lexer Tokenizer;
+        public string UserInput;
 
         public GameController(Game game)
         {
@@ -48,7 +28,8 @@ namespace Texticular
             this.InputResponse = new StringBuilder();
             this.commands = new Dictionary<string, Action<string[]>>();
             this.ItemsinInventory = new List<StoryItem>();
-            this.ItemsinRoom = new List<GameObject>();
+            this.ItemsinRoom = new List<StoryItem>();
+            Tokenizer = new Lexer();
 
 
             commands["go"] = go;
@@ -102,19 +83,19 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
-         
+            this.UserInput = userInput;
             ItemsinInventory.Clear();
-            foreach (GameObject item in game.Items)
+            foreach (StoryItem item in game.Items)
             {
                 if (item.LocationKey == "inventory")
                 {
-                    ItemsinInventory.Add((StoryItem)item);
+                    ItemsinInventory.Add(item);
                 }
             }
 
 
             ItemsinRoom.Clear();
-            foreach (GameObject item in game.Items)
+            foreach (StoryItem item in game.Items)
             {
                 if (item.LocationKey == game.Player.PlayerLocation.KeyValue)
                 {
@@ -133,7 +114,7 @@ namespace Texticular
             bool commandFound = false;
 
             // Name of the method we want to call.
-            foreach (string command in knownCommands)
+            foreach (string command in Tokenizer.KnownCommands)
             {
                 name = "";
 
@@ -171,51 +152,22 @@ namespace Texticular
             //args[1] = parameters;
 
             Action<string[]> parsedCommand;
-            bool validCommand = commands.TryGetValue(name, out parsedCommand);
+            bool basicCommand = commands.TryGetValue(name, out parsedCommand);
 
             //basic commands
-            if (validCommand)
+            if (basicCommand)
                 parsedCommand(parameters);
 
             //context sensitive commands
-            else if (!validCommand && knownCommands.Contains(name))
+            else if (!basicCommand && Tokenizer.KnownCommands.Contains(name))
             {
-                //check if a there is an object that matches 
-                //the tokens left in the parameters array
-                string noun = "";
-                bool objectFound = false;
-                GameObject target = null;
+                StoryItem objectToFind;
 
-                for ( int i = 0; i < ItemsinRoom.Count; i++)
+                if (objectFound(parameters, out objectToFind))
                 {
-                    noun = "";
-
-                    for (int j = 0; j < parameters.Length; j++)
-                    {
-                        noun = String.Join(" ", parameters, 0, j + 1);
-
-                        if (noun == ItemsinRoom[i].Name.ToLower())
-                        {
-
-                            objectFound = true;
-                            target = ItemsinRoom[i];
-                            break;
-                        }
-                    }
-
-                    if (objectFound)
-                    {
-                        break;
-                    }
-                }
-
-                if (objectFound)
-                {
-                    //implement interface
-                    TV myTv = (TV)target;
 
                     Action<GameController> contextCommand;
-                    bool validcontextCommand = myTv.Commands.TryGetValue(name, out contextCommand);
+                    bool validcontextCommand = objectToFind.Commands.TryGetValue(name, out contextCommand);
 
                     if (validcontextCommand)
                     {
@@ -225,7 +177,7 @@ namespace Texticular
 
                 else
                 {
-                    InputResponse.Append($"There is no {noun} here.\n");
+                    InputResponse.Append($"There is no {String.Join(" ", parameters)} here.\n");
                 }
 
             }
@@ -407,32 +359,27 @@ namespace Texticular
                 }
             }
 
-            foreach (string item in parameters)
-            {
-                var examineInventory = ItemsinInventory.Where(p => p.Name.ToLower() == item).ToList();
-                var examineRoom = ItemsinRoom.Where(p => p.Name.ToLower() == item).ToList();
+            StoryItem objectToExamine;
 
-                if (examineInventory.Count > 0)
-                {
-                    foreach (StoryItem inventoryItem in examineInventory)
-                    {
-                        InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", inventoryItem.ExamineResponse);
-                    }
-                }
+            objectToExamine = checkInventory(parameters);
 
-                else if (examineRoom.Count > 0)
-                {
-                    foreach (StoryItem roomItem in examineRoom)
-                    {
-                        InputResponse.Append(roomItem.ExamineResponse + "\n\n");
-                    }
-                }
-
-                else
-                {
-                    InputResponse.AppendFormat("There is no {0} here.\n", item);
-                }
+            if (objectToExamine != null) {
+                InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", objectToExamine.ExamineResponse);
+                return;
             }
+
+            objectToExamine = checkRoom(parameters);
+
+            if (objectToExamine != null)
+            {
+                InputResponse.AppendFormat(objectToExamine.ExamineResponse + "\n\n");
+                return;
+            }
+
+            InputResponse.AppendFormat($"There is no {String.Join(" ", parameters)} here.\n");
+
+
+
 
 
         }
@@ -462,90 +409,203 @@ namespace Texticular
             InputResponse.Append("\n");
         }
 
-
+        //todo refactor to use internal inventory add method
         void take(string[] parameters)
         {
             Player player = game.Player;
 
-            foreach (string item in parameters)
+            StoryItem itemToTake;
+            itemToTake = checkInventory(parameters);
+
+            if (itemToTake != null)
             {
-                var examineInventory = ItemsinInventory.Where(p => p.Name.ToLower() == item).ToList();
-                var examineRoom = ItemsinRoom.Where(p => p.Name.ToLower() == item).ToList();
+                InputResponse.AppendFormat("You already have the item {0}.\n", itemToTake.Name);
+                return;
+            }
 
-                if (examineRoom.Count > 0)
+            itemToTake = checkRoom(parameters);
+
+            if (itemToTake != null)
+            {
+
+                if (itemToTake.IsPortable)
                 {
-                    foreach (StoryItem roomItem in examineRoom)
+                    if (player.BackPack.ItemCount < player.BackPack.Slots)
                     {
-                        if (roomItem.IsPortable)
-                        {
-                            if (player.BackPack.ItemCount < player.BackPack.Slots)
-                            {
-                                roomItem.LocationKey = "inventory";
-                                InputResponse.AppendFormat("{0} taken.\n", roomItem.Name);
-                                player.BackPack.ItemCount += 1;
-                            }
-
-                            else
-                            {
-                                InputResponse.AppendFormat("You don't have any space for the {0} in your inventory! Try dropping something you don't need.\n", roomItem.Name);
-                            }
-
-
-                        }
-
-                        else
-                        {
-                            InputResponse.AppendFormat("You try to take the {0} but it won't budge!\n", roomItem.Name);
-                        }
+                        itemToTake.LocationKey = "inventory";
+                        InputResponse.AppendFormat("{0} taken.\n", itemToTake.Name);
+                        player.BackPack.ItemCount += 1;
                     }
-                }
 
-                else if (examineInventory.Count > 0)
-                {
-                    foreach (StoryItem inventoryItem in examineInventory)
+                    else
                     {
-                        InputResponse.AppendFormat("You already have the item {0}.\n", inventoryItem.Name);
+                        InputResponse.AppendFormat("You don't have any space for the {0} in your inventory! Try dropping something you don't need.\n", itemToTake.Name);
                     }
+
+
                 }
 
                 else
                 {
-                    InputResponse.AppendFormat("There is no {0} here to take.\n", item);
+                    InputResponse.AppendFormat("You try to take the {0} but it won't budge!\n", itemToTake.Name);
                 }
+                
             }
+
+
+
+            else
+            {
+                InputResponse.AppendFormat($"There is no {String.Join(" ", parameters)} here to take.\n");
+            }
+            
 
         }
 
-
+        //todo refactor to use internal inventory drop method
         void drop(string[] parameters)
         {
             Player player = game.Player;
+            StoryItem itemToDrop;
 
-            foreach (string item in parameters)
+            itemToDrop = checkInventory(parameters);
+
+
+            if (itemToDrop != null)
             {
-                var examineInventory = ItemsinInventory.Where(p => p.Name.ToLower() == item).ToList();
 
-                if (examineInventory.Count > 0)
-                {
-                    foreach (StoryItem inventoryItem in examineInventory)
-                    {
-                        inventoryItem.LocationKey = game.Player.PlayerLocation.KeyValue;
-                        InputResponse.AppendFormat("You dropped the {0} like it's hot.\n", inventoryItem.Name);
-                        player.BackPack.ItemCount -= 1;
-                    }
-                }
-
-                else
-                {
-                    InputResponse.AppendFormat("You don't have a {0} to drop.\n", item);
-                }
+                itemToDrop.LocationKey = game.Player.PlayerLocation.KeyValue;
+                InputResponse.AppendFormat($"You dropped the {itemToDrop.Name} like it's hot.\n");
+                player.BackPack.ItemCount -= 1;
+                
             }
+
+            else
+            {
+                InputResponse.AppendFormat($"You don't have a {String.Join(" ", parameters)} to drop.\n");
+            }
+            
 
         }
 
 
-        public static string FirstCharToUpper(string input) => input.First().ToString().ToUpper() + input.Substring(1);
-        
+        #region helper methods
+
+        /// <summary>
+        ///Check if a there is an object that matches 
+        ///the tokens left in the parameters array
+        ///either in the players inventory or the current room
+        ///and return the result and a reference to the object
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="itemToActOn"></param>
+        /// <returns>bool</returns>
+        bool objectFound(string[] parameters, out StoryItem itemToActOn)
+        {
+
+            string noun = "";
+            itemToActOn = null;
+
+            //player inventory
+            for (int i = 0; i < ItemsinInventory.Count; i++)
+            {
+                noun = "";
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    noun = String.Join(" ", parameters, 0, j + 1);
+
+                    if (noun == ItemsinInventory[i].Name.ToLower())
+                    {
+
+                        itemToActOn = ItemsinInventory[i];
+                        return true;
+
+                    }
+                }
+
+            }
+
+            //current room
+            for (int i = 0; i < ItemsinRoom.Count; i++)
+            {
+                noun = "";
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    noun = String.Join(" ", parameters, 0, j + 1);
+
+                    if (noun == ItemsinRoom[i].Name.ToLower())
+                    {
+
+                        itemToActOn = ItemsinRoom[i];
+                        return true;
+
+                    }
+                }
+
+            }
+
+            return false;
+
+        }
+
+        public StoryItem checkInventory(string[] parameters)
+        {
+            StoryItem itemToActOn = null;
+            
+            //player inventory
+            for (int i = 0; i < ItemsinInventory.Count; i++)
+            {
+                string noun = "";
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    noun = String.Join(" ", parameters, 0, j + 1);
+
+                    if (noun == ItemsinInventory[i].Name.ToLower())
+                    {
+
+                        return itemToActOn = ItemsinInventory[i];
+
+                    }
+                }
+
+            }
+
+            return itemToActOn;
+        }
+
+        public StoryItem checkRoom(string[] parameters)
+        {
+            StoryItem itemToActOn = null;
+
+            for (int i = 0; i < ItemsinRoom.Count; i++)
+            {
+                string noun = "";
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    noun = String.Join(" ", parameters, 0, j + 1);
+
+                    if (noun == ItemsinRoom[i].Name.ToLower())
+                    {
+
+                        return itemToActOn = ItemsinRoom[i];
+
+                    }
+                }
+
+            }
+
+            return itemToActOn;
+        }
+
+
+
+        public string FirstCharToUpper(string input) => input.First().ToString().ToUpper() + input.Substring(1);
+        #endregion
+
 
 
     }

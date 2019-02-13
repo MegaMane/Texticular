@@ -32,7 +32,7 @@ namespace Texticular
                                          Exits=new Dictionary<string, Exit>
                                          {
                                             {
-                                                "Northwest", new Exit(locationKey:"diningRoom", destinationKey:"aidensRoom", isLocked:true, keyName:"aidensKey", name:"Aiden's Bedroom Door", description:"A white painted door with caution tape and a do not enter sign taped to it")
+                                                "Northwest", new Exit(locationKey:"diningRoom", destinationKey:"aidensRoom", isLocked:true, keyName:"Aiden's Key", name:"Aiden's Bedroom Door", description:"A white painted door with caution tape and a do not enter sign taped to it")
                                             },
                                             {
                                                 "North", new Exit(locationKey:"diningRoom", destinationKey:"livingRoom", isLocked:false, name:"diningRoom_Ex_livingRoom")
@@ -59,7 +59,7 @@ namespace Texticular
                                                  new TV(locationKey:"livingRoom", description:"A flat screen tv")
                                              },
                                              {
-                                                 new DoorKey(locationKey:"livingRoom", name:"aidensKey" , description:"Aiden's room key",examineResponse:"A simple key that fits in the lock to Aiden's door...")
+                                                 new DoorKey(locationKey:"livingRoom", name:"Aiden's Key" , description:"Aiden's room key",examineResponse:"A simple key that fits in the lock to Aiden's door...")
                                              }
                                          }
 
@@ -103,7 +103,7 @@ namespace Texticular
 
 
             //Default inventory items
-            player.BackPack.AddItem(new StoryItem(name:"Lint", description:"Your favorite piece of pocket lint, don't spend it all in one place!", locationKey:"inventory",isPortable:true, examine:"Your favorite piece of pocket lint, don't spend it all in one place!"));
+            player.BackPack.AddItem(new StoryItem(name:"Pocket Lint", description:"Your favorite piece of pocket lint, don't spend it all in one place!", locationKey:"inventory",isPortable:true, examine:"Your favorite piece of pocket lint, don't spend it all in one place!"));
 
 
             //Add any room and inventory items to the global list of game items
