@@ -506,7 +506,7 @@ namespace Texticular
             string noun = "";
             itemToActOn = null;
 
-            //player inventory
+            //items in player inventory
             for (int i = 0; i < ItemsinInventory.Count; i++)
             {
                 noun = "";
@@ -526,7 +526,7 @@ namespace Texticular
 
             }
 
-            //current room
+            //items in current room
             for (int i = 0; i < ItemsinRoom.Count; i++)
             {
                 noun = "";
@@ -539,6 +539,26 @@ namespace Texticular
                     {
 
                         itemToActOn = ItemsinRoom[i];
+                        return true;
+
+                    }
+                }
+
+            }
+
+            //Exits in current room
+            foreach (Exit exit in  game.Player.PlayerLocation.Exits.Values)
+            {
+                noun = "";
+
+                for (int j = 0; j < parameters.Length; j++)
+                {
+                    noun = String.Join(" ", parameters, 0, j + 1);
+
+                    if (noun == exit.Name.ToLower())
+                    {
+
+                        itemToActOn = exit;
                         return true;
 
                     }
@@ -563,7 +583,7 @@ namespace Texticular
                 {
                     noun = String.Join(" ", parameters, 0, j + 1);
 
-                    if (noun == ItemsinInventory[i].Name.ToLower())
+                    if (noun.ToLower() == ItemsinInventory[i].Name.ToLower())
                     {
 
                         return itemToActOn = ItemsinInventory[i];
@@ -588,7 +608,7 @@ namespace Texticular
                 {
                     noun = String.Join(" ", parameters, 0, j + 1);
 
-                    if (noun == ItemsinRoom[i].Name.ToLower())
+                    if (noun.ToLower() == ItemsinRoom[i].Name.ToLower())
                     {
 
                         return itemToActOn = ItemsinRoom[i];

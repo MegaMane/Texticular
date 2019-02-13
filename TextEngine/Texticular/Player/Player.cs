@@ -9,7 +9,8 @@ namespace Texticular
 {
     public class Player:GameObject
     {
-        public Room PlayerLocation { get; set; }
+        private Room _playerLocation;
+        public Room PlayerLocation { get { return _playerLocation; } set { _playerLocation = value; LocationKey = value.KeyValue; } }
         public int Health { get; set; }
         public Inventory BackPack;
 

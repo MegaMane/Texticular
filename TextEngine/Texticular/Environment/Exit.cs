@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace Texticular.Environment
 {
-    public class Exit : GameObject
+    public class Exit : StoryItem
     {
         public string DestinationKey;
         public bool IsLocked;
@@ -25,14 +25,49 @@ namespace Texticular.Environment
         //}
 
         [JsonConstructor]
-        public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit", string KeyValue="") 
-            :base(name, description, locationKey, KeyValue)
+        public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit", string keyValue="") 
+            :base (name, description)
         {
+            LocationKey = locationKey;
+            KeyValue = keyValue;
             DestinationKey = destinationKey;
             IsLocked = isLocked;
             KeyName = keyName;
 
+            Commands["open"] = openDoor;
+            Commands["unlock"] = openDoor;
+        }
 
+        void openDoor(GameController controller)
+        {
+            Player player = controller.game.Player;
+
+            if (player.LocationKey != this.LocationKey)
+            {
+                controller.InputResponse.Append("I don't see that door.");
+                return;
+            }
+
+            if (IsLocked)
+            {
+               DoorKey doorKey = (DoorKey)controller.checkInventory(new string[] {KeyName});
+               if (doorKey != null)
+                {
+                    controller.InputResponse.Append($"{this.Name} opens...");
+                    IsLocked = false;
+                    player.BackPack.ConsumeItem(doorKey);
+                    player.PlayerLocation = controller.game.Rooms[DestinationKey];
+                    controller.Parse("look");
+                    return;
+                }
+
+               else
+                {
+                    controller.InputResponse.Append("You don't have the key");
+                }
+            }
+                //if the player has the correct key in inventory
+            
         }
 
         public override string ToString()

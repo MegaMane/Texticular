@@ -14,13 +14,17 @@ namespace Texticular
          * Look at sourrondings {complete}
          * Examine Objects {complete}
          * Take and Drop Items {complete}
-         * Unlock doors with correct key 
-         * Use healing items 
-         * lock/unlock/open containers and place and retrieve items
+         * Unlock doors with correct key {complete}
+         * Use healing items magic medicine
+         * lock/unlock/open containers and place and retrieve items locker, chest
          * use special context sensitive items * use phone/keypad vending machine
          * talk to people
-         * equip weapons
-         * fight with weapons
+         * equip special items
+         * fight
+         * trigger game events or "cut scenes"
+         * add a splash screen
+         * add visuals
+         * add sound
         */
         static void Main(string[] args)
         {
@@ -40,7 +44,7 @@ namespace Texticular
 
 
                 Console.Write("\n>> ");
-                string userInput = Console.ReadLine();
+                string userInput=Console.ReadLine();
 
 
                 if (userInput.ToLower() == "exit")

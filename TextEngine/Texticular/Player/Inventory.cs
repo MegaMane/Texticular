@@ -1,4 +1,5 @@
-﻿using Texticular.Environment;
+﻿using System.Collections.Generic;
+using Texticular.Environment;
 
 namespace Texticular
 {
@@ -6,6 +7,7 @@ namespace Texticular
     {
         public int Slots { get; set; }
         public int ItemCount { get; set; }
+        private List<StoryItem> usedItems;
 
 
         public Inventory(string keyValue, string name, string description, int slots, int itemCount, int timeVisited = 0):
@@ -13,6 +15,7 @@ namespace Texticular
         {
             this.Slots = slots;
             this.ItemCount = itemCount;
+            usedItems = new List<StoryItem>();
         }
 
         new public bool AddItem(StoryItem item)
@@ -28,17 +31,13 @@ namespace Texticular
         }
 
 
-        public bool RemoveItem(StoryItem item)
+        public void ConsumeItem(StoryItem item)
         {
+            item.LocationKey = "usedItem";
+            RoomItems.Remove(item);
+            ItemCount--;
+            usedItems.Add(item);
 
-            if (ItemCount < Slots)
-            {
-                RoomItems.Add(item);
-                ItemCount++;
-                return true;
-            }
-
-            return false;
         }
 
     }

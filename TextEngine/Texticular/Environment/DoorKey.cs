@@ -18,11 +18,27 @@ namespace Texticular.Environment
         {
             Player player = controller.game.Player;
 
+
             if (LocationKey == "inventory")
             {
-                //if the key is in the players possesion
                 //the key is taken from the players inventory
                 //the player is moved to the destination for the door
+                foreach (Exit door in player.PlayerLocation.Exits.Values)
+                {
+                    if (door.KeyName.ToLower() == this.Name.ToLower())
+                    {
+                        controller.InputResponse.Append($"{door.Name} opens...");
+                        door.IsLocked = false;
+                        player.BackPack.ConsumeItem(this);
+                        player.PlayerLocation = controller.game.Rooms[door.DestinationKey];
+                        controller.Parse("look");
+                        return;
+                    }
+                }
+
+                //their are no doors the key opens in the current room
+                controller.InputResponse.Append($"{Name} doesn't fit into any of the locks.");
+
 
             }
 
