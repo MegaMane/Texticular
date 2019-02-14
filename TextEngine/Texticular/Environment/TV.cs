@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticular.Environment
 {
-    class TV: StoryItem
+    public class TV: StoryItem
     {
         private static List<string> channels = new List<string>
         {   
@@ -16,7 +16,7 @@ namespace Texticular.Environment
             "Static\n"
          };
 
-        public string TurnOffResponse { get; set; }
+        public string TurnOffResponse { get; set; } 
 
         public string Channel { get { return channels[currentChannel]; }  }
 
@@ -41,7 +41,7 @@ namespace Texticular.Environment
 
         void turnOn (GameController controller)
         {
-            controller.InputResponse.Append("You turn on the TV...\n");
+            controller.InputResponse.Append("You turn on the TV...\n\n");
             controller.InputResponse.Append( Channel );
             isON = true;
         }
@@ -63,7 +63,7 @@ namespace Texticular.Environment
 
                 else currentChannel += 1;
 
-                controller.InputResponse.Append(Channel);
+                controller.InputResponse.Append("Click...\n\n" + Channel);
             }
             else
             {
