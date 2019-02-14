@@ -69,7 +69,7 @@ namespace Texticular
             Parse("look");
             int startingScore = 0;
             int startingMoves = 0;
-            InputResponse.Append(game.Gamestats.updateStats(startingScore, startingMoves));
+            //InputResponse.Append(game.Gamestats.updateStats(startingScore, startingMoves));
         }
 
         public void Update (string userInput)
@@ -77,7 +77,7 @@ namespace Texticular
             InputResponse.Clear();
             Parse(userInput);
             int testScore = 100;
-            InputResponse.Append(game.Gamestats.updateStats(testScore));
+            //InputResponse.Append(game.Gamestats.updateStats(testScore));
 
         }
 
