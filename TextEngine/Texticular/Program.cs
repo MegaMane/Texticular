@@ -37,17 +37,15 @@ namespace Texticular
             bool gameRunning = true;
 
             Controller.Start();
-            Console.Write(Controller.InputResponse.ToString());
+
 
             while (gameRunning)
             {
 
-
-                Console.Write("\n>> ");
-                string userInput=Console.ReadLine();
+                Controller.GetInput();
 
 
-                if (userInput.ToLower() == "exit")
+                if (Controller.UserInput.ToLower() == "exit")
                 {
                     Console.WriteLine("Thanks for Playing!");
                     gameRunning = false;
@@ -55,45 +53,13 @@ namespace Texticular
                     break;
                 }
 
-                Controller.Update(userInput);
-                Console.Write(Controller.InputResponse.ToString());
+                Controller.Update();
+                
 
             }
         }
 
-        static string GetWordWrappedParagraph(string paragraph)
-        {
-            if (string.IsNullOrWhiteSpace(paragraph))
-            {
-                return string.Empty;
-            }
-
-            var approxLineCount = paragraph.Length / Console.WindowWidth;
-            var lines = new StringBuilder(paragraph.Length + (approxLineCount * 4));
-
-            for (var i = 0; i < paragraph.Length;)
-            {
-                var grabLimit = Math.Min(Console.WindowWidth, paragraph.Length - i);
-                var line = paragraph.Substring(i, grabLimit);
-
-                var isLastChunk = grabLimit + i == paragraph.Length;
-
-                if (isLastChunk)
-                {
-                    i = i + grabLimit;
-                    lines.Append(line);
-                }
-                else
-                {
-                    var lastSpace = line.LastIndexOf(" ", StringComparison.Ordinal);
-                    lines.AppendLine(line.Substring(0, lastSpace));
-
-                    //Trailing spaces needn't be displayed as the first character on the new line
-                    i = i + lastSpace + 1;
-                }
-            }
-            return lines.ToString();
-        }
+ 
     
 
     }

@@ -20,6 +20,8 @@ namespace Texticular
         List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
         public string UserInput;
+        Story story = new Story();
+
 
         public GameController(Game game)
         {
@@ -65,19 +67,40 @@ namespace Texticular
 
         public void Start()
         {
-            InputResponse.Append("Type Help for a list of commands...\n\n");
-            Parse("look");
-            int startingScore = 0;
-            int startingMoves = 0;
-            //InputResponse.Append(game.Gamestats.updateStats(startingScore, startingMoves));
+            story.CurrentScene = "intro";
+            story.PlayScene(this);
+           
         }
 
-        public void Update (string userInput)
+        public void GetInput()
         {
+
+            Console.Write("\n>> ");
+            string userInput = Console.ReadLine();
+            this.UserInput = userInput;
+        }   
+        
+        public void DisplayResponse()
+        {
+            Console.WriteLine(GetWordWrappedParagraph(InputResponse.ToString()));
+        }
+
+        public void Update ()
+        {
+
             InputResponse.Clear();
-            Parse(userInput);
-            int testScore = 100;
-            //InputResponse.Append(game.Gamestats.updateStats(testScore));
+            if (story.CurrentScene == "playerControlled")
+            {
+                look(new string[] { });
+                Parse(UserInput);
+            }
+
+            else
+            {
+                Action<GameController> storyScene;
+                storyScene = story.Scenes[story.CurrentScene].SceneAction;
+                storyScene(this);
+            }
 
         }
 
@@ -190,6 +213,8 @@ namespace Texticular
 
 
             game.GameLog.Add(InputResponse.ToString() + "\n");
+
+            DisplayResponse();
         }
 
         void help(string[] parameters)
@@ -623,7 +648,42 @@ namespace Texticular
 
 
 
-        public string FirstCharToUpper(string input) => input.First().ToString().ToUpper() + input.Substring(1);
+        static public string FirstCharToUpper(string input) => input.First().ToString().ToUpper() + input.Substring(1);
+
+
+        static string GetWordWrappedParagraph(string paragraph)
+        {
+            if (string.IsNullOrWhiteSpace(paragraph))
+            {
+                return string.Empty;
+            }
+
+            var approxLineCount = paragraph.Length / Console.WindowWidth;
+            var lines = new StringBuilder(paragraph.Length + (approxLineCount * 4));
+
+            for (var i = 0; i < paragraph.Length;)
+            {
+                var grabLimit = Math.Min(Console.WindowWidth, paragraph.Length - i);
+                var line = paragraph.Substring(i, grabLimit);
+
+                var isLastChunk = grabLimit + i == paragraph.Length;
+
+                if (isLastChunk)
+                {
+                    i = i + grabLimit;
+                    lines.Append(line);
+                }
+                else
+                {
+                    var lastSpace = line.LastIndexOf(" ", StringComparison.Ordinal);
+                    lines.AppendLine(line.Substring(0, lastSpace));
+
+                    //Trailing spaces needn't be displayed as the first character on the new line
+                    i = i + lastSpace + 1;
+                }
+            }
+            return lines.ToString();
+        }
         #endregion
 
 
