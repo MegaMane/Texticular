@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticular.Environment
 {
-    class DoorKey:StoryItem
+    public class DoorKey:StoryItem
     {
         public DoorKey(string locationKey, string name, string description, string examineResponse="", bool isPortable = true, int weight=0, string keyValue = "") 
             :base(name, description,locationKey, isPortable, examineResponse, weight, keyValue)

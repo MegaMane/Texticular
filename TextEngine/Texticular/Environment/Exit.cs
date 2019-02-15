@@ -44,7 +44,7 @@ namespace Texticular.Environment
 
             if (player.LocationKey != this.LocationKey)
             {
-                controller.InputResponse.Append("I don't see that door.");
+                controller.InputResponse.Append("I don't see that door.\n");
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace Texticular.Environment
                DoorKey doorKey = (DoorKey)controller.checkInventory(new string[] {KeyName});
                if (doorKey != null)
                 {
-                    controller.InputResponse.Append($"{this.Name} opens...");
+                    controller.InputResponse.Append($"{this.Name} opens...\n");
                     IsLocked = false;
                     player.BackPack.ConsumeItem(doorKey);
                     player.PlayerLocation = controller.game.Rooms[DestinationKey];
@@ -63,7 +63,7 @@ namespace Texticular.Environment
 
                else
                 {
-                    controller.InputResponse.Append("You don't have the key");
+                    controller.InputResponse.Append("You don't have the key\n");
                 }
             }
                 //if the player has the correct key in inventory

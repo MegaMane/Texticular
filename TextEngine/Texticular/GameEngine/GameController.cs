@@ -16,8 +16,8 @@ namespace Texticular
         public Game game;
         public StringBuilder InputResponse;
         Dictionary<string, Action<string[]>> commands;
-        List<StoryItem> ItemsinInventory;
-        List<StoryItem> ItemsinRoom;
+        public List<StoryItem> ItemsinInventory;
+        public List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
         public string UserInput;
         Story story = new Story();
