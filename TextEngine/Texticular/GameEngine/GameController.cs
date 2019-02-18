@@ -40,10 +40,10 @@ namespace Texticular
 
             commands["examine"] = examine;
 
-            commands["take"] = take;
-            commands["get"] = take;
-            commands["grab"] = take;
-            commands["pick up"] = take;
+            //commands["take"] = take;
+            //commands["get"] = take;
+            //commands["grab"] = take;
+           //commands["pick up"] = take;
 
             commands["drop"] = drop;
 
@@ -65,9 +65,12 @@ namespace Texticular
 
         public void Start()
         {
-            story.CurrentScene = "intro";
-            story.PlayScene(this);
-           
+            InputResponse.Append("Type Help for a list of commands...\n\n");
+            Parse("look");
+            Render();
+            //story.CurrentScene = "intro";
+            //story.PlayScene(this);
+
         }
 
         public void GetInput()
@@ -78,27 +81,26 @@ namespace Texticular
             this.UserInput = userInput;
         }   
         
-        public void DisplayResponse()
+        public void Render()
         {
-            Console.WriteLine(GetWordWrappedParagraph(InputResponse.ToString()));
+            Console.Clear();
+            Console.WriteLine("Insert Score Here\n");
+            Console.WriteLine(InputResponse.ToString());
         }
 
         public void Update ()
         {
 
             InputResponse.Clear();
-            if (story.CurrentScene == "playerControlled")
-            {
-                look(new string[] { });
-                Parse(UserInput);
-            }
+            Parse(UserInput);
+           
 
-            else
-            {
-                Action<GameController> storyScene;
-                storyScene = story.Scenes[story.CurrentScene].SceneAction;
-                storyScene(this);
-            }
+            //else
+            //{
+            //    Action<GameController> storyScene;
+            //    storyScene = story.Scenes[story.CurrentScene].SceneAction;
+            //    storyScene(this);
+            //}
 
         }
 
@@ -212,7 +214,6 @@ namespace Texticular
 
             game.GameLog.Add(InputResponse.ToString() + "\n");
 
-            DisplayResponse();
         }
 
         void help(string[] parameters)
@@ -433,6 +434,7 @@ namespace Texticular
         }
 
         //todo refactor to use internal inventory add method
+        /*
         void take(string[] parameters)
         {
             Player player = game.Player;
@@ -484,7 +486,7 @@ namespace Texticular
             
 
         }
-
+        */
         //todo refactor to use internal inventory drop method
         void drop(string[] parameters)
         {

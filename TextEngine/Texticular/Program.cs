@@ -38,6 +38,13 @@ namespace Texticular
 
             Controller.Start();
 
+            //while (true)
+            //{
+            //    processInput(); handles any user input that has happened since the last call. 
+            //    update(); advances the game simulation one step It runs AI and physics (usually in that order). 
+            //    render(); draws the game so the player can see what happened.
+            //}
+
 
             while (gameRunning)
             {
@@ -54,7 +61,9 @@ namespace Texticular
                 }
 
                 Controller.Update();
-                
+                Controller.Render();
+
+
 
             }
         }

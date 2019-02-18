@@ -29,12 +29,43 @@ namespace Texticular.Environment
 
         void takeItem(GameController controller)
         {
-            
+            Player player = controller.game.Player;
+
+            if (LocationKey != player.LocationKey)
+            {
+                if (LocationKey == "inventory")
+                {
+                    controller.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                }
+
+                else
+                {
+                    controller.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
+                }
+                
+                return;
+            }
+
             if (IsPortable)
             {
+                if (player.BackPack.ItemCount < player.BackPack.Slots)
+                {
+                    LocationKey = "inventory";
+                    controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                    player.BackPack.ItemCount += 1;
+                }
 
+                else
+                {
+                    controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                }
             }
-            controller.InputResponse.Append($"The {Name} won't budge.");
+
+            else
+            {
+                controller.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
+            }
+            
         }
 
     }

@@ -29,7 +29,7 @@ namespace Texticular.Environment.Tests
 
             //Act
             Console.WriteLine(myRoom.Description);
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
 
@@ -65,7 +65,7 @@ namespace Texticular.Environment.Tests
 
             //Act
             Controller.InputResponse.Append("\nTest: Player is not in the correct location\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             Controller.game.Player.PlayerLocation = destination;
@@ -74,14 +74,14 @@ namespace Texticular.Environment.Tests
 
 
             Controller.InputResponse.Append("\nTest: Player is in the correct location but does not have the key.\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             Controller.game.Player.PlayerLocation = myRoom;
             testTExit.Commands["open"](Controller);
 
             Controller.InputResponse.Append("\nTest: Player is in the correct location and has the key.\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             Controller.ItemsinInventory.Add(testKey);
@@ -126,7 +126,7 @@ namespace Texticular.Environment.Tests
 
             //Act
             Controller.InputResponse.Append("\nTest: The Key does not open any doors in the current location\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             
@@ -134,7 +134,7 @@ namespace Texticular.Environment.Tests
 
             
             Controller.InputResponse.Append("\nTest: Player Needs to be holding the key to use it.\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             //place the player in the correct room but remove the key from inventory and place it in the room as well
@@ -145,7 +145,7 @@ namespace Texticular.Environment.Tests
 
 
             Controller.InputResponse.Append("\nTest: Player does not have the key.\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             //try to use a key that exists in the list of game objects 
@@ -154,12 +154,13 @@ namespace Texticular.Environment.Tests
             anotherKey.Commands["use"](Controller);
 
             Controller.InputResponse.Append("\nTest: Player has the key and is in the correct location.\n");
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             testKey.LocationKey = "inventory";
             Controller.ItemsinInventory.Add(testKey);
             testKey.Commands["use"](Controller);
+            Controller.Render();
 
 
 
@@ -183,17 +184,17 @@ namespace Texticular.Environment.Tests
             //Act
             testTv.Commands["turn on"](Controller);
 
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             testTv.Commands["change channel"](Controller);
 
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             testTv.Commands["turn off"](Controller);
 
-            Controller.DisplayResponse();
+            Controller.Render();
             Controller.InputResponse.Clear();
 
             //Assert

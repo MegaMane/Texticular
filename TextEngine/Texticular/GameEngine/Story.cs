@@ -53,7 +53,7 @@ namespace Texticular.GameEngine
             {
                 controller.InputResponse.Clear();
                 controller.InputResponse.Append(scene);
-                controller.DisplayResponse();
+                controller.Render();
                 if (scene.Substring(0,1) == "?")
                 {
                     controller.GetInput();
