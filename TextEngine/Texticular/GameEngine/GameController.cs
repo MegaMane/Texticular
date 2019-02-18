@@ -18,7 +18,7 @@ namespace Texticular
         public List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
         public string UserInput;
-        Story story = new Story();
+        public Story story = new Story();
 
 
         public GameController(Game game)
@@ -65,12 +65,11 @@ namespace Texticular
 
         public void Start()
         {
+            Action<GameController> playScene = story.Scenes["intro"].SceneAction;
+            playScene(this);
             InputResponse.Append("Type Help for a list of commands...\n\n");
             Parse("look");
             Render();
-            //story.CurrentScene = "intro";
-            //story.PlayScene(this);
-
         }
 
         public void GetInput()
@@ -79,21 +78,16 @@ namespace Texticular
             Console.Write("\n>> ");
             string userInput = Console.ReadLine();
             this.UserInput = userInput;
-        }   
-        
-        public void Render()
-        {
-            Console.Clear();
-            Console.WriteLine("Insert Score Here\n");
-            Console.WriteLine(InputResponse.ToString());
         }
 
-        public void Update ()
+
+
+        public void Update()
         {
 
             InputResponse.Clear();
             Parse(UserInput);
-           
+
 
             //else
             //{
@@ -103,6 +97,14 @@ namespace Texticular
             //}
 
         }
+
+        public void Render()
+        {
+            Console.Clear();
+            Console.WriteLine(game.Gamestats.updateStats(100));
+            Console.WriteLine(InputResponse.ToString());
+        }
+
 
         public void Parse(String userInput)
         {

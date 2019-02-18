@@ -13,8 +13,8 @@ namespace Texticular
         public Room PlayerLocation { get { return _playerLocation; } set { _playerLocation = value; LocationKey = value.KeyValue; } }
         public int Health { get; set; }
         public Inventory BackPack;
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
 
         public Player(string name, string description, Room playerlocation, int health):
             base(name, description)
