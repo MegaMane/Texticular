@@ -11,7 +11,7 @@ namespace Texticular.Environment
 
         private static int _nextGameID = 0;
 
-        public int ID { get; protected set; }
+        public int ID { get; private set; }
         public String KeyValue { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
@@ -19,18 +19,13 @@ namespace Texticular.Environment
         public String LocationKey { get; set; }
 
 
-
-        private GameObject()
-        {
-            ID = ++_nextGameID;
-            Name = "Game Object";
-            Description = "Object Description";
-            KeyValue = "gamObject" + ID.ToString();
-        }
+        private Dictionary<string, Action<GameController>> commands;
+        public Dictionary<string, Action<GameController>> Commands { get { return commands; } protected set { commands = value; } }
 
 
         public GameObject(string name, string description)
         {
+            commands = new Dictionary<string, Action<GameController>>();
             ID = ++_nextGameID;
             KeyValue = createStringKey(name) + "_" + this.ID.ToString();
             Name = name;
@@ -39,17 +34,9 @@ namespace Texticular.Environment
         }
 
 
-        public GameObject(string name, string description, string LocationKey=null, string KeyValue="")
-        {
-            this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
-            ID = ++_nextGameID;
-            Name = name;
-            Description = description;
-            this.LocationKey = LocationKey;
-        }
-
         public GameObject(string name, string description, string examineResponse, string LocationKey, string KeyValue = "")
         {
+            commands = new Dictionary<string, Action<GameController>>();
             this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
             ID = ++_nextGameID;
             Name = name;

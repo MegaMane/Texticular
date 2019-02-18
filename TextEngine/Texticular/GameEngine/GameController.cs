@@ -11,8 +11,6 @@ namespace Texticular
 {
     public class GameController
     {
-        //add the rest of the exits for the map
-        //add simple interactable object like use key
         public Game game;
         public StringBuilder InputResponse;
         Dictionary<string, Action<string[]>> commands;

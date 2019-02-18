@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticular.Environment
 {
-    public class TV: StoryItem
+    public class TV: Prop
     {
         private static List<string> channels = new List<string>
         {   
@@ -24,9 +24,8 @@ namespace Texticular.Environment
 
         bool isON = false;
 
-        public TV(string locationKey, string description, string name = "TV", string keyValue="", bool isPortable = false, string examineResponse="", int weight = 999)
-            : base(name, description, locationKey, isPortable, examineResponse, weight , keyValue)
-
+        public TV(string locationKey, string name, string description, string keyValue="",  string examine="")
+            :base(locationKey, name, description, keyValue, examine)
         {
             TurnOffResponse = "The TV flickers then goes black";
             

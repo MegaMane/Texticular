@@ -44,7 +44,8 @@ namespace Texticular.Environment
 
 
         [JsonConstructor]
-        public Room(string name, string description, string keyValue, int timeVisited) : base(name, description, keyValue)
+        public Room(string name, string description, string keyValue, int timeVisited) 
+            : base(name, description, examineResponse:"", LocationKey:null, KeyValue: keyValue)
         {
             TimesVisited = timeVisited;
             roomCount++;

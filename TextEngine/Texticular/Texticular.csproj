@@ -46,10 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\Container.cs" />
     <Compile Include="Environment\DoorKey.cs" />
     <Compile Include="Environment\Exit.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\MovementDirection.cs" />
+    <Compile Include="Environment\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />

@@ -13,13 +13,12 @@ namespace Texticular
         {
 
 
-            this.Rooms = new Dictionary<string, Room>();
-            this.Items = new List<StoryItem> ();
-            this.gameRooms = new List<Room> ();
-            this.Gamestats = new Gamestats();
-            this.GameLog = new List<string>(50);
+            Rooms = new Dictionary<string, Room>();
+            Items = new List<StoryItem> ();
+            Gamestats = new Gamestats();
+            GameLog = new List<string>(50);
 
-
+            #region create Game Objects
             //rooms, items and exits
             this.Rooms = new Dictionary<string, Room>()
             {
@@ -56,7 +55,7 @@ namespace Texticular
                                          RoomItems=new List<StoryItem>
                                          {
                                              {
-                                                 new TV(locationKey:"livingRoom", description:"A flat screen tv")
+                                                 new TV(locationKey:"livingRoom", name:"TV",description:"A flat screen tv")
                                              },
                                              {
                                                  new DoorKey(locationKey:"livingRoom", name:"Aiden's Key" , description:"Aiden's room key",examineResponse:"A simple key that fits in the lock to Aiden's door...")
@@ -81,7 +80,7 @@ namespace Texticular
                                          RoomItems=new List<StoryItem>
                                          {
                                              {
-                                                 new TV(locationKey:"aidensRoom", description:"Another  flat screen tv")
+                                                 new TV(locationKey:"aidensRoom", name:"Another Tv", description:"Another  flat screen tv")
                                              }
                                          }
 
@@ -105,6 +104,9 @@ namespace Texticular
             //Default inventory items
             player.BackPack.AddItem(new StoryItem(name:"Pocket Lint", description:"Your favorite piece of pocket lint, don't spend it all in one place!", locationKey:"inventory",isPortable:true, examine:"Your favorite piece of pocket lint, don't spend it all in one place!"));
 
+            AddPlayer(player);
+
+            #endregion
 
             //Add any room and inventory items to the global list of game items
             foreach (Room room in Rooms.Values)
@@ -117,14 +119,11 @@ namespace Texticular
             }
 
 
-            AddPlayer(player);
+           
             
             
 
-            #region useItems
-
-
-            #endregion
+           
 
 
         }

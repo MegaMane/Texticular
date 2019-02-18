@@ -16,9 +16,7 @@ namespace Texticular
         public List<StoryItem> Items;
         private List<Room> gameRooms;
         public Player Player;
-        //public Dictionary<string, int> Location;
         public List<string> GameLog;
-        //public List<Scene> Scenes;
         public Gamestats Gamestats;
 
 
@@ -68,16 +66,6 @@ namespace Texticular
             }
         }
 
-
-        public void AddRoom(Room newRoom)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddItem(StoryItem newItem)
-        {
-            this.Items.Add(newItem);
-        }
 
         public void AddPlayer(Player newPlayer)
         {
