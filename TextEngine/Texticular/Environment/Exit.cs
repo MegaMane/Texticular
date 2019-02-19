@@ -6,68 +6,73 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 
-namespace Texticular
+namespace Texticular.Environment
 {
-    public class Exit : GameObject
+    public class Exit : StoryItem
     {
-        public Direction ExitPosition;
         public string DestinationKey;
         public bool IsLocked;
         public string KeyName;
 
 
-        public Exit(string locationKey, Direction exitPosition, string destinationKey, string name = "Exit", string description = "Exit") :
-            base(name, description)
-        {
-            LocationKey = locationKey;
-            ExitPosition = exitPosition;
-            DestinationKey = destinationKey;
-            IsLocked = false;
-
-
-        }
+        //public Exit(string locationKey, Direction exitPosition, string destinationKey, string name = "Exit", string description = "Exit") :
+        //    base(name, description)
+        //{
+        //    LocationKey = locationKey;
+        //    ExitPosition = exitPosition;
+        //    DestinationKey = destinationKey;
+        //    IsLocked = false;
+        //}
 
         [JsonConstructor]
-        public Exit(string locationKey, string exitPosition, string destinationKey, bool isLocked, string keyName, string name = "Exit", string description = "Exit") :
-           base(name, description)
+        public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit", string keyValue="") 
+            :base (name, description)
         {
             LocationKey = locationKey;
-            ExitPosition = (Direction)Enum.Parse(typeof(Direction), exitPosition);
+            KeyValue = keyValue;
             DestinationKey = destinationKey;
             IsLocked = isLocked;
             KeyName = keyName;
 
-
+            Commands["open"] = openDoor;
+            Commands["unlock"] = openDoor;
         }
 
-        public Exit(string locationKey, Direction exitPosition, string destinationKey, bool isLocked, string keyName, string name = "Exit", string description = "Exit") :
-             base(name, description)
+        void openDoor(GameController controller)
         {
-            LocationKey = locationKey;
-            ExitPosition = exitPosition;
-            DestinationKey = destinationKey;
-            IsLocked = isLocked;
-            KeyName = keyName;
+            Player player = controller.game.Player;
 
+            if (player.LocationKey != this.LocationKey)
+            {
+                controller.InputResponse.Append("I don't see that door.\n");
+                return;
+            }
 
+            if (IsLocked)
+            {
+               DoorKey doorKey = (DoorKey)controller.checkInventory(new string[] {KeyName});
+               if (doorKey != null)
+                {
+                    controller.InputResponse.Append($"{this.Name} opens...\n");
+                    IsLocked = false;
+                    player.BackPack.ConsumeItem(doorKey);
+                    player.PlayerLocation = controller.game.Rooms[DestinationKey];
+                    controller.Parse("look");
+                    return;
+                }
+
+               else
+                {
+                    controller.InputResponse.Append("You don't have the key\n");
+                }
+            }
+                //if the player has the correct key in inventory
+            
         }
-
-        public Exit(string keyValue, string locationKey, Direction exitPosition, string destinationKey, bool isLocked, string keyName, string name = "Exit", string description = "Exit") :
-            base(name, description, keyValue)
-        {
-            LocationKey = locationKey;
-            ExitPosition = exitPosition;
-            DestinationKey = destinationKey;
-            IsLocked = isLocked;
-            KeyName = keyName;
-
-
-        }
-
 
         public override string ToString()
         {
-            return base.ToString() + $"Destination:{DestinationKey}\nExitPosition: {ExitPosition.ToString()}\nIsLocked: {IsLocked.ToString()}\nKeyName: {KeyName}\n\n";
+            return base.ToString() + $"Destination:{DestinationKey}\nIsLocked: {IsLocked.ToString()}\nKeyName: {KeyName}\n\n";
             //base code below
             //return $"{this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\n";
         }

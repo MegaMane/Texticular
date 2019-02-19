@@ -46,16 +46,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\Coins.cs" />
+    <Compile Include="Environment\Container.cs" />
+    <Compile Include="Environment\DoorKey.cs" />
     <Compile Include="Environment\Exit.cs" />
-    <Compile Include="Environment\GameObject.cs" />
-    <Compile Include="Environment\ItemType.cs" />
-    <Compile Include="Environment\MovementDirection.cs" />
+    <Compile Include="Environment\BaseClasses\GameObject.cs" />
+    <Compile Include="Environment\BaseClasses\MovementDirection.cs" />
+    <Compile Include="Environment\Prop.cs" />
+    <Compile Include="Environment\TV.cs" />
+    <Compile Include="GameEngine\Game.cs" />
+    <Compile Include="GameEngine\Game.Init.cs" />
+    <Compile Include="GameEngine\GameController.cs" />
+    <Compile Include="GameEngine\GameEvents.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
+    <Compile Include="GameEngine\Lexer.cs" />
+    <Compile Include="GameEngine\LocationChangedEventArgs.cs" />
+    <Compile Include="GameEngine\Story.cs" />
+    <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Environment\Room.cs" />
-    <Compile Include="Environment\StoryItem.cs" />
+    <Compile Include="Environment\BaseClasses\StoryItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

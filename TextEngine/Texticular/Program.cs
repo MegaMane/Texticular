@@ -3,58 +3,73 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Console;
-using Newtonsoft.Json;
-using System.IO;
+using System.Media;
 
 namespace Texticular
 {
     class Program
     {
+        /*
+         * Move Between Rooms with unlocked doors {complete}
+         * Look at sourrondings {complete}
+         * Examine Objects {complete}
+         * Take and Drop Items {complete}
+         * Unlock doors with correct key {complete}
+         * Use healing items magic medicine
+         * lock/unlock/open containers and place and retrieve items locker, chest
+         * use special context sensitive items * use phone/keypad vending machine
+         * talk to people
+         * equip special items
+         * fight
+         * trigger game events or "cut scenes"
+         * add a splash screen
+         * add visuals
+         * add sound
+        */
         static void Main(string[] args)
         {
+            Console.SetWindowSize(100, 43);
+            Console.SetBufferSize(100, 43);
+            Console.Title = "Busted Ass Text Adventure (Texticular)";
 
-            List<Room> rooms= new List<Room>();
+            Game ActiveGame = new Game();
+            GameController Controller = new GameController(ActiveGame);
+            bool gameRunning = true;
 
-            using (StreamReader file = File.OpenText(@"..\..\JsonFiles\JsonRoomTest.json"))
+            Controller.Start();
+
+            //while (true)
+            //{
+            //    processInput(); handles any user input that has happened since the last call. 
+            //    update(); advances the game simulation one step It runs AI and physics (usually in that order). 
+            //    render(); draws the game so the player can see what happened.
+            //}
+
+
+            while (gameRunning)
             {
-                JsonSerializer serializer = new JsonSerializer();
-                rooms = (List<Room>)serializer.Deserialize(file, typeof(List<Room>));
-            }
 
-            //products = JsonConvert.DeserializeObject<List<ProductJson>>(json);
+                Controller.GetInput();
 
-            //fruits[1].SetPrice(99.00m);
 
-            foreach (Room gameRoom in rooms)
-            {
-                Write(gameRoom.ToString());
-                WriteLine();
-                for(int i =0; i< gameRoom.Exits.Count; i++)
+                if (Controller.UserInput.ToLower() == "exit")
                 {
-                    Write(gameRoom.Exits[i].ToString());
+                    Console.WriteLine("Thanks for Playing!");
+                    gameRunning = false;
+                    ActiveGame.Gamestats.stopWatch.Stop();
+                    break;
                 }
-                WriteLine();
-                for (int i = 0; i < gameRoom.Items.Count; i++)
-                {
-                    Write(gameRoom.Items[i].ToString());
-                }
+
+                Controller.Update();
+                Controller.Render();
+
+
+
             }
-
-            Console.Read();
-
-            JsonSerializer Saveserializer = new JsonSerializer();
-            Saveserializer.NullValueHandling = NullValueHandling.Ignore;
-
-            using (StreamWriter sw = new StreamWriter(@"..\..\JsonFiles\JsonRoomTest_Out.json")) 
-            using (JsonWriter writer = new JsonTextWriter(sw))
-            {
-                Saveserializer.Serialize(writer, rooms);
-                // {"ExpiryDate":new Date(1230375600000),"Price":0}
-            }
-
-
         }
+
+ 
+    
 
     }
 }
