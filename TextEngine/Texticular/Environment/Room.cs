@@ -32,7 +32,6 @@ namespace Texticular.Environment
 
         public Room() : this( "Test Room", "Test Description")
         {
-            
 
         }
 
@@ -40,6 +39,8 @@ namespace Texticular.Environment
         {
             TimesVisited = 0;
             roomCount++;
+
+            Commands["look"] = look;
         }
 
 
@@ -49,6 +50,9 @@ namespace Texticular.Environment
         {
             TimesVisited = timeVisited;
             roomCount++;
+
+            Commands["look"] = look;
+            Commands["examine"] = look;
         }
 
 
@@ -67,5 +71,65 @@ namespace Texticular.Environment
         {
             return base.ToString() + $"TimesVisited: {TimesVisited}\n\n";
         }
+
+        void look(GameController controller)
+        {
+            Room currentRoom = this;
+            Game game = controller.game;
+
+            //location description
+            controller.InputResponse.AppendFormat("\nYou are in {0}: {1}", currentRoom.Name, currentRoom.Description);
+            foreach (StoryItem item in game.Items)
+            {
+                if(item.LocationKey == currentRoom.KeyValue && !String.IsNullOrEmpty(item.DescriptionInRoom))
+                {
+                    controller.InputResponse.Append(item.DescriptionInRoom );
+                }
+            }
+
+            controller.InputResponse.Append("\n\n");
+
+            //list items
+            controller.InputResponse.Append("You see: \n");
+            string itemString = "";
+            foreach (StoryItem item in game.Items)
+            {
+                if (item.LocationKey == currentRoom.KeyValue)
+                {
+
+                     itemString += item.Name + " : " + item.Description + "\n";
+                }
+
+            }
+
+            controller.InputResponse.Append(itemString != "" ? itemString + "\n" : "Nothing\n\n");
+
+            //exits
+            controller.InputResponse.Append("Obvious Exits : \n");
+
+            var exits = from KeyValpair in currentRoom.Exits
+                        orderby (Direction)Enum.Parse(typeof(Direction), KeyValpair.Key) ascending
+                        select KeyValpair;
+
+            foreach (KeyValuePair<string, Exit> exit in exits)
+            {
+
+
+                if (exit.Value.IsLocked)
+                {
+                    controller.InputResponse.AppendFormat("To the {0} you see: {1}\n", exit.Key, exit.Value.Name);
+                }
+
+                else
+                {
+                    controller.InputResponse.AppendFormat("To the {0} you see: {1}\n", exit.Key, game.Rooms[exit.Value.DestinationKey].Name);
+                }
+
+
+            }
+
+
+        }
+
     }
 }

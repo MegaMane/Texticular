@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Texticular.Environment;
+using Texticular.GameEngine;
 
 namespace Texticular
 {
@@ -64,7 +65,8 @@ namespace Texticular
                 TV(
                     locationKey: "room201",
                     name: "Old TV",
-                    description: "an old {TV} with rabbit ears that looks like it came straight out of the 1950's."
+                    description: "an old {TV} with rabbit ears that looks like it came straight out of the 1950's.",
+                    examine: "One of the dials on the TV has fallen off, but it still works. Kick back and enjoy the wonders of technology."
                    );
 
             room201.AddItem(room201_tv);
@@ -127,6 +129,11 @@ namespace Texticular
 
             westHallway.Exits["West"] = westHallway_westExit;
 
+            Coins pocketChange = new Coins("westHallway", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
+            pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
+
+            westHallway.AddItem(pocketChange);
+
             Rooms["westHallway"] = westHallway;
 
             #endregion
@@ -140,6 +147,8 @@ namespace Texticular
             //create default player
             Room playerStartingLocation = room201;
             Player player = new Player("Jonny Rotten", "A strapping young lad with a rotten disposition.", playerStartingLocation, 100);
+            
+            
             Inventory playerInventory = new Inventory("playerInventory","Inventory", "Your trusty backpack.", 10, 0);
 
             player.BackPack = playerInventory;
@@ -174,6 +183,11 @@ namespace Texticular
            
 
 
+        }
+
+        void LocationChanged(object sender, LocationChangedEventArgs args)
+        {
+            
         }
     }
 }

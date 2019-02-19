@@ -32,27 +32,16 @@ namespace Texticular
             Tokenizer = new Lexer();
 
 
+            //basic commands not attached to an object
             commands["go"] = go;
             commands["walk"] = go;
             commands["move"] = go;
-
-            commands["look"] = look;
-
-            commands["examine"] = examine;
-
-            //commands["take"] = take;
-            //commands["get"] = take;
-            //commands["grab"] = take;
-           //commands["pick up"] = take;
-
-            commands["drop"] = drop;
 
             commands["inventory"] = inventory;
             commands["backpack"] = inventory;
             commands["inv"] = inventory;
 
             commands["help"] = help;
-
 
 
         }
@@ -65,9 +54,12 @@ namespace Texticular
 
         public void Start()
         {
-            Action<GameController> playScene = story.Scenes["intro"].SceneAction;
-            playScene(this);
+            //Action<GameController> playScene = story.Scenes["intro"].SceneAction;
+            //playScene(this);
             InputResponse.Append("Type Help for a list of commands...\n\n");
+            //need to manually set the input to look after playing the intro scene 
+            //to print the room description
+            UserInput = "look";
             Parse("look");
             Render();
         }
@@ -77,7 +69,7 @@ namespace Texticular
 
             Console.Write("\n>> ");
             string userInput = Console.ReadLine();
-            this.UserInput = userInput;
+            this.UserInput = userInput.ToLower().Trim();
         }
 
 
@@ -108,7 +100,6 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
-            this.UserInput = userInput;
             ItemsinInventory.Clear();
             foreach (StoryItem item in game.Items)
             {
@@ -129,7 +120,13 @@ namespace Texticular
             }
 
             char[] delimiters = { ' ', ',' };
-            string[] commandParts = userInput.ToLower().Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+
+            // look with no object after it means look at the players surroundings
+            if(UserInput == "look")
+            {
+                UserInput += $" {game.Player.PlayerLocation.Name.ToLower()}";
+            }
+            string[] commandParts = UserInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
             if (commandParts.Length == 0) return ; //the player just hit enter without typing anything
 
@@ -186,7 +183,7 @@ namespace Texticular
             //context sensitive commands
             else if (!basicCommand && Tokenizer.KnownCommands.Contains(name))
             {
-                StoryItem objectToFind;
+                GameObject objectToFind;
 
                 if (objectFound(parameters, out objectToFind))
                 {
@@ -197,6 +194,11 @@ namespace Texticular
                     if (validcontextCommand)
                     {
                         contextCommand(this);
+                    }
+
+                    else
+                    {
+                        InputResponse.Append($"You cant {name} {String.Join(" ", parameters)}.\n");
                     }
                 }
 
@@ -285,10 +287,9 @@ namespace Texticular
                         currentRoom = player.PlayerLocation;
                         InputResponse.AppendFormat("\nMoving to {0}\n", currentRoom.Name);
 
-                        if (currentRoom.TimesVisited == 0)
-                        {
-                            look(new string[] { });
-                        }
+
+                        player.PlayerLocation.Commands["look"](this);
+
                         currentRoom.TimesVisited += 1;
 
                     }
@@ -304,112 +305,6 @@ namespace Texticular
 
 
         }
-
-        void look(string[] parameters)
-        {
-
-            Player player = game.Player;
-            Room currentRoom = player.PlayerLocation;
-
-
-            //location description
-            InputResponse.AppendFormat("\nYou are in {0}: {1}\n\n", currentRoom.Name, currentRoom.Description);
-
-
-            //list items
-            InputResponse.Append("You see: \n");
-            string itemString = "";
-            foreach (GameObject item in game.Items)
-            {
-                if (item.LocationKey == player.PlayerLocation.KeyValue)
-                {
-                    itemString += item.Name + " : " + item.Description + "\n";
-                }
-
-            }
-
-
-            InputResponse.Append(itemString != "" ? itemString + "\n" : "Nothing\n\n");
-
-            //exits
-            InputResponse.Append("Obvious Exits : \n");
-
-            var exits = from pair in currentRoom.Exits
-                        orderby (Direction)Enum.Parse(typeof(Direction), pair.Key) ascending
-                        select pair;
-
-            foreach (KeyValuePair<string, Exit> exit in exits)
-            {
-                
-
-                if (exit.Value.IsLocked)
-                {
-                    InputResponse.AppendFormat("To the {0} you see: {1}\n", exit.Key, exit.Value.Name);
-                }
-
-                else
-                {
-                    InputResponse.AppendFormat("To the {0} you see: {1}\n", exit.Key, game.Rooms[exit.Value.DestinationKey].Name);
-                }
-
-                
-            }
-
-        }
-
-        
-        void examine(string[] parameters)
-        {
-            Player player = game.Player;
-            Room currentRoom = player.PlayerLocation;
-
-
-            //join the parameters with a space and loop through the rooms to see if there is a match
-            string searchString = String.Join(" ", parameters);
-
-            //if the player is examining a room call the look function instead
-            foreach (KeyValuePair<string, Room> room in game.Rooms)
-            {
-                if (room.Key.ToLower() == searchString.ToLower())
-                {
-                    if (room.Value.KeyValue == currentRoom.KeyValue)
-                    {
-                        look(new[] { "" });
-                    }
-
-                    else
-                    {
-                        InputResponse.AppendFormat($"You are not in the {searchString}...\n\n");
-                        look(new[] { "" });
-                    }
-                }
-            }
-
-            StoryItem objectToExamine;
-
-            objectToExamine = checkInventory(parameters);
-
-            if (objectToExamine != null) {
-                InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", objectToExamine.ExamineResponse);
-                return;
-            }
-
-            objectToExamine = checkRoom(parameters);
-
-            if (objectToExamine != null)
-            {
-                InputResponse.AppendFormat(objectToExamine.ExamineResponse + "\n\n");
-                return;
-            }
-
-            InputResponse.AppendFormat($"There is no {String.Join(" ", parameters)} here.\n");
-
-
-
-
-
-        }
-
 
         void inventory(string[] parameters)
         {
@@ -435,86 +330,8 @@ namespace Texticular
             InputResponse.Append("\n");
         }
 
-        //todo refactor to use internal inventory add method
-        /*
-        void take(string[] parameters)
-        {
-            Player player = game.Player;
-
-            StoryItem itemToTake;
-            itemToTake = checkInventory(parameters);
-
-            if (itemToTake != null)
-            {
-                InputResponse.AppendFormat("You already have the item {0}.\n", itemToTake.Name);
-                return;
-            }
-
-            itemToTake = checkRoom(parameters);
-
-            if (itemToTake != null)
-            {
-
-                if (itemToTake.IsPortable)
-                {
-                    if (player.BackPack.ItemCount < player.BackPack.Slots)
-                    {
-                        itemToTake.LocationKey = "inventory";
-                        InputResponse.AppendFormat("{0} taken.\n", itemToTake.Name);
-                        player.BackPack.ItemCount += 1;
-                    }
-
-                    else
-                    {
-                        InputResponse.AppendFormat("You don't have any space for the {0} in your inventory! Try dropping something you don't need.\n", itemToTake.Name);
-                    }
-
-
-                }
-
-                else
-                {
-                    InputResponse.AppendFormat("You try to take the {0} but it won't budge!\n", itemToTake.Name);
-                }
-                
-            }
-
-
-
-            else
-            {
-                InputResponse.AppendFormat($"There is no {String.Join(" ", parameters)} here to take.\n");
-            }
-            
-
-        }
-        */
-        //todo refactor to use internal inventory drop method
-        void drop(string[] parameters)
-        {
-            Player player = game.Player;
-            StoryItem itemToDrop;
-
-            itemToDrop = checkInventory(parameters);
-
-
-            if (itemToDrop != null)
-            {
-
-                itemToDrop.LocationKey = game.Player.PlayerLocation.KeyValue;
-                InputResponse.AppendFormat($"You dropped the {itemToDrop.Name} like it's hot.\n");
-                player.BackPack.ItemCount -= 1;
-                
-            }
-
-            else
-            {
-                InputResponse.AppendFormat($"You don't have a {String.Join(" ", parameters)} to drop.\n");
-            }
-            
-
-        }
-
+     
+     
 
         #region helper methods
 
@@ -527,11 +344,28 @@ namespace Texticular
         /// <param name="parameters"></param>
         /// <param name="itemToActOn"></param>
         /// <returns>bool</returns>
-        bool objectFound(string[] parameters, out StoryItem itemToActOn)
+        bool objectFound(string[] parameters, out GameObject itemToActOn)
         {
 
             string noun = "";
             itemToActOn = null;
+
+            //the target object is the current room
+
+            for (int j = 0; j < parameters.Length; j++)
+            {
+                noun = String.Join(" ", parameters, 0, j + 1);
+
+                if (noun == game.Player.PlayerLocation.Name.ToLower())
+                {
+
+                    itemToActOn = game.Player.PlayerLocation;
+                    return true;
+
+                }
+            }
+
+            
 
             //items in player inventory
             for (int i = 0; i < ItemsinInventory.Count; i++)
@@ -653,39 +487,6 @@ namespace Texticular
         static public string FirstCharToUpper(string input) => input.First().ToString().ToUpper() + input.Substring(1);
 
 
-        static string GetWordWrappedParagraph(string paragraph)
-        {
-            if (string.IsNullOrWhiteSpace(paragraph))
-            {
-                return string.Empty;
-            }
-
-            var approxLineCount = paragraph.Length / Console.WindowWidth;
-            var lines = new StringBuilder(paragraph.Length + (approxLineCount * 4));
-
-            for (var i = 0; i < paragraph.Length;)
-            {
-                var grabLimit = Math.Min(Console.WindowWidth, paragraph.Length - i);
-                var line = paragraph.Substring(i, grabLimit);
-
-                var isLastChunk = grabLimit + i == paragraph.Length;
-
-                if (isLastChunk)
-                {
-                    i = i + grabLimit;
-                    lines.Append(line);
-                }
-                else
-                {
-                    var lastSpace = line.LastIndexOf(" ", StringComparison.Ordinal);
-                    lines.AppendLine(line.Substring(0, lastSpace));
-
-                    //Trailing spaces needn't be displayed as the first character on the new line
-                    i = i + lastSpace + 1;
-                }
-            }
-            return lines.ToString();
-        }
         #endregion
 
 

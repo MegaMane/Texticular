@@ -31,6 +31,8 @@ namespace Texticular.Environment
             Name = name;
             Description = description;
             ExamineResponse = description;
+            Commands["look"] = look;
+            Commands["examine"] = examine;
         }
 
 
@@ -43,6 +45,8 @@ namespace Texticular.Environment
             Description = description;
             this.LocationKey = LocationKey;
             ExamineResponse = examineResponse;
+            Commands["look"] = look;
+            Commands["examine"] = examine;
         }
 
         public override string ToString()
@@ -88,6 +92,65 @@ namespace Texticular.Environment
             return result;
         }
 
+
+        void examine(GameController controller)
+        {
+            Player player = controller.game.Player;
+            string response;
+
+            if (ExamineResponse == "" || ExamineResponse == null)
+            {
+                response = Description;
+            }
+
+            else { response = ExamineResponse; }
+
+            if (LocationKey == "inventory")
+            {
+                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
+                return;
+            }
+
+            else if(LocationKey == player.LocationKey)
+            {
+                controller.InputResponse.Append(response);
+                return;
+            }
+
+
+
+            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+
+
+        }
+
+
+        void look(GameController controller)
+        {
+            Player player = controller.game.Player;
+
+
+            if (LocationKey == "inventory")
+            {
+                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
+                return;
+            }
+
+            else if (LocationKey == player.LocationKey)
+            {
+                controller.InputResponse.Append(Description);
+                return;
+            }
+
+
+
+            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+
+
+
+
+
+        }
 
     }
 }

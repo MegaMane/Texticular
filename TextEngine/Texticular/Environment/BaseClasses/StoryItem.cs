@@ -11,6 +11,7 @@ namespace Texticular.Environment
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
+        public string DescriptionInRoom { get; set; }
 
 
         [JsonConstructor]
@@ -23,6 +24,8 @@ namespace Texticular.Environment
             Commands["get"] = takeItem;
             Commands["pick up"] = takeItem;
             Commands["grab"] = takeItem;
+
+            Commands["drop"] = dropItem;
         }
 
 
@@ -66,6 +69,23 @@ namespace Texticular.Environment
                 controller.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
             }
             
+        }
+
+        void dropItem(GameController controller)
+        {
+            Player player = controller.game.Player;
+
+            if (LocationKey == "inventory")
+            {
+                LocationKey = player.PlayerLocation.KeyValue;
+                controller.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
+                player.BackPack.ItemCount -= 1;
+            }
+
+            else
+            {
+                controller.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
+            }
         }
 
     }

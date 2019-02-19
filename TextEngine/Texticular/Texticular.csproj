@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Environment\Coins.cs" />
     <Compile Include="Environment\Container.cs" />
     <Compile Include="Environment\DoorKey.cs" />
     <Compile Include="Environment\Exit.cs" />
@@ -56,8 +57,10 @@
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
+    <Compile Include="GameEngine\GameEvents.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
+    <Compile Include="GameEngine\LocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Story.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
