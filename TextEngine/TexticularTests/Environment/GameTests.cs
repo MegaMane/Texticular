@@ -68,7 +68,7 @@ namespace Texticular.Environment.Tests
             Controller.Render();
             Controller.InputResponse.Clear();
 
-            Controller.game.Player.PlayerLocation = destination;
+            Controller.Game.Player.PlayerLocation = destination;
             testTExit.Commands["open"](Controller);
 
 
@@ -77,7 +77,7 @@ namespace Texticular.Environment.Tests
             Controller.Render();
             Controller.InputResponse.Clear();
 
-            Controller.game.Player.PlayerLocation = myRoom;
+            Controller.Game.Player.PlayerLocation = myRoom;
             testTExit.Commands["open"](Controller);
 
             Controller.InputResponse.Append("\nTest: Player is in the correct location and has the key.\n");
@@ -91,7 +91,7 @@ namespace Texticular.Environment.Tests
 
 
             //Assert
-            Assert.AreEqual(Controller.game.Player.PlayerLocation, destination);
+            Assert.AreEqual(Controller.Game.Player.PlayerLocation, destination);
 
         }
 
@@ -121,7 +121,7 @@ namespace Texticular.Environment.Tests
             ActiveGame.Items.Add(anotherKey);
 
             //start the player in the wrong location
-            Controller.game.Player.PlayerLocation = anotherRoom;
+            Controller.Game.Player.PlayerLocation = anotherRoom;
 
 
             //Act
@@ -138,7 +138,7 @@ namespace Texticular.Environment.Tests
             Controller.InputResponse.Clear();
 
             //place the player in the correct room but remove the key from inventory and place it in the room as well
-            Controller.game.Player.PlayerLocation = testRoom;
+            Controller.Game.Player.PlayerLocation = testRoom;
             testKey.LocationKey = testRoom.KeyValue;
             testKey.Commands["use"](Controller);
 
@@ -150,7 +150,7 @@ namespace Texticular.Environment.Tests
 
             //try to use a key that exists in the list of game objects 
             //but is not in the current room or in the players inventory
-            Controller.game.Player.PlayerLocation = testRoom;
+            Controller.Game.Player.PlayerLocation = testRoom;
             anotherKey.Commands["use"](Controller);
 
             Controller.InputResponse.Append("\nTest: Player has the key and is in the correct location.\n");
@@ -166,7 +166,7 @@ namespace Texticular.Environment.Tests
 
 
             //Assert
-            Assert.AreEqual(Controller.game.Player.PlayerLocation, destination);
+            Assert.AreEqual(Controller.Game.Player.PlayerLocation, destination);
 
         }
 

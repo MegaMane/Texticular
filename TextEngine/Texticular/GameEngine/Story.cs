@@ -47,7 +47,7 @@ namespace Texticular.GameEngine
 
             void playIntro(GameController controller)
             {
-                Player player = controller.game.Player;
+                Player player = controller.Game.Player;
                 Scene scene = controller.story.Scenes["intro"];
 
                 controller.InputResponse.Clear();

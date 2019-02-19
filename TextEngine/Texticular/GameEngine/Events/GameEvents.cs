@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace Texticular.GameEngine
 {
-    public delegate void LocationChangedHandler (object sender, LocationChangedEventArgs args);
+    public delegate void OnLocationChanged (object sender, LocationChangedEventArgs args);
 }

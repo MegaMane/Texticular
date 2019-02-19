@@ -32,7 +32,7 @@ namespace Texticular.Environment
 
         void takeItem(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
 
             if (LocationKey != player.LocationKey)
             {
@@ -73,7 +73,7 @@ namespace Texticular.Environment
 
         void dropItem(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
 
             if (LocationKey == "inventory")
             {

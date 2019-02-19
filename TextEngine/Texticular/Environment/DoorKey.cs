@@ -16,7 +16,7 @@ namespace Texticular.Environment
 
         void useKey(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
 
 
             if (LocationKey == "inventory")
@@ -30,7 +30,7 @@ namespace Texticular.Environment
                         controller.InputResponse.Append($"{door.Name} opens...");
                         door.IsLocked = false;
                         player.BackPack.ConsumeItem(this);
-                        player.PlayerLocation = controller.game.Rooms[door.DestinationKey];
+                        player.PlayerLocation = controller.Game.Rooms[door.DestinationKey];
                         controller.Parse("look");
                         return;
                     }

@@ -95,7 +95,7 @@ namespace Texticular.Environment
 
         void examine(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
             string response;
 
             if (ExamineResponse == "" || ExamineResponse == null)
@@ -127,7 +127,7 @@ namespace Texticular.Environment
 
         void look(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
 
 
             if (LocationKey == "inventory")

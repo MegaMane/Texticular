@@ -40,7 +40,7 @@ namespace Texticular.Environment
 
         void openDoor(GameController controller)
         {
-            Player player = controller.game.Player;
+            Player player = controller.Game.Player;
 
             if (player.LocationKey != this.LocationKey)
             {
@@ -56,7 +56,7 @@ namespace Texticular.Environment
                     controller.InputResponse.Append($"{this.Name} opens...\n");
                     IsLocked = false;
                     player.BackPack.ConsumeItem(doorKey);
-                    player.PlayerLocation = controller.game.Rooms[DestinationKey];
+                    player.PlayerLocation = controller.Game.Rooms[DestinationKey];
                     controller.Parse("look");
                     return;
                 }

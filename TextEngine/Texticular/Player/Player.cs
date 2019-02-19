@@ -10,7 +10,7 @@ namespace Texticular
 {
     public class Player:GameObject
     {
-        public event LocationChangedHandler OnPlayerLocationChanged;
+        public event OnLocationChanged OnPlayerLocationChanged;
         private Room _playerLocation;
         public Room PlayerLocation
         {

@@ -11,24 +11,28 @@ namespace Texticular
 {
     public class GameController
     {
-        public Game game;
+        public Game Game;
+        public string UserInput;
         public StringBuilder InputResponse;
         Dictionary<string, Action<string[]>> commands;
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
-        public string UserInput;
+
         public Story story = new Story();
+
+        
 
 
         public GameController(Game game)
         {
 
-            this.game = game;
-            this.InputResponse = new StringBuilder();
-            this.commands = new Dictionary<string, Action<string[]>>();
-            this.ItemsinInventory = new List<StoryItem>();
-            this.ItemsinRoom = new List<StoryItem>();
+            Game = game;
+            Game.Player.OnPlayerLocationChanged += PlayerLocationChangedHandler;
+            InputResponse = new StringBuilder();
+            commands = new Dictionary<string, Action<string[]>>();
+            ItemsinInventory = new List<StoryItem>();
+            ItemsinRoom = new List<StoryItem>();
             Tokenizer = new Lexer();
 
 
@@ -72,8 +76,6 @@ namespace Texticular
             this.UserInput = userInput.ToLower().Trim();
         }
 
-
-
         public void Update()
         {
 
@@ -93,7 +95,7 @@ namespace Texticular
         public void Render()
         {
             Console.Clear();
-            Console.WriteLine(game.Gamestats.updateStats(100));
+            Console.WriteLine(Game.Gamestats.updateStats(100));
             Console.WriteLine(InputResponse.ToString());
         }
 
@@ -101,7 +103,7 @@ namespace Texticular
         public void Parse(String userInput)
         {
             ItemsinInventory.Clear();
-            foreach (StoryItem item in game.Items)
+            foreach (StoryItem item in Game.Items)
             {
                 if (item.LocationKey == "inventory")
                 {
@@ -111,9 +113,9 @@ namespace Texticular
 
 
             ItemsinRoom.Clear();
-            foreach (StoryItem item in game.Items)
+            foreach (StoryItem item in Game.Items)
             {
-                if (item.LocationKey == game.Player.PlayerLocation.KeyValue)
+                if (item.LocationKey == Game.Player.PlayerLocation.KeyValue)
                 {
                     ItemsinRoom.Add(item);
                 }
@@ -124,7 +126,7 @@ namespace Texticular
             // look with no object after it means look at the players surroundings
             if(UserInput == "look")
             {
-                UserInput += $" {game.Player.PlayerLocation.Name.ToLower()}";
+                UserInput += $" {Game.Player.PlayerLocation.Name.ToLower()}";
             }
             string[] commandParts = UserInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
@@ -216,10 +218,12 @@ namespace Texticular
             }
 
 
-            game.GameLog.Add(InputResponse.ToString() + "\n");
+            Game.GameLog.Add(InputResponse.ToString() + "\n");
 
         }
 
+
+        #region Basic Commands
         void help(string[] parameters)
         {
             if (parameters.Length == 0)
@@ -243,13 +247,13 @@ namespace Texticular
             }
 
             //don't count this as an actual move in the game
-            game.Gamestats.Moves -= 1;
+            Game.Gamestats.Moves -= 1;
         }
 
         void go(string[] parameters)
         {
 
-            Player player = game.Player;
+            Player player = Game.Player;
             Room currentRoom = player.PlayerLocation;
 
 
@@ -283,12 +287,12 @@ namespace Texticular
                     else
                     {
   
-                        player.PlayerLocation = game.Rooms[currentRoom.Exits[direction].DestinationKey];
+                        player.PlayerLocation = Game.Rooms[currentRoom.Exits[direction].DestinationKey];
                         currentRoom = player.PlayerLocation;
                         InputResponse.AppendFormat("\nMoving to {0}\n", currentRoom.Name);
 
 
-                        player.PlayerLocation.Commands["look"](this);
+                        //player.PlayerLocation.Commands["look"](this);
 
                         currentRoom.TimesVisited += 1;
 
@@ -330,8 +334,19 @@ namespace Texticular
             InputResponse.Append("\n");
         }
 
-     
-     
+        #endregion
+
+        #region event handlers
+
+        void PlayerLocationChangedHandler(object sender, LocationChangedEventArgs args)
+        {
+            //look at the players surroundings automatically 
+            //when they enter a new location
+            args.NewLocation.Commands["look"](this);
+        }
+
+
+        #endregion
 
         #region helper methods
 
@@ -356,10 +371,10 @@ namespace Texticular
             {
                 noun = String.Join(" ", parameters, 0, j + 1);
 
-                if (noun == game.Player.PlayerLocation.Name.ToLower())
+                if (noun == Game.Player.PlayerLocation.Name.ToLower())
                 {
 
-                    itemToActOn = game.Player.PlayerLocation;
+                    itemToActOn = Game.Player.PlayerLocation;
                     return true;
 
                 }
@@ -408,7 +423,7 @@ namespace Texticular
             }
 
             //Exits in current room
-            foreach (Exit exit in  game.Player.PlayerLocation.Exits.Values)
+            foreach (Exit exit in  Game.Player.PlayerLocation.Exits.Values)
             {
                 noun = "";
 

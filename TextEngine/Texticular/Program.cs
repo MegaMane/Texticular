@@ -11,18 +11,20 @@ namespace Texticular
     {
         /*
          * Move Between Rooms with unlocked doors {complete}
+         * Move using the location name or a cardinal direction
          * Look at sourrondings {complete}
          * Examine Objects {complete}
          * Take and Drop Items {complete}
          * Unlock doors with correct key {complete}
-         * Use healing items magic medicine
          * lock/unlock/open containers and place and retrieve items locker, chest
          * use special context sensitive items * use phone/keypad vending machine
+         * trigger game events or "cut scenes"
          * talk to people
          * equip special items
          * fight
-         * trigger game events or "cut scenes"
          * add a splash screen
+         * Use healing items magic medicine
+         * Unity
          * add visuals
          * add sound
         */

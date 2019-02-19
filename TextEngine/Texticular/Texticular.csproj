@@ -52,22 +52,29 @@
     <Compile Include="Environment\Exit.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\MovementDirection.cs" />
-    <Compile Include="Environment\Prop.cs" />
+    <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
-    <Compile Include="GameEngine\GameEvents.cs" />
+    <Compile Include="GameEngine\Events\GameEvents.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
-    <Compile Include="GameEngine\LocationChangedEventArgs.cs" />
+    <Compile Include="GameEngine\Events\LocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Story.cs" />
+    <Compile Include="GameStates\GameStateManager.cs" />
+    <Compile Include="GameStates\MainGameState.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Environment\Room.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
+    <Compile Include="UI\Colors.cs" />
+    <Compile Include="UI\Narrative.cs" />
+    <Compile Include="UI\TempRef.cs" />
+    <Compile Include="UI\Terminal.cs" />
+    <Compile Include="UI\UserInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

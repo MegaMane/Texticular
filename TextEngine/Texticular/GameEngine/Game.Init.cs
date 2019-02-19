@@ -26,7 +26,7 @@ namespace Texticular
             Room room201 = new 
                 Room(
                     name:"Room 201", 
-                    description: @"As you look around the hotel room you see an old {TV} with rabbit ears that looks like it came straight "
+                    description: @"As you look around the hotel room you see an old TV with rabbit ears that looks like it came straight "
                                  +"out of the 1950's. Against the wall there is a beat up {night stand} with a little {drawer} built into it "
                                  +"and an old {phone} on top. Next to it is a lumpy old {bed} that looks like it's seen better days with a "
                                  +"dark brown stain on the sheets and a funny smell coming from it. There is an obnoxious orange {couch} in "
@@ -64,8 +64,8 @@ namespace Texticular
             TV room201_tv = new
                 TV(
                     locationKey: "room201",
-                    name: "Old TV",
-                    description: "an old {TV} with rabbit ears that looks like it came straight out of the 1950's.",
+                    name: "TV",
+                    description: "an old TV with rabbit ears that looks like it came straight out of the 1950's.",
                     examine: "One of the dials on the TV has fallen off, but it still works. Kick back and enjoy the wonders of technology."
                    );
 

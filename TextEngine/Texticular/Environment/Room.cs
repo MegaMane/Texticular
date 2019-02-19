@@ -75,7 +75,7 @@ namespace Texticular.Environment
         void look(GameController controller)
         {
             Room currentRoom = this;
-            Game game = controller.game;
+            Game game = controller.Game;
 
             //location description
             controller.InputResponse.AppendFormat("\nYou are in {0}: {1}", currentRoom.Name, currentRoom.Description);

@@ -15,6 +15,24 @@ namespace Texticular
         public Stopwatch stopWatch;
         public Player player;
 
+        public int HP { get; set; }
+        public int MaxHP { get; set; }
+        public int MP { get; set; }
+        public int MaxMP { get; set; }
+        public int ST { get; set; }
+        public int MaxST { get; set; }
+        public int GP { get; set; }
+
+        public int Level { get; set; }
+        public int Strength { get; set; }
+        public int Intelligence { get; set; }
+        public int Piety { get; set; }
+        public int Vitality { get; set; }
+        public int Dexterity { get; set; }
+        public int Speed { get; set; }
+        public int Personality { get; set; }
+        public int Luck { get; set; }
+
         public Gamestats()
         {
             Moves = 0;
