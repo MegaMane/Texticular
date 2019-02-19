@@ -20,7 +20,7 @@ namespace Texticular.UI
         private Buffer attrBuffer;
         private Gamestats stats;
 
-        public void DrawGameUI()
+        public void DrawGameUI(GameController controller)
         {
 
             statsBuffer.DrawFrameLeft(0, 0, 80, 3, ConsoleColor.DarkGray);
@@ -38,7 +38,7 @@ namespace Texticular.UI
             var stColor = (stats.ST < stats.MaxST / 2) ? ConsoleColor.DarkCyan : ConsoleColor.White;
             statsBuffer.Draw(stats.ST.ToString().PadLeft(4), 35, 1, stColor);
 
-            statsBuffer.Draw($"DUNGEON 1-1".PadLeft(15), 64, 1, ConsoleColor.Gray);
+            statsBuffer.Draw($"{controller.Game.Player.PlayerLocation.Name}".PadLeft(15), 64, 1, ConsoleColor.Gray);
             statsBuffer.Blit(0, 0);
 
             attrBuffer.DrawFrame(0, 0, 15, 43, ConsoleColor.DarkGray);

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Media;
 using Texticular.Environment;
 using Texticular.GameEngine;
+using Texticular.UI;
 
 namespace Texticular
 {
@@ -21,7 +22,12 @@ namespace Texticular
 
         public Story story = new Story();
 
-        
+        //new UI Stuff
+        private Texticular.UI.Buffer mainBuffer;
+        private UserInterface ui;
+        private Narrative narrative;
+
+
 
 
         public GameController(Game game)
@@ -47,7 +53,33 @@ namespace Texticular
 
             commands["help"] = help;
 
+            //new UI Stuff
+            Terminal.Init(95, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            Console.SetCursorPosition(0, 40);
 
+            Gamestats testStats = new Gamestats();
+
+            testStats.HP = testStats.MaxHP = 20;
+            testStats.MP = testStats.MaxMP = 10;
+            testStats.ST = testStats.MaxST = 10;
+            testStats.GP = 0;
+            testStats.Level = 1;
+            testStats.Strength = 3;
+            testStats.Intelligence = 2;
+            testStats.Piety = 1;
+            testStats.Vitality = 3;
+            testStats.Dexterity = 1;
+            testStats.Speed = 2;
+            testStats.Personality = 1;
+            testStats.Luck = 1;
+
+
+            this.ui = new UserInterface(testStats);
+
+            mainBuffer = Terminal.CreateBuffer(80, 41);
+            Terminal.SetCurrentConsoleFontEx(10, 12);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
         }
 
 
@@ -95,8 +127,15 @@ namespace Texticular
         public void Render()
         {
             Console.Clear();
-            Console.WriteLine(Game.Gamestats.updateStats(100));
-            Console.WriteLine(InputResponse.ToString());
+            ui.DrawGameUI(this);
+
+
+           // mainBuffer = Terminal.CreateBuffer(80, 41);
+            narrative = new Narrative(mainBuffer);
+           // mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
+            narrative.Write(InputResponse.ToString(), fg:ConsoleColor.DarkGreen);
+            mainBuffer.Blit(0, 2);
+            Console.SetCursorPosition(0, 45);
         }
 
 

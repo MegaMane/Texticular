@@ -45,22 +45,22 @@ namespace Texticular.UI
             {
                 var word = words[i];
                 lineLength += word.Length + 1;
-                if (lineLength < width && !word.Contains("\n"))
+                if (lineLength < width)
                 {
                     sb.Append(word);
                     sb.Append(' ');
                 }
 
-                //forced newline
-                else if (lineLength < width && word.Contains("\n"))
-                {
-                    sb.Append(word.Replace("\n", ""));
-                    writeLine(sb.ToString(), fg, bg, hilight);
-                    //figure out how to use force additional line breaks
-                    // writeLine("", fg, bg, hilight);
-                    lineLength -= (word.Length + 1);
-                    sb.Clear();
-                }
+                ////forced newline
+                //else if (lineLength < width && word.Contains("\n"))
+                //{
+                //    sb.Append(word.Replace("\n", ""));
+                //    writeLine(sb.ToString(), fg, bg, hilight);
+                //    //figure out how to use force additional line breaks
+                //    // writeLine("", fg, bg, hilight);
+                //    lineLength -= (word.Length + 1);
+                //    sb.Clear();
+                //}
 
                 //word wrap
                 else

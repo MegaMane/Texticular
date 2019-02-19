@@ -382,7 +382,7 @@ namespace Texticular.UI
             var currentStyle = GetWindowLong(hWnd, GWL_STYLE);
             SetWindowLong(hWnd, GWL_STYLE, (currentStyle & ~WS_MAXIMIZEBOX & ~WS_MINIMIZEBOX));
 
-            Console.CursorVisible = false;
+            Console.CursorVisible = true;
             Console.Title = title;
 
             SetCurrentConsoleFontEx(fontSizeX, fontSizeY, fontFaceName);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Media;
+using Texticular.UI;
 
 namespace Texticular
 {
@@ -30,9 +31,10 @@ namespace Texticular
         */
         static void Main(string[] args)
         {
-            Console.SetWindowSize(100, 43);
-            Console.SetBufferSize(100, 43);
-            Console.Title = "Busted Ass Text Adventure (Texticular)";
+
+
+
+
 
             Game ActiveGame = new Game();
             GameController Controller = new GameController(ActiveGame);
@@ -64,6 +66,7 @@ namespace Texticular
 
                 Controller.Update();
                 Controller.Render();
+
 
 
 
