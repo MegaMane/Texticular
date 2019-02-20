@@ -54,8 +54,8 @@ namespace Texticular
             commands["help"] = help;
 
             //new UI Stuff
-            Terminal.Init(95, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            Console.SetCursorPosition(0, 40);
+            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            //Console.SetCursorPosition(0, 40);
 
             Gamestats testStats = new Gamestats();
 
@@ -77,7 +77,7 @@ namespace Texticular
             this.ui = new UserInterface(testStats);
 
             mainBuffer = Terminal.CreateBuffer(80, 41);
-            Terminal.SetCurrentConsoleFontEx(10, 12);
+            Terminal.SetCurrentConsoleFontEx(8, 10);
             narrative = new Narrative(mainBuffer);
             mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
         }
@@ -92,7 +92,7 @@ namespace Texticular
         {
             //Action<GameController> playScene = story.Scenes["intro"].SceneAction;
             //playScene(this);
-            InputResponse.Append("Type Help for a list of commands...\n\n");
+            InputResponse.Append("Type Help for a list of commands...\n\n ");
             //need to manually set the input to look after playing the intro scene 
             //to print the room description
             UserInput = "look";
@@ -113,7 +113,8 @@ namespace Texticular
 
             InputResponse.Clear();
             Parse(UserInput);
-
+            Game.Gamestats.updateStats(10);
+            
 
             //else
             //{
@@ -130,9 +131,9 @@ namespace Texticular
             ui.DrawGameUI(this);
 
 
-           // mainBuffer = Terminal.CreateBuffer(80, 41);
+            mainBuffer = Terminal.CreateBuffer(80, 41);
             narrative = new Narrative(mainBuffer);
-           // mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
             narrative.Write(InputResponse.ToString(), fg:ConsoleColor.DarkGreen);
             mainBuffer.Blit(0, 2);
             Console.SetCursorPosition(0, 45);
@@ -325,16 +326,10 @@ namespace Texticular
 
                     else
                     {
-  
+                  
                         player.PlayerLocation = Game.Rooms[currentRoom.Exits[direction].DestinationKey];
-                        currentRoom = player.PlayerLocation;
-                        InputResponse.AppendFormat("\nMoving to {0}\n", currentRoom.Name);
-
-
-                        //player.PlayerLocation.Commands["look"](this);
-
-                        currentRoom.TimesVisited += 1;
-
+                    
+                        
                     }
                 }
 
@@ -381,6 +376,8 @@ namespace Texticular
         {
             //look at the players surroundings automatically 
             //when they enter a new location
+            InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
+            args.NewLocation.TimesVisited += 1;
             args.NewLocation.Commands["look"](this);
         }
 

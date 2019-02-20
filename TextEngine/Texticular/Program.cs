@@ -60,7 +60,7 @@ namespace Texticular
                 {
                     Console.WriteLine("Thanks for Playing!");
                     gameRunning = false;
-                    ActiveGame.Gamestats.stopWatch.Stop();
+                    ActiveGame.Gamestats.StopWatch.Stop();
                     break;
                 }
 

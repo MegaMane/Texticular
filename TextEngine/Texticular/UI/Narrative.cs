@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Texticular.UI
 {
@@ -47,8 +48,28 @@ namespace Texticular.UI
                 lineLength += word.Length + 1;
                 if (lineLength < width)
                 {
-                    sb.Append(word);
-                    sb.Append(' ');
+                    sb.Append(word).Replace("\n","");
+
+                    if (word.Contains("\n")) {
+                        writeLine(sb.ToString(), fg, bg, hilight);
+                        int count = word.Count(f => f == '\n');
+                        for(int j = 0; j < count; j++)
+                        {
+                            writeLine("", fg, bg, hilight);
+                        }
+                        //writeLine(sb.ToString(), fg, bg, hilight);
+                        sb.Clear();
+                        //sb.Append(word);
+                        //sb.Append(' ');
+                        lineLength = word.Length + 1;
+
+                    }
+                    else
+                    {
+                        
+                        sb.Append(' ');
+                    }
+
                 }
 
                 ////forced newline

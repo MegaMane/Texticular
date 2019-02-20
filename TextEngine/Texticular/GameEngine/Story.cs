@@ -36,11 +36,11 @@ namespace Texticular.GameEngine
                                 +"definitely don't remember anything about drinking a 24 pack of Fast Eddie's Colon Cleanse. Your stomach "
                                 +"starts to feel a little uneasy, but never mind that, it's time to spend some of that hard earned cash! "
                                 +"You reach into your wallet and realize in that moment that you don't even remember your name. You look at "
-                                +"your license and focus your still hazy eyes and barely make out that it says...");
+                                +"your license and focus your still hazy eyes and barely make out that it says...\n\n ");
 
             intro.SceneText.Add("Dear<Name>,\n\nThank you so much for signing up to try out our exciting new drink!"
                                 +"We hope you don't mind but we've taken the liberty of putting you up for the night "
-                                +"in one of our sponsors hotels with a generous supply of Fast Eddie's to keep you company.\n\n"
+                                +"in one of our sponsors hotels with a generous supply of Fast Eddie's to keep you company.\n\n "
                                 );
 
             intro.SceneAction = playIntro;
@@ -52,7 +52,7 @@ namespace Texticular.GameEngine
 
                 controller.InputResponse.Clear();
                 controller.InputResponse.Append(scene.SceneText[0]);
-                controller.InputResponse.Append("\n\nWhat is your name?\n\n");
+                controller.InputResponse.Append("What is your name?\n\n ");
                 while (player.FirstName == "")
                 {
                     controller.Render();

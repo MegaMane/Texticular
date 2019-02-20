@@ -71,7 +71,7 @@ namespace Texticular
         {
             Player = newPlayer;
             Rooms[Player.PlayerLocation.KeyValue].TimesVisited += 1;
-            Gamestats.player = this.Player;
+            Gamestats.Player = this.Player;
         }
 
         public void Save(string saveName)
