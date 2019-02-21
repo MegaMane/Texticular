@@ -27,7 +27,7 @@ namespace Texticular
                 Room(
                     name:"Room 201", 
                     description: @"As you look around the hotel room you see an old TV with rabbit ears that looks like it came straight "
-                                 +"out of the 1950's. Against the wall there is a beat up {night stand} with a little {drawer} built into it "
+                                 +"out of the 1950's. Against the wall there is a beat up night stand with a little drawer built into it "
                                  +"and an old {phone} on top. Next to it is a lumpy old {bed} that looks like it's seen better days with a "
                                  +"dark brown stain on the sheets and a funny smell coming from it. There is an obnoxious orange {couch} in "
                                  +"the corner next to a small {window} smudged with sticky purple hand prints, the stuffing is coming out of "
@@ -68,8 +68,31 @@ namespace Texticular
                     description: "an old TV with rabbit ears that looks like it came straight out of the 1950's.",
                     examine: "One of the dials on the TV has fallen off, but it still works. Kick back and enjoy the wonders of technology."
                    );
+            Prop room201_nightStand = new
+                Prop(
+                    locationKey: "room201",
+                    name: "Night Stand",
+                    description: "Against the wall there is a beat up night stand with a little drawer built into it.",
+                    examine: "",
+                    keyValue: "room201_nightStand"
+                     );
+            Container nightStand_drawer = new
+                Container(
+                           locationKey: "room201_nightStand",
+                           name: "Drawer",
+                           description: "A small wooden drawer.",
+                           examine: ""
+                         );
+
+            Coins pocketChange = new Coins("westHallway", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
+            pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
+
+            nightStand_drawer.Items.Add(pocketChange);
+
+            room201_nightStand.Container = nightStand_drawer;
 
             room201.AddItem(room201_tv);
+            room201.AddItem(room201_nightStand);
 
             Rooms["room201"] = room201;
             #endregion
@@ -129,10 +152,7 @@ namespace Texticular
 
             westHallway.Exits["West"] = westHallway_westExit;
 
-            Coins pocketChange = new Coins("westHallway", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
-            pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
 
-            westHallway.AddItem(pocketChange);
 
             Rooms["westHallway"] = westHallway;
 
