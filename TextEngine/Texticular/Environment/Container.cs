@@ -17,6 +17,9 @@ namespace Texticular.Environment
             Items = new List<StoryItem>();
 
             Commands["open"] = openContainer;
+
+            Commands["close"] = closeContainer;
+            Commands["shut"] = closeContainer;
         }
 
         void openContainer(GameController controller)
@@ -26,6 +29,8 @@ namespace Texticular.Environment
             foreach (StoryItem item in Items)
             {
                 controller.InputResponse.Append($"{item.Name}:{item.Description}\n ");
+                //place the item in the room so the player can take it
+                item.LocationKey = this.LocationKey;
             }
             
 
@@ -36,8 +41,16 @@ namespace Texticular.Environment
         {
             IsOpen = false;
             controller.InputResponse.Append($"You shut the {Description}\n ");
+            foreach (StoryItem item in Items)
+            {
+                //set the location of the item back to the parent container so it can no longer be taken by the player
+                //because it is not visible in the current room
+                item.LocationKey = this.KeyValue;
+            }
 
         }
+
+
     }
 
 }

@@ -32,8 +32,8 @@ namespace Texticular
                                  +"dark brown stain on the sheets and a funny smell coming from it. There is an obnoxious orange {couch} in "
                                  +"the corner next to a small {window} smudged with sticky purple hand prints, the stuffing is coming out of "
                                  +"the cushions which are also spotted with purple, and the floor is covered with {cans} of Fast Eddies Colon "
-                                 +"Cleanse. The {door} that leads to the hallway is to the east you notice what seems like a {folded letter} "
-                                 +"slipped underneath it. There is a {door} to the west that leads to that sweet sweet porcelain throne.", 
+                                 +"Cleanse. The door that leads to the hallway is to the east. "
+                                 +"There is a door to the west that leads to that sweet sweet porcelain throne.", 
                     keyValue: "room201", 
                     timeVisited: 0
                 );
@@ -78,13 +78,14 @@ namespace Texticular
                      );
             Container nightStand_drawer = new
                 Container(
-                           locationKey: "room201_nightStand",
+                           locationKey: "room201",
                            name: "Drawer",
-                           description: "A small wooden drawer.",
-                           examine: ""
+                           description: "small wooden drawer.",
+                           examine: "",
+                           keyValue: "room201_nightStand_drawer"
                          );
 
-            Coins pocketChange = new Coins("westHallway", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
+            Coins pocketChange = new Coins("room201_nightStand_drawer", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
             pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
 
             nightStand_drawer.Items.Add(pocketChange);
@@ -93,6 +94,8 @@ namespace Texticular
 
             room201.AddItem(room201_tv);
             room201.AddItem(room201_nightStand);
+            room201.AddItem(nightStand_drawer);
+
 
             Rooms["room201"] = room201;
             #endregion
@@ -191,6 +194,14 @@ namespace Texticular
                 foreach(StoryItem item in room.RoomItems)
                 {
                     Items.Add(item);
+                    if (item is Container)
+                    {
+                        var chest = item as Container;
+                        foreach(StoryItem loot in chest.Items)
+                        {
+                            Items.Add(loot);
+                        }
+                    }
                 }
                 
             }

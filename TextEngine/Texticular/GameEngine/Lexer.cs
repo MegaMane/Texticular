@@ -14,6 +14,7 @@ namespace Texticular.GameEngine
         List<String> knownCommands = new List<string> {
                                                         "backpack",
                                                         "change channel",
+                                                        "close",
                                                         "drop",
                                                         "examine",
                                                         "get",
@@ -28,6 +29,7 @@ namespace Texticular.GameEngine
                                                         "pick up",
                                                         "power off",
                                                         "power on",
+                                                        "shut",
                                                         "take",
                                                         "unlock",
                                                         "use",
