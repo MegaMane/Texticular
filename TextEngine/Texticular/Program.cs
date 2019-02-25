@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Media;
+using Texticular.UI;
 
 namespace Texticular
 {
@@ -12,7 +13,7 @@ namespace Texticular
         /*
          * Move Between Rooms with unlocked doors {complete}
          * Move using the location name or a cardinal direction
-         * Look at sourrondings {complete}
+         * Look at surroundings {complete}
          * Examine Objects {complete}
          * Take and Drop Items {complete}
          * Unlock doors with correct key {complete}
@@ -30,9 +31,10 @@ namespace Texticular
         */
         static void Main(string[] args)
         {
-            Console.SetWindowSize(100, 43);
-            Console.SetBufferSize(100, 43);
-            Console.Title = "Busted Ass Text Adventure (Texticular)";
+
+
+
+
 
             Game ActiveGame = new Game();
             GameController Controller = new GameController(ActiveGame);
@@ -58,12 +60,13 @@ namespace Texticular
                 {
                     Console.WriteLine("Thanks for Playing!");
                     gameRunning = false;
-                    ActiveGame.Gamestats.stopWatch.Stop();
+                    ActiveGame.Gamestats.StopWatch.Stop();
                     break;
                 }
 
                 Controller.Update();
                 Controller.Render();
+
 
 
 

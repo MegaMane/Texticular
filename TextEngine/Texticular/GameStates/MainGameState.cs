@@ -76,7 +76,7 @@ namespace Texticular.GameStates
             //}
             //player.Draw(mapBuffer, dungeonMap);
             //mapBuffer.Blit(0, 3);
-            ui.DrawGameUI();
+            //ui.DrawGameUI();
             //mainBuffer = Terminal.CreateBuffer(70, 40);
             //mainBuffer.Clear();
             //mainBuffer.Blit(0, 5);

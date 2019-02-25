@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Media;
 using Texticular.Environment;
 using Texticular.GameEngine;
+using Texticular.UI;
 
 namespace Texticular
 {
@@ -21,7 +22,12 @@ namespace Texticular
 
         public Story story = new Story();
 
-        
+        //new UI Stuff
+        private Texticular.UI.Buffer mainBuffer;
+        private UserInterface ui;
+        private Narrative narrative;
+
+
 
 
         public GameController(Game game)
@@ -47,7 +53,33 @@ namespace Texticular
 
             commands["help"] = help;
 
+            //new UI Stuff
+            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            //Console.SetCursorPosition(0, 40);
 
+            Gamestats testStats = new Gamestats();
+
+            testStats.HP = testStats.MaxHP = 20;
+            testStats.MP = testStats.MaxMP = 10;
+            testStats.ST = testStats.MaxST = 10;
+            testStats.GP = 0;
+            testStats.Level = 1;
+            testStats.Strength = 3;
+            testStats.Intelligence = 2;
+            testStats.Piety = 1;
+            testStats.Vitality = 3;
+            testStats.Dexterity = 1;
+            testStats.Speed = 2;
+            testStats.Personality = 1;
+            testStats.Luck = 1;
+
+
+            this.ui = new UserInterface(testStats);
+
+            mainBuffer = Terminal.CreateBuffer(80, 41);
+            Terminal.SetCurrentConsoleFontEx(8, 10);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
         }
 
 
@@ -60,7 +92,7 @@ namespace Texticular
         {
             //Action<GameController> playScene = story.Scenes["intro"].SceneAction;
             //playScene(this);
-            InputResponse.Append("Type Help for a list of commands...\n\n");
+            InputResponse.Append("Type Help for a list of commands...\n\n ");
             //need to manually set the input to look after playing the intro scene 
             //to print the room description
             UserInput = "look";
@@ -81,7 +113,8 @@ namespace Texticular
 
             InputResponse.Clear();
             Parse(UserInput);
-
+            Game.Gamestats.updateStats(10);
+            
 
             //else
             //{
@@ -95,15 +128,22 @@ namespace Texticular
         public void Render()
         {
             Console.Clear();
-            Console.WriteLine(Game.Gamestats.updateStats(100));
-            Console.WriteLine(InputResponse.ToString());
+            ui.DrawGameUI(this);
+
+
+            mainBuffer = Terminal.CreateBuffer(80, 41);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
+            narrative.Write(InputResponse.ToString(), fg:ConsoleColor.DarkGreen);
+            mainBuffer.Blit(0, 2);
+            Console.SetCursorPosition(0, 45);
         }
 
 
         public void Parse(String userInput)
         {
             ItemsinInventory.Clear();
-            foreach (StoryItem item in Game.Items)
+            foreach (StoryItem item in Game.Items.Values)
             {
                 if (item.LocationKey == "inventory")
                 {
@@ -113,7 +153,7 @@ namespace Texticular
 
 
             ItemsinRoom.Clear();
-            foreach (StoryItem item in Game.Items)
+            foreach (StoryItem item in Game.Items.Values)
             {
                 if (item.LocationKey == Game.Player.PlayerLocation.KeyValue)
                 {
@@ -286,16 +326,10 @@ namespace Texticular
 
                     else
                     {
-  
+                  
                         player.PlayerLocation = Game.Rooms[currentRoom.Exits[direction].DestinationKey];
-                        currentRoom = player.PlayerLocation;
-                        InputResponse.AppendFormat("\nMoving to {0}\n", currentRoom.Name);
-
-
-                        //player.PlayerLocation.Commands["look"](this);
-
-                        currentRoom.TimesVisited += 1;
-
+                    
+                        
                     }
                 }
 
@@ -342,6 +376,8 @@ namespace Texticular
         {
             //look at the players surroundings automatically 
             //when they enter a new location
+            InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
+            args.NewLocation.TimesVisited += 1;
             args.NewLocation.Commands["look"](this);
         }
 
@@ -406,6 +442,29 @@ namespace Texticular
             for (int i = 0; i < ItemsinRoom.Count; i++)
             {
                 noun = "";
+
+                if(ItemsinRoom[i] is Container && (ItemsinRoom[i] as Container).IsOpen)
+                {
+                    Container container = (Container)ItemsinRoom[i];
+
+                    foreach (StoryItem loot in container.Items)
+                    {
+                        for (int j = 0; j < parameters.Length; j++)
+                        {
+                            noun = String.Join(" ", parameters, 0, j + 1);
+
+                            if (noun == loot.Name.ToLower())
+                            {
+
+                                itemToActOn = loot;
+                                return true;
+
+                            }
+                        }
+
+                    }
+                    
+                }
 
                 for (int j = 0; j < parameters.Length; j++)
                 {

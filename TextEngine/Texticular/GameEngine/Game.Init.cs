@@ -15,7 +15,7 @@ namespace Texticular
 
 
             Rooms = new Dictionary<string, Room>();
-            Items = new List<StoryItem> ();
+            Items = new Dictionary<string, StoryItem>();
             Gamestats = new Gamestats();
             GameLog = new List<string>(50);
 
@@ -27,13 +27,13 @@ namespace Texticular
                 Room(
                     name:"Room 201", 
                     description: @"As you look around the hotel room you see an old TV with rabbit ears that looks like it came straight "
-                                 +"out of the 1950's. Against the wall there is a beat up {night stand} with a little {drawer} built into it "
+                                 +"out of the 1950's. Against the wall there is a beat up night stand with a little drawer built into it "
                                  +"and an old {phone} on top. Next to it is a lumpy old {bed} that looks like it's seen better days with a "
                                  +"dark brown stain on the sheets and a funny smell coming from it. There is an obnoxious orange {couch} in "
                                  +"the corner next to a small {window} smudged with sticky purple hand prints, the stuffing is coming out of "
                                  +"the cushions which are also spotted with purple, and the floor is covered with {cans} of Fast Eddies Colon "
-                                 +"Cleanse. The {door} that leads to the hallway is to the east you notice what seems like a {folded letter} "
-                                 +"slipped underneath it. There is a {door} to the west that leads to that sweet sweet porcelain throne.", 
+                                 +"Cleanse. The door that leads to the hallway is to the east. "
+                                 +"There is a door to the west that leads to that sweet sweet porcelain throne.", 
                     keyValue: "room201", 
                     timeVisited: 0
                 );
@@ -68,8 +68,34 @@ namespace Texticular
                     description: "an old TV with rabbit ears that looks like it came straight out of the 1950's.",
                     examine: "One of the dials on the TV has fallen off, but it still works. Kick back and enjoy the wonders of technology."
                    );
+            Prop room201_nightStand = new
+                Prop(
+                    locationKey: "room201",
+                    name: "Night Stand",
+                    description: "Against the wall there is a beat up night stand with a little drawer built into it.",
+                    examine: "",
+                    keyValue: "room201_nightStand"
+                     );
+            Container nightStand_drawer = new
+                Container(
+                           locationKey: "room201",
+                           name: "Drawer",
+                           description: "small wooden drawer.",
+                           examine: "",
+                           keyValue: "room201_nightStand_drawer"
+                         );
+
+            Coins pocketChange = new Coins("room201_nightStand_drawer", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
+            pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
+
+            nightStand_drawer.Items.Add(pocketChange);
+
+            room201_nightStand.Container = nightStand_drawer;
 
             room201.AddItem(room201_tv);
+            room201.AddItem(room201_nightStand);
+            room201.AddItem(nightStand_drawer);
+
 
             Rooms["room201"] = room201;
             #endregion
@@ -129,10 +155,7 @@ namespace Texticular
 
             westHallway.Exits["West"] = westHallway_westExit;
 
-            Coins pocketChange = new Coins("westHallway", "pocket change", "A whole 84 cents!", keyValue: "pocketChange");
-            pocketChange.DescriptionInRoom = "Some pocket change is lying on the ground.";
 
-            westHallway.AddItem(pocketChange);
 
             Rooms["westHallway"] = westHallway;
 
@@ -170,7 +193,15 @@ namespace Texticular
             {
                 foreach(StoryItem item in room.RoomItems)
                 {
-                    Items.Add(item);
+                    Items.Add(item.KeyValue,item);
+                    if (item is Container)
+                    {
+                        var chest = item as Container;
+                        foreach(StoryItem loot in chest.Items)
+                        {
+                            Items.Add(loot.KeyValue,loot);
+                        }
+                    }
                 }
                 
             }
