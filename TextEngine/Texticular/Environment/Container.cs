@@ -9,7 +9,7 @@ namespace Texticular.Environment
     public class Container : StoryItem
     {
         public List<StoryItem> Items;
-        bool IsOpen { get; set; } = false;
+        public bool IsOpen { get; set; } = false;
 
         public Container(string locationKey, string name, string description, string keyValue = "", string examine = "", Container container = null)
             : base(name, description, locationKey, isPortable: false, examine: examine, weight: 99, keyValue: keyValue)
@@ -24,13 +24,13 @@ namespace Texticular.Environment
 
         void openContainer(GameController controller)
         {
+            UpdateItems(controller);
+
             IsOpen = true;
             controller.InputResponse.Append($"You open the {Description} and look inside.\n\n ");
             foreach (StoryItem item in Items)
             {
                 controller.InputResponse.Append($"{item.Name}:{item.Description}\n ");
-                //place the item in the room so the player can take it
-                item.LocationKey = this.LocationKey;
             }
             
 
@@ -39,15 +39,23 @@ namespace Texticular.Environment
 
         void closeContainer(GameController controller)
         {
+            UpdateItems(controller);
             IsOpen = false;
             controller.InputResponse.Append($"You shut the {Description}\n ");
-            foreach (StoryItem item in Items)
+
+        }
+
+        void UpdateItems(GameController controller)
+        {
+            for (int i = 0; i < Items.Count; i++)
             {
-                //set the location of the item back to the parent container so it can no longer be taken by the player
-                //because it is not visible in the current room
-                item.LocationKey = this.KeyValue;
+                if (Items[i].LocationKey == "inventory") Items.RemoveAt(i);
             }
 
+            //for (int i = 0; i < controller.Game.Items.Count; i++)
+            //{
+            //    if (Items[i].LocationKey == KeyValue) Items.Add(controller.Game.Items[i]);
+            //}
         }
 
 

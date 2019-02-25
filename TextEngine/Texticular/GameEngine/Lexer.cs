@@ -29,6 +29,7 @@ namespace Texticular.GameEngine
                                                         "pick up",
                                                         "power off",
                                                         "power on",
+                                                        "put",
                                                         "shut",
                                                         "take",
                                                         "unlock",

@@ -79,7 +79,7 @@ namespace Texticular.Environment
 
             //location description
             controller.InputResponse.AppendFormat("You are in {0}: {1}", currentRoom.Name, currentRoom.Description);
-            foreach (StoryItem item in game.Items)
+            foreach (StoryItem item in game.Items.Values)
             {
                 if(item.LocationKey == currentRoom.KeyValue && !String.IsNullOrEmpty(item.DescriptionInRoom))
                 {
@@ -92,7 +92,7 @@ namespace Texticular.Environment
             //list items
             controller.InputResponse.Append("You see:\n ");
             string itemString = "";
-            foreach (StoryItem item in game.Items)
+            foreach (StoryItem item in game.Items.Values)
             {
                 if (item.LocationKey == currentRoom.KeyValue)
                 {

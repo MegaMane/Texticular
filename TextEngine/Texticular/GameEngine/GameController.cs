@@ -143,7 +143,7 @@ namespace Texticular
         public void Parse(String userInput)
         {
             ItemsinInventory.Clear();
-            foreach (StoryItem item in Game.Items)
+            foreach (StoryItem item in Game.Items.Values)
             {
                 if (item.LocationKey == "inventory")
                 {
@@ -153,7 +153,7 @@ namespace Texticular
 
 
             ItemsinRoom.Clear();
-            foreach (StoryItem item in Game.Items)
+            foreach (StoryItem item in Game.Items.Values)
             {
                 if (item.LocationKey == Game.Player.PlayerLocation.KeyValue)
                 {
@@ -442,6 +442,29 @@ namespace Texticular
             for (int i = 0; i < ItemsinRoom.Count; i++)
             {
                 noun = "";
+
+                if(ItemsinRoom[i] is Container && (ItemsinRoom[i] as Container).IsOpen)
+                {
+                    Container container = (Container)ItemsinRoom[i];
+
+                    foreach (StoryItem loot in container.Items)
+                    {
+                        for (int j = 0; j < parameters.Length; j++)
+                        {
+                            noun = String.Join(" ", parameters, 0, j + 1);
+
+                            if (noun == loot.Name.ToLower())
+                            {
+
+                                itemToActOn = loot;
+                                return true;
+
+                            }
+                        }
+
+                    }
+                    
+                }
 
                 for (int j = 0; j < parameters.Length; j++)
                 {

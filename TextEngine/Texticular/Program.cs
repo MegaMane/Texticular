@@ -13,7 +13,7 @@ namespace Texticular
         /*
          * Move Between Rooms with unlocked doors {complete}
          * Move using the location name or a cardinal direction
-         * Look at sourrondings {complete}
+         * Look at surroundings {complete}
          * Examine Objects {complete}
          * Take and Drop Items {complete}
          * Unlock doors with correct key {complete}

@@ -15,7 +15,7 @@ namespace Texticular
 
 
             Rooms = new Dictionary<string, Room>();
-            Items = new List<StoryItem> ();
+            Items = new Dictionary<string, StoryItem>();
             Gamestats = new Gamestats();
             GameLog = new List<string>(50);
 
@@ -193,13 +193,13 @@ namespace Texticular
             {
                 foreach(StoryItem item in room.RoomItems)
                 {
-                    Items.Add(item);
+                    Items.Add(item.KeyValue,item);
                     if (item is Container)
                     {
                         var chest = item as Container;
                         foreach(StoryItem loot in chest.Items)
                         {
-                            Items.Add(loot);
+                            Items.Add(loot.KeyValue,loot);
                         }
                     }
                 }

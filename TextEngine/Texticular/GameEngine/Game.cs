@@ -13,7 +13,7 @@ namespace Texticular
     {
 
         public Dictionary<string, Room> Rooms;
-        public List<StoryItem> Items;
+        public Dictionary<string, StoryItem> Items;
         private List<Room> gameRooms;
         public Player Player;
         public List<string> GameLog;
@@ -46,7 +46,7 @@ namespace Texticular
                 //populate the items list with any items that exist in the room
                 foreach(StoryItem item in gameRoom.RoomItems)
                 {
-                    Items.Add(item);
+                    Items.Add(item.KeyValue,item);
                 }
             }
 

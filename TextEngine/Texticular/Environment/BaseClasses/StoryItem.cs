@@ -26,6 +26,8 @@ namespace Texticular.Environment
             Commands["grab"] = takeItem;
 
             Commands["drop"] = dropItem;
+
+            Commands["put"] = putItem;
         }
 
 
@@ -39,6 +41,25 @@ namespace Texticular.Environment
                 if (LocationKey == "inventory")
                 {
                     controller.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                }
+
+                //if the item is in a container and the container is in the players current location
+                else if (controller.Game.Items.ContainsKey(LocationKey))
+                {
+                    if(controller.Game.Items[LocationKey] is Container && controller.Game.Items[LocationKey].LocationKey == player.LocationKey)
+                    {
+                        if (player.BackPack.ItemCount < player.BackPack.Slots)
+                        {
+                            LocationKey = "inventory";
+                            controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                            player.BackPack.ItemCount += 1;
+                        }
+
+                        else
+                        {
+                            controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                        }
+                    }
                 }
 
                 else
@@ -86,6 +107,13 @@ namespace Texticular.Environment
             {
                 controller.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
             }
+        }
+
+        void putItem(GameController controller)
+        {
+            //check the target after the word in/on
+            //if it's a container check if it's open and put the item in
+            
         }
 
     }

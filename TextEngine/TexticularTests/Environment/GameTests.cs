@@ -57,7 +57,7 @@ namespace Texticular.Environment.Tests
 
             ActiveGame.Rooms["room204"] = myRoom;
             ActiveGame.Rooms["room203"] = destination;
-            ActiveGame.Items.Add(testKey);
+            ActiveGame.Items.Add(testKey.KeyValue,testKey);
             
 
 
@@ -117,8 +117,8 @@ namespace Texticular.Environment.Tests
             ActiveGame.Rooms["room204"] = testRoom;
             ActiveGame.Rooms["room203"] = destination;
             ActiveGame.Rooms["unreachableRoom"] = anotherRoom;
-            ActiveGame.Items.Add(testKey);
-            ActiveGame.Items.Add(anotherKey);
+            ActiveGame.Items.Add(testKey.KeyValue,testKey);
+            ActiveGame.Items.Add(anotherKey.KeyValue,anotherKey);
 
             //start the player in the wrong location
             Controller.Game.Player.PlayerLocation = anotherRoom;
