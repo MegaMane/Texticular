@@ -40,7 +40,7 @@ namespace Texticular
         public string LastName { get; set; } = "";
 
         public Player(string name, string description, Room playerlocation, int health):
-            base(name, description)
+            base(name, description, examineResponse:"", LocationKey:playerlocation.KeyValue, KeyValue:"Player")
         {
             this.PlayerLocation = playerlocation;
             this.Health = health;

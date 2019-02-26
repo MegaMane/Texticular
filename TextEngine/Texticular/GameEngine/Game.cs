@@ -12,6 +12,7 @@ namespace Texticular
     public partial class Game
     {
 
+
         public Dictionary<string, Room> Rooms;
         public Dictionary<string, StoryItem> Items;
         private List<Room> gameRooms;

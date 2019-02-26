@@ -11,6 +11,7 @@ namespace Texticular.Environment
     {
 
         private static int _nextGameID = 0;
+        public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
 
         public event ItemLocationChangedEventHandler LocationChanged;
 
@@ -51,28 +52,34 @@ namespace Texticular.Environment
 
         public GameObject(string name, string description)
         {
-            commands = new Dictionary<string, Action<GameController>>();
             ID = ++_nextGameID;
+
+            commands = new Dictionary<string, Action<GameController>>();
             KeyValue = createStringKey(name) + "_" + this.ID.ToString();
             Name = name;
             Description = description;
             ExamineResponse = description;
             Commands["look"] = look;
             Commands["examine"] = examine;
+
+            Objects[this.KeyValue] = this;
         }
 
 
         public GameObject(string name, string description, string examineResponse, string LocationKey, string KeyValue = "")
         {
+            ID = ++_nextGameID;
+
             commands = new Dictionary<string, Action<GameController>>();
             this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
-            ID = ++_nextGameID;
             Name = name;
             Description = description;
             this.LocationKey = LocationKey;
             ExamineResponse = examineResponse;
             Commands["look"] = look;
             Commands["examine"] = examine;
+
+            Objects[this.KeyValue] = this;
         }
 
         public override string ToString()
