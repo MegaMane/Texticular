@@ -113,7 +113,8 @@ namespace Texticular.Environment
         {
             //check the target after the word in/on
             //if it's a container check if it's open and put the item in
-            
+            controller.InputResponse.AppendFormat($"put {Name} in the target?\n");
+
         }
 
     }

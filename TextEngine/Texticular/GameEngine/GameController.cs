@@ -19,6 +19,7 @@ namespace Texticular
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
+        public string[] Tokens;
 
         public Story story = new Story();
 
@@ -34,7 +35,13 @@ namespace Texticular
         {
 
             Game = game;
-            Game.Player.OnPlayerLocationChanged += PlayerLocationChangedHandler;
+            Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
+
+            foreach(StoryItem item in Game.Items.Values)
+            {
+                item.LocationChanged += ItemLocationChangedHandler;
+            }
+
             InputResponse = new StringBuilder();
             commands = new Dictionary<string, Action<string[]>>();
             ItemsinInventory = new List<StoryItem>();
@@ -372,7 +379,7 @@ namespace Texticular
 
         #region event handlers
 
-        void PlayerLocationChangedHandler(object sender, LocationChangedEventArgs args)
+        void PlayerLocationChangedHandler(object sender, PlayerLocationChangedEventArgs args)
         {
             //look at the players surroundings automatically 
             //when they enter a new location
@@ -381,6 +388,27 @@ namespace Texticular
             args.NewLocation.Commands["look"](this);
         }
 
+        void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)
+        {
+            //the object was removed from a container
+            StoryItem storyItem;
+            bool itemFound = Game.Items.TryGetValue(args.CurrentLocation, out storyItem);
+
+            if (itemFound && storyItem is Container)
+            {
+                Container container = (Container)storyItem;
+                container.Items.Remove((StoryItem) sender);
+            }
+
+            //the object was placed in a container
+            itemFound = Game.Items.TryGetValue(args.NewLocation, out storyItem);
+
+            if (itemFound && storyItem is Container)
+            {
+                Container container = (Container)storyItem;
+                container.Items.Add((StoryItem)sender);
+            }
+        }
 
         #endregion
 

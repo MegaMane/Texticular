@@ -6,5 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticular.GameEngine
 {
-    public delegate void OnLocationChanged (object sender, LocationChangedEventArgs args);
+    public delegate void PlayerLocationChangedEventHandler (object sender, PlayerLocationChangedEventArgs args);
+
+    public delegate void ItemLocationChangedEventHandler(object sender, ItemLocationChangedEventArgs args);
 }

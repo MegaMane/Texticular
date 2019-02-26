@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -11,13 +12,38 @@ namespace Texticular.Environment
 
         private static int _nextGameID = 0;
 
+        public event ItemLocationChangedEventHandler LocationChanged;
+
         public int ID { get; private set; }
         public String KeyValue { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public String ExamineResponse { get; set; }
-        public String LocationKey { get; set; }
+        private String _locationKey;
+        public String LocationKey
+        {
+            get { return _locationKey; }
+            set
+            {
 
+                OnLocationChanged(_locationKey,value);
+
+                _locationKey = value;
+
+                
+            }
+        }
+
+        protected virtual void OnLocationChanged(string currentLocation, string newLocation)
+        {
+            if (LocationChanged != null)
+            {
+                ItemLocationChangedEventArgs args = new ItemLocationChangedEventArgs();
+                args.CurrentLocation = currentLocation;
+                args.NewLocation = newLocation;
+                LocationChanged(this, args);
+            }
+        }
 
         private Dictionary<string, Action<GameController>> commands;
         public Dictionary<string, Action<GameController>> Commands { get { return commands; } protected set { commands = value; } }
