@@ -92,3 +92,13 @@ Game over
 
 If you lie down three times 
 Game Over
+
+
+A lexer is a software program that performs lexical analysis.  Lexical analysis is the process of separating a stream of characters into different words, which in computer science we call 'tokens' .  
+When you read my answer you are performing the lexical operation of breaking the string of text at the space characters into multiple words.
+
+A parser goes one level further than the lexer and takes the tokens produced by the lexer and tries to determine if proper sentences have been formed.  Parsers work at the grammatical level, lexers work at the word level.
+
+A lexer is part of a compiler that converts the statements in code into various categories of like key words,constants,variable etc jus like identifying parts of speech in a sentence and produce token (each converted unit is called as a token )
+
+A parser defines rules of grammer for these tokens and determines whether these statements are semantically correct
