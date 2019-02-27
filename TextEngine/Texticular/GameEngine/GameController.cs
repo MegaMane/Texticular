@@ -359,22 +359,22 @@ namespace Texticular
 
             if (parameters.Length > 0)
             {
-                InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv' \n");
+                InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv'\n ");
                 return;
             }
 
-            InputResponse.Append("\nInventory\n");
-            InputResponse.Append("--------------------------------------------------------------------------------------------\n\n");
+            InputResponse.Append("\n Inventory\n ");
+            InputResponse.Append("------------------------------------------------------\n\n ");
 
             foreach (StoryItem item in ItemsinInventory)
             {
 
-                InputResponse.AppendFormat("{0} : {1} \n", item.Name, item.Description);
+                InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
 
 
             }
 
-            InputResponse.Append("\n");
+            InputResponse.Append("\n ");
         }
 
         #endregion

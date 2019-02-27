@@ -41,7 +41,7 @@ namespace Texticular
             GameController Controller = new GameController(ActiveGame);
             bool gameRunning = true;
 
-            GameLoadDiagnostic();
+            //GameLoadDiagnostic();
 
             Controller.Start();
 

@@ -13,6 +13,36 @@ namespace Texticular.Environment
         private static int _nextGameID = 0;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
 
+        public static T GetComponent<T>(string objKey, string objName="") where T: GameObject
+        {
+            GameObject obj;
+
+            //search by key
+            bool objectFound = Objects.TryGetValue(objKey, out obj);
+
+            //search by value.Name
+            if(!objectFound)
+            {
+                foreach(GameObject gObject in Objects.Values)
+                {
+                    if(objName.ToLower() == gObject.Name.ToLower())
+                    {
+                        obj = gObject;
+                        break;
+                    }
+                }
+            }
+            
+            if (obj != null && obj is T)
+            {
+                return (T)obj;
+            }
+
+            return null;
+        }
+
+
+
         public event ItemLocationChangedEventHandler LocationChanged;
 
         public int ID { get; private set; }
