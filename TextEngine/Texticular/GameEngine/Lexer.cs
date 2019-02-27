@@ -8,6 +8,7 @@ using Texticular;
 
 namespace Texticular.GameEngine
 {
+
     public class Lexer
     {
         public List<string> KnownCommands { get { return knownCommands; } }
@@ -47,15 +48,15 @@ namespace Texticular.GameEngine
         };
         
 
-        public string [] Tokenize(string userInput)
+        public ParseTree Tokenize(string userInput)
         {
-            List<string> Tokens = new List<string>();
+            ParseTree tokens = new ParseTree();
 
             char[] delimiters = { ' ', ',' };
             
             string[] commandParts = userInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (commandParts.Length == 0) return new string[] { } ;
+            if (commandParts.Length == 0) return tokens ;
 
 
             int offset = 0;
@@ -77,7 +78,7 @@ namespace Texticular.GameEngine
                     {
 
                         commandFound = true;
-                        Tokens.Add(commandName);
+                        tokens.Verb = commandName;
                         break;
                     }
                 }
@@ -135,12 +136,36 @@ namespace Texticular.GameEngine
                     if (objectName == obj.Name.ToLower())
                     {
 
-                        Tokens.Add(objectName);
+                        tokens.DirectObject = objectName;
                         remainingInput.RemoveRange(0, offset);
                         break;
                     }
                 }
             }
+
+            /*
+            //check direction
+            if (tokens.DirectObject == null)
+            {
+
+                string directionName = "";
+
+                directionName = GameController.FirstCharToUpper(String.Join("", remainingInput.ToArray()));
+
+                try
+                {
+                    Direction desiredDirecton = (Direction)Enum.Parse(typeof(Direction), directionName);
+                    tokens.DirectObject = directionName;
+                }
+                
+                catch (ArgumentException e)
+                {
+                    GameController.InputResponse.Append(e.Message);
+                }
+
+                    
+            }
+            */
 
             if(secondaryObject.Count > 0)
             {
@@ -157,7 +182,7 @@ namespace Texticular.GameEngine
                         if (objectName == obj.Name.ToLower())
                         {
 
-                            Tokens.Add(objectName);
+                            tokens.IndirectObject = objectName;
                             secondaryObject.RemoveRange(0, offset);
                             break;
                         }
@@ -167,9 +192,17 @@ namespace Texticular.GameEngine
             }
 
 
-            return Tokens.ToArray();
+            return tokens;
 
         }
 
+    }
+
+
+    public class ParseTree
+    {
+        public String Verb { get; set; } = null;
+        public String DirectObject { get; set; } = null;
+        public String IndirectObject { get; set; } = null;
     }
 }

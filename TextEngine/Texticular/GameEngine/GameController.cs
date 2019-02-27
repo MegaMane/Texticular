@@ -15,15 +15,16 @@ namespace Texticular
         public static StringBuilder InputResponse = new StringBuilder();
 
         public Game Game;
+        public Story story = new Story();
         public string UserInput;
-
-        Dictionary<string, Action<string[]>> commands;
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
-        Lexer Tokenizer;
-        public string[] Tokens;
 
-        public Story story = new Story();
+        Dictionary<string, Action<string[]>> commands;
+        Lexer Tokenizer;
+
+
+
 
         //new UI Stuff
         private Texticular.UI.Buffer mainBuffer;
@@ -150,7 +151,9 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
-            Tokenizer.Tokenize(UserInput);
+            ParseTree tokens = Tokenizer.Tokenize(UserInput);
+
+
 
             ItemsinInventory.Clear();
             foreach (StoryItem item in Game.Items.Values)
