@@ -149,6 +149,8 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
+            Tokenizer.Tokenize(UserInput);
+
             ItemsinInventory.Clear();
             foreach (StoryItem item in Game.Items.Values)
             {
