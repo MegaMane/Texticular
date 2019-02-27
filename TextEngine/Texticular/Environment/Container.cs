@@ -27,10 +27,10 @@ namespace Texticular.Environment
         {
 
             IsOpen = true;
-            controller.InputResponse.Append($"You open the {Description} and look inside.\n\n ");
+            GameController.InputResponse.Append($"You open the {Description} and look inside.\n\n ");
             foreach (StoryItem item in Items)
             {
-                controller.InputResponse.Append($"{item.Name}:{item.Description}\n ");
+                GameController.InputResponse.Append($"{item.Name}:{item.Description}\n ");
             }
             
 
@@ -40,7 +40,7 @@ namespace Texticular.Environment
         void closeContainer(GameController controller)
         {
             IsOpen = false;
-            controller.InputResponse.Append($"You shut the {Description}\n ");
+            GameController.InputResponse.Append($"You shut the {Description}\n ");
         }
 
 

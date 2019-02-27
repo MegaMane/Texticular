@@ -78,19 +78,19 @@ namespace Texticular.Environment
             Game game = controller.Game;
 
             //location description
-            controller.InputResponse.AppendFormat("You are in {0}: {1}", currentRoom.Name, currentRoom.Description);
+            GameController.InputResponse.AppendFormat("You are in {0}: {1}", currentRoom.Name, currentRoom.Description);
             foreach (StoryItem item in game.Items.Values)
             {
                 if(item.LocationKey == currentRoom.KeyValue && !String.IsNullOrEmpty(item.DescriptionInRoom))
                 {
-                    controller.InputResponse.Append(item.DescriptionInRoom );
+                    GameController.InputResponse.Append(item.DescriptionInRoom );
                 }
             }
 
-            controller.InputResponse.Append(" \n\n ");
+            GameController.InputResponse.Append(" \n\n ");
 
             //list items
-            controller.InputResponse.Append("You see:\n ");
+            GameController.InputResponse.Append("You see:\n ");
             string itemString = "";
             foreach (StoryItem item in game.Items.Values)
             {
@@ -102,10 +102,10 @@ namespace Texticular.Environment
 
             }
 
-            controller.InputResponse.Append(itemString != "" ? itemString + "\n " : "Nothing\n\n ");
+            GameController.InputResponse.Append(itemString != "" ? itemString + "\n " : "Nothing\n\n ");
 
             //exits
-            controller.InputResponse.Append("Obvious Exits:\n ");
+            GameController.InputResponse.Append("Obvious Exits:\n ");
 
             var exits = from KeyValpair in currentRoom.Exits
                         orderby (Direction)Enum.Parse(typeof(Direction), KeyValpair.Key) ascending
@@ -117,12 +117,12 @@ namespace Texticular.Environment
 
                 if (exit.Value.IsLocked)
                 {
-                    controller.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, exit.Value.Name);
+                    GameController.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, exit.Value.Name);
                 }
 
                 else
                 {
-                    controller.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, game.Rooms[exit.Value.DestinationKey].Name);
+                    GameController.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, game.Rooms[exit.Value.DestinationKey].Name);
                 }
 
 

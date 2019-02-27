@@ -170,19 +170,19 @@ namespace Texticular.Environment
 
             if (LocationKey == "inventory")
             {
-                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
+                GameController.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
                 return;
             }
 
             else if(LocationKey == player.LocationKey)
             {
-                controller.InputResponse.Append(response);
+                GameController.InputResponse.Append(response);
                 return;
             }
 
 
 
-            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+            GameController.InputResponse.AppendFormat($"There is no {Name} here.\n");
 
 
         }
@@ -195,19 +195,19 @@ namespace Texticular.Environment
 
             if (LocationKey == "inventory")
             {
-                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
+                GameController.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
                 return;
             }
 
             else if (LocationKey == player.LocationKey)
             {
-                controller.InputResponse.Append(Description);
+                GameController.InputResponse.Append(Description);
                 return;
             }
 
 
 
-            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+            GameController.InputResponse.AppendFormat($"There is no {Name} here.\n");
 
 
 

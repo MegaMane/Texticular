@@ -38,16 +38,16 @@ namespace Texticular.Environment
             Commands["change channel"] = changeChannel;
         }
 
-        void turnOn (GameController controller)
+        void turnOn (GameController GameController)
         {
-            controller.InputResponse.Append("You turn on the TV...\n\n ");
-            controller.InputResponse.Append( Channel );
+            GameController.InputResponse.Append("You turn on the TV...\n\n ");
+            GameController.InputResponse.Append( Channel );
             isON = true;
         }
 
         void turnOff(GameController controller)
         {
-            controller.InputResponse.Append(TurnOffResponse + "\n");
+            GameController.InputResponse.Append(TurnOffResponse + "\n");
             isON = false;
         }
 
@@ -62,11 +62,11 @@ namespace Texticular.Environment
 
                 else currentChannel += 1;
 
-                controller.InputResponse.Append("Click...\n\n " + Channel);
+                GameController.InputResponse.Append("Click...\n\n " + Channel);
             }
             else
             {
-                controller.InputResponse.Append("You have to turn the TV on first!\n ");
+                GameController.InputResponse.Append("You have to turn the TV on first!\n ");
             }
         }
     }

@@ -27,7 +27,7 @@ namespace Texticular.Environment
 
         void takeProp(GameController controller)
         {
-            controller.InputResponse.Append($"The {Name} won't budge.");
+            GameController.InputResponse.Append($"The {Name} won't budge.");
         }
 
         void openProp(GameController controller)
@@ -39,7 +39,7 @@ namespace Texticular.Environment
 
             else
             {
-                controller.InputResponse.Append($"Try as you might you can't open the {Name}");
+                GameController.InputResponse.Append($"Try as you might you can't open the {Name}");
             }
         }
 

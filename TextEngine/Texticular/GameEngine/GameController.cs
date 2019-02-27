@@ -12,9 +12,11 @@ namespace Texticular
 {
     public class GameController
     {
+        public static StringBuilder InputResponse = new StringBuilder();
+
         public Game Game;
         public string UserInput;
-        public StringBuilder InputResponse;
+
         Dictionary<string, Action<string[]>> commands;
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
@@ -42,7 +44,6 @@ namespace Texticular
                 item.LocationChanged += ItemLocationChangedHandler;
             }
 
-            InputResponse = new StringBuilder();
             commands = new Dictionary<string, Action<string[]>>();
             ItemsinInventory = new List<StoryItem>();
             ItemsinRoom = new List<StoryItem>();

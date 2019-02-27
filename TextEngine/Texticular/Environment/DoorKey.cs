@@ -27,7 +27,7 @@ namespace Texticular.Environment
                 {
                     if (door.KeyName.ToLower() == this.Name.ToLower())
                     {
-                        controller.InputResponse.Append($"{door.Name} opens...");
+                        GameController.InputResponse.Append($"{door.Name} opens...");
                         door.IsLocked = false;
                         player.BackPack.ConsumeItem(this);
                         player.PlayerLocation = controller.Game.Rooms[door.DestinationKey];
@@ -37,7 +37,7 @@ namespace Texticular.Environment
                 }
 
                 //their are no doors the key opens in the current room
-                controller.InputResponse.Append($"{Name} doesn't fit into any of the locks.");
+                GameController.InputResponse.Append($"{Name} doesn't fit into any of the locks.");
 
 
             }
@@ -45,13 +45,13 @@ namespace Texticular.Environment
             else if (LocationKey == player.LocationKey)
             {
 
-                controller.InputResponse.Append("You need to be holding the key to use it");
+                GameController.InputResponse.Append("You need to be holding the key to use it");
 
             }
 
             else
             {
-                controller.InputResponse.Append("Keep searching...You don't have that item\n");
+                GameController.InputResponse.Append("Keep searching...You don't have that item\n");
 
             }
 

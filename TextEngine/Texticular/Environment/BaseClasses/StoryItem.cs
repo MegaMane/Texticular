@@ -41,7 +41,7 @@ namespace Texticular.Environment
             {
                 if (LocationKey == "inventory")
                 {
-                    controller.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                    GameController.InputResponse.AppendFormat($"You already have the item {Name}.\n");
                 }
 
                 //if the item is in a container and the container is in the players current location
@@ -52,20 +52,20 @@ namespace Texticular.Environment
                         if (player.BackPack.ItemCount < player.BackPack.Slots)
                         {
                             LocationKey = "inventory";
-                            controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                            GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                             player.BackPack.ItemCount += 1;
                         }
 
                         else
                         {
-                            controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                            GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                         }
                     }
                 }
 
                 else
                 {
-                    controller.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
+                    GameController.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
                 }
                 
                 return;
@@ -76,19 +76,19 @@ namespace Texticular.Environment
                 if (player.BackPack.ItemCount < player.BackPack.Slots)
                 {
                     LocationKey = "inventory";
-                    controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                    GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                     player.BackPack.ItemCount += 1;
                 }
 
                 else
                 {
-                    controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                    GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                 }
             }
 
             else
             {
-                controller.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
+                GameController.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
             }
             
         }
@@ -100,13 +100,13 @@ namespace Texticular.Environment
             if (LocationKey == "inventory")
             {
                 LocationKey = player.PlayerLocation.KeyValue;
-                controller.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
+                GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
                 player.BackPack.ItemCount -= 1;
             }
 
             else
             {
-                controller.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
+                GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
             }
         }
 
@@ -114,7 +114,7 @@ namespace Texticular.Environment
         {
             //check the target after the word in/on
             //if it's a container check if it's open and put the item in
-            controller.InputResponse.AppendFormat($"put {Name} in the target?\n");
+            GameController.InputResponse.AppendFormat($"put {Name} in the target?\n");
 
         }
 

@@ -19,7 +19,7 @@ namespace Texticular.Environment
 
         public void useCoins(GameController controller)
         {
-            controller.InputResponse.AppendFormat($"You use the {Name}.\n");
+            GameController.InputResponse.AppendFormat($"You use the {Name}.\n");
         }
     }
 }

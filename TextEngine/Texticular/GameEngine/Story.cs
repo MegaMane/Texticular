@@ -50,9 +50,9 @@ namespace Texticular.GameEngine
                 Player player = controller.Game.Player;
                 Scene scene = controller.story.Scenes["intro"];
 
-                controller.InputResponse.Clear();
-                controller.InputResponse.Append(scene.SceneText[0]);
-                controller.InputResponse.Append("What is your name?\n\n ");
+                GameController.InputResponse.Clear();
+                GameController.InputResponse.Append(scene.SceneText[0]);
+                GameController.InputResponse.Append("What is your name?\n\n ");
                 while (player.FirstName == "")
                 {
                     controller.Render();
@@ -61,9 +61,9 @@ namespace Texticular.GameEngine
                 }
 
                 
-                controller.InputResponse.Clear();
+                GameController.InputResponse.Clear();
 
-                controller.InputResponse.Append(scene.SceneText[1].Replace("<Name>", player.FirstName));
+                GameController.InputResponse.Append(scene.SceneText[1].Replace("<Name>", player.FirstName));
                 controller.Render();
 
 
@@ -80,8 +80,8 @@ namespace Texticular.GameEngine
         {
             foreach (string scene in Scenes[CurrentScene].SceneText)
             {
-                controller.InputResponse.Clear();
-                controller.InputResponse.Append(scene);
+                GameController.InputResponse.Clear();
+                GameController.InputResponse.Append(scene);
                 controller.Render();
                 if (scene.Substring(0,1) == "?")
                 {
