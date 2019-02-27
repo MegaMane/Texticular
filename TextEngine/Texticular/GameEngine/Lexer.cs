@@ -43,6 +43,7 @@ namespace Texticular.GameEngine
         {
             "in",
             "on"
+            //through, inside, up, under, over, beside, below, down ...{the apple}
         };
         
 
