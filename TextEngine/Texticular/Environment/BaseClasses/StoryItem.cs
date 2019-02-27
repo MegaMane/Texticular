@@ -34,7 +34,8 @@ namespace Texticular.Environment
 
         void takeItem(GameController controller)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
 
             if (LocationKey != player.LocationKey)
             {
@@ -94,7 +95,7 @@ namespace Texticular.Environment
 
         void dropItem(GameController controller)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
 
             if (LocationKey == "inventory")
             {
@@ -113,7 +114,8 @@ namespace Texticular.Environment
         {
             //check the target after the word in/on
             //if it's a container check if it's open and put the item in
-            
+            controller.InputResponse.AppendFormat($"put {Name} in the target?\n");
+
         }
 
     }

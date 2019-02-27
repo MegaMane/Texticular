@@ -7,9 +7,9 @@ using Texticular.Environment;
 
 namespace Texticular.GameEngine
 {
-    public class LocationChangedEventArgs:EventArgs
+    public class ItemLocationChangedEventArgs
     {
-        public Room CurrentLocation { get; set; }
-        public Room NewLocation { get; set; }
+        public String CurrentLocation { get; set; }
+        public String NewLocation { get; set; }
     }
 }

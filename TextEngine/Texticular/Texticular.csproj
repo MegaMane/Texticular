@@ -54,13 +54,14 @@
     <Compile Include="Environment\BaseClasses\MovementDirection.cs" />
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
+    <Compile Include="GameEngine\Events\ItemLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
     <Compile Include="GameEngine\Events\GameEvents.cs" />
     <Compile Include="GameEngine\Gamestats.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
-    <Compile Include="GameEngine\Events\LocationChangedEventArgs.cs" />
+    <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Story.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
     <Compile Include="GameStates\MainGameState.cs" />

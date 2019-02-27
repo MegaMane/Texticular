@@ -10,7 +10,7 @@ namespace Texticular
 {
     public class Player:GameObject
     {
-        public event OnLocationChanged OnPlayerLocationChanged;
+        public event PlayerLocationChangedEventHandler PlayerLocationChanged;
         private Room _playerLocation;
         public Room PlayerLocation
         {
@@ -22,12 +22,12 @@ namespace Texticular
             {
 
 
-                if(OnPlayerLocationChanged != null)
+                if(PlayerLocationChanged != null)
                 {
-                    LocationChangedEventArgs args = new LocationChangedEventArgs();
+                    PlayerLocationChangedEventArgs args = new PlayerLocationChangedEventArgs();
                     args.CurrentLocation = _playerLocation;
                     args.NewLocation = value;
-                    OnPlayerLocationChanged(this, args);
+                    PlayerLocationChanged(this, args);
                 }
 
                 _playerLocation = value;
@@ -40,13 +40,15 @@ namespace Texticular
         public string LastName { get; set; } = "";
 
         public Player(string name, string description, Room playerlocation, int health):
-            base(name, description)
+            base(name, description, examineResponse:"", LocationKey:playerlocation.KeyValue, KeyValue:"player")
         {
             this.PlayerLocation = playerlocation;
             this.Health = health;
 
             
         }
+
+
 
 
     }

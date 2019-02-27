@@ -19,6 +19,7 @@ namespace Texticular
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
         Lexer Tokenizer;
+        public string[] Tokens;
 
         public Story story = new Story();
 
@@ -34,7 +35,13 @@ namespace Texticular
         {
 
             Game = game;
-            Game.Player.OnPlayerLocationChanged += PlayerLocationChangedHandler;
+            Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
+
+            foreach(StoryItem item in Game.Items.Values)
+            {
+                item.LocationChanged += ItemLocationChangedHandler;
+            }
+
             InputResponse = new StringBuilder();
             commands = new Dictionary<string, Action<string[]>>();
             ItemsinInventory = new List<StoryItem>();
@@ -142,6 +149,8 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
+            Tokenizer.Tokenize(UserInput);
+
             ItemsinInventory.Clear();
             foreach (StoryItem item in Game.Items.Values)
             {
@@ -350,29 +359,29 @@ namespace Texticular
 
             if (parameters.Length > 0)
             {
-                InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv' \n");
+                InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv'\n ");
                 return;
             }
 
-            InputResponse.Append("\nInventory\n");
-            InputResponse.Append("--------------------------------------------------------------------------------------------\n\n");
+            InputResponse.Append("\n Inventory\n ");
+            InputResponse.Append("------------------------------------------------------\n\n ");
 
             foreach (StoryItem item in ItemsinInventory)
             {
 
-                InputResponse.AppendFormat("{0} : {1} \n", item.Name, item.Description);
+                InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
 
 
             }
 
-            InputResponse.Append("\n");
+            InputResponse.Append("\n ");
         }
 
         #endregion
 
         #region event handlers
 
-        void PlayerLocationChangedHandler(object sender, LocationChangedEventArgs args)
+        void PlayerLocationChangedHandler(object sender, PlayerLocationChangedEventArgs args)
         {
             //look at the players surroundings automatically 
             //when they enter a new location
@@ -381,6 +390,27 @@ namespace Texticular
             args.NewLocation.Commands["look"](this);
         }
 
+        void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)
+        {
+            //the object was removed from a container
+            StoryItem storyItem;
+            bool itemFound = Game.Items.TryGetValue(args.CurrentLocation, out storyItem);
+
+            if (itemFound && storyItem is Container)
+            {
+                Container container = (Container)storyItem;
+                container.Items.Remove((StoryItem) sender);
+            }
+
+            //the object was placed in a container
+            itemFound = Game.Items.TryGetValue(args.NewLocation, out storyItem);
+
+            if (itemFound && storyItem is Container)
+            {
+                Container container = (Container)storyItem;
+                container.Items.Add((StoryItem)sender);
+            }
+        }
 
         #endregion
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -10,14 +11,70 @@ namespace Texticular.Environment
     {
 
         private static int _nextGameID = 0;
+        public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
+
+        public static T GetComponent<T>(string objKey, string objName="") where T: GameObject
+        {
+            GameObject obj;
+
+            //search by key
+            bool objectFound = Objects.TryGetValue(objKey, out obj);
+
+            //search by value.Name
+            if(!objectFound)
+            {
+                foreach(GameObject gObject in Objects.Values)
+                {
+                    if(objName.ToLower() == gObject.Name.ToLower())
+                    {
+                        obj = gObject;
+                        break;
+                    }
+                }
+            }
+            
+            if (obj != null && obj is T)
+            {
+                return (T)obj;
+            }
+
+            return null;
+        }
+
+
+
+        public event ItemLocationChangedEventHandler LocationChanged;
 
         public int ID { get; private set; }
         public String KeyValue { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
         public String ExamineResponse { get; set; }
-        public String LocationKey { get; set; }
+        private String _locationKey;
+        public String LocationKey
+        {
+            get { return _locationKey; }
+            set
+            {
 
+                OnLocationChanged(_locationKey,value);
+
+                _locationKey = value;
+
+                
+            }
+        }
+
+        protected virtual void OnLocationChanged(string currentLocation, string newLocation)
+        {
+            if (LocationChanged != null)
+            {
+                ItemLocationChangedEventArgs args = new ItemLocationChangedEventArgs();
+                args.CurrentLocation = currentLocation;
+                args.NewLocation = newLocation;
+                LocationChanged(this, args);
+            }
+        }
 
         private Dictionary<string, Action<GameController>> commands;
         public Dictionary<string, Action<GameController>> Commands { get { return commands; } protected set { commands = value; } }
@@ -25,28 +82,34 @@ namespace Texticular.Environment
 
         public GameObject(string name, string description)
         {
-            commands = new Dictionary<string, Action<GameController>>();
             ID = ++_nextGameID;
+
+            commands = new Dictionary<string, Action<GameController>>();
             KeyValue = createStringKey(name) + "_" + this.ID.ToString();
             Name = name;
             Description = description;
             ExamineResponse = description;
             Commands["look"] = look;
             Commands["examine"] = examine;
+
+            Objects[this.KeyValue] = this;
         }
 
 
         public GameObject(string name, string description, string examineResponse, string LocationKey, string KeyValue = "")
         {
+            ID = ++_nextGameID;
+
             commands = new Dictionary<string, Action<GameController>>();
             this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
-            ID = ++_nextGameID;
             Name = name;
             Description = description;
             this.LocationKey = LocationKey;
             ExamineResponse = examineResponse;
             Commands["look"] = look;
             Commands["examine"] = examine;
+
+            Objects[this.KeyValue] = this;
         }
 
         public override string ToString()

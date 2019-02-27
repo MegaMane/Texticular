@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Media;
 using Texticular.UI;
+using Texticular.Environment;
 
 namespace Texticular
 {
@@ -40,6 +41,8 @@ namespace Texticular
             GameController Controller = new GameController(ActiveGame);
             bool gameRunning = true;
 
+            //GameLoadDiagnostic();
+
             Controller.Start();
 
             //while (true)
@@ -73,8 +76,20 @@ namespace Texticular
             }
         }
 
- 
-    
+        private static void GameLoadDiagnostic()
+        {
+            Console.WriteLine("Game Objects Created".PadLeft(45, ' '));
+            Console.WriteLine();
+            foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
+            {
+                Console.WriteLine($"{obj.Key.PadLeft(30, ' ')} =>     {obj.Value.Name}");
+            }
+
+            Console.WriteLine("\n\nPress any key to continue");
+            Console.ReadKey();
+        }
+
+
 
     }
 }

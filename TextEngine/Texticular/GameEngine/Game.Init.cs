@@ -216,9 +216,6 @@ namespace Texticular
 
         }
 
-        void LocationChanged(object sender, LocationChangedEventArgs args)
-        {
-            
-        }
+
     }
 }
