@@ -12,16 +12,19 @@ namespace Texticular
 {
     public class GameController
     {
+        public static StringBuilder InputResponse = new StringBuilder();
+
         public Game Game;
+        public Story story = new Story();
         public string UserInput;
-        public StringBuilder InputResponse;
-        Dictionary<string, Action<string[]>> commands;
         public List<StoryItem> ItemsinInventory;
         public List<StoryItem> ItemsinRoom;
-        Lexer Tokenizer;
-        public string[] Tokens;
 
-        public Story story = new Story();
+        Dictionary<string, Action<ParseTree>> commands;
+        Lexer Tokenizer;
+
+
+
 
         //new UI Stuff
         private Texticular.UI.Buffer mainBuffer;
@@ -42,8 +45,7 @@ namespace Texticular
                 item.LocationChanged += ItemLocationChangedHandler;
             }
 
-            InputResponse = new StringBuilder();
-            commands = new Dictionary<string, Action<string[]>>();
+            commands = new Dictionary<string, Action<ParseTree>>(); 
             ItemsinInventory = new List<StoryItem>();
             ItemsinRoom = new List<StoryItem>();
             Tokenizer = new Lexer();
@@ -97,8 +99,8 @@ namespace Texticular
 
         public void Start()
         {
-            //Action<GameController> playScene = story.Scenes["intro"].SceneAction;
-            //playScene(this);
+            Action<GameController> playScene = story.Scenes["intro"].SceneAction;
+            playScene(this);
             InputResponse.Append("Type Help for a list of commands...\n\n ");
             //need to manually set the input to look after playing the intro scene 
             //to print the room description
@@ -149,121 +151,58 @@ namespace Texticular
 
         public void Parse(String userInput)
         {
-            Tokenizer.Tokenize(UserInput);
+            ParseTree tokens = Tokenizer.Tokenize(UserInput);
 
-            ItemsinInventory.Clear();
-            foreach (StoryItem item in Game.Items.Values)
+            if (tokens == null) return; //the player just hit enter without typing anything
+
+            if(tokens.Verb == null)
             {
-                if (item.LocationKey == "inventory")
-                {
-                    ItemsinInventory.Add(item);
-                }
+                InputResponse.Append($"I dont understand '{UserInput}'! Type help for some examples of what I do understand.");
+                return;
             }
 
-
-            ItemsinRoom.Clear();
-            foreach (StoryItem item in Game.Items.Values)
+            //look with no object after it means look at surroundings
+            if (tokens.Verb == "look" && tokens.DirectObject == null)
             {
-                if (item.LocationKey == Game.Player.PlayerLocation.KeyValue)
-                {
-                    ItemsinRoom.Add(item);
-                }
+                tokens.DirectObject = Game.Player.PlayerLocation.Name.ToLower();
+                tokens.DirectObjectKeyValue = Game.Player.PlayerLocation.KeyValue;
             }
 
-            char[] delimiters = { ' ', ',' };
+            Action<ParseTree> parsedCommand;
+            bool basicCommand = commands.TryGetValue(tokens.Verb, out parsedCommand);
 
-            // look with no object after it means look at the players surroundings
-            if(UserInput == "look")
-            {
-                UserInput += $" {Game.Player.PlayerLocation.Name.ToLower()}";
-            }
-            string[] commandParts = UserInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-
-            if (commandParts.Length == 0) return ; //the player just hit enter without typing anything
-
-
-            int offset = 0;
-            string name="";
-            bool commandFound = false;
-
-            // Name of the method we want to call.
-            foreach (string command in Tokenizer.KnownCommands)
-            {
-                name = "";
-
-                for (int i = 0; i < commandParts.Length; i++)
-                {
-                    name = String.Join(" ", commandParts, 0, i + 1);
-                    offset = i + 1;
-
-                    if (name == command)
-                    {
-
-                        commandFound = true;
-                        break;
-                    }
-                }
-
-                if (commandFound)
-                {
-                    break;
-                }
-
-            }
-            
-
-            //need to remove articles and parse adjectives
-            string[] parameters = new string[commandParts.Length - offset];
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                parameters[i] = commandParts[i + offset];
-            }
-
-            //object[] args = new object[2];
-            //args[0] = gamestate;
-            //args[1] = parameters;
-
-            Action<string[]> parsedCommand;
-            bool basicCommand = commands.TryGetValue(name, out parsedCommand);
-
-            //basic commands
+            //basic commands go, help, inventory
             if (basicCommand)
-                parsedCommand(parameters);
+                parsedCommand(tokens);
+
+
 
             //context sensitive commands
-            else if (!basicCommand && Tokenizer.KnownCommands.Contains(name))
+            else if (!basicCommand && tokens.DirectObject != null)
             {
-                GameObject objectToFind;
+                GameObject objectToFind = GameObject.Objects[tokens.DirectObjectKeyValue];
 
-                if (objectFound(parameters, out objectToFind))
+
+                Action<ParseTree> contextCommand;
+                bool validcontextCommand = objectToFind.Commands.TryGetValue(tokens.Verb, out contextCommand);
+
+                if (validcontextCommand)
                 {
-
-                    Action<GameController> contextCommand;
-                    bool validcontextCommand = objectToFind.Commands.TryGetValue(name, out contextCommand);
-
-                    if (validcontextCommand)
-                    {
-                        contextCommand(this);
-                    }
-
-                    else
-                    {
-                        InputResponse.Append($"You cant {name} {String.Join(" ", parameters)}.\n");
-                    }
+                    contextCommand(tokens);
                 }
 
                 else
                 {
-                    InputResponse.Append($"There is no {String.Join(" ", parameters)} here.\n");
+                    InputResponse.Append($"You cant {tokens.Verb} {tokens.UnparsedInput.Replace(tokens.Verb, "")}.\n");
                 }
+                
 
             }
 
             else
             {
                 //bogus command not understood
-                InputResponse.Append("I dont understand\n");
+                InputResponse.Append($"{tokens.Verb} what?");
             }
 
 
@@ -273,9 +212,9 @@ namespace Texticular
 
 
         #region Basic Commands
-        void help(string[] parameters)
+        void help(ParseTree tokens)
         {
-            if (parameters.Length == 0)
+            if (tokens.DirectObject == null && tokens.IndirectObject == null)
             {
                 InputResponse.Append("\n\n----------------------\n"+
                                      "Command List\n" +
@@ -299,7 +238,7 @@ namespace Texticular
             Game.Gamestats.Moves -= 1;
         }
 
-        void go(string[] parameters)
+        void go(ParseTree tokens)
         {
 
             Player player = Game.Player;
@@ -310,15 +249,15 @@ namespace Texticular
             Direction desiredDirecton;
 
 
-            if (parameters.Length == 0)
+            if (tokens.DirectObject == null)
             {
                 InputResponse.Append("Go Where?\n");
             }
 
             else
             {
-                direction = parameters[0].ToLower().Trim();
-                direction = FirstCharToUpper(direction);
+                direction = tokens.DirectObject;
+
                 try
                 {
                     desiredDirecton = (Direction) Enum.Parse(typeof(Direction), direction);
@@ -353,11 +292,11 @@ namespace Texticular
 
         }
 
-        void inventory(string[] parameters)
+        void inventory(ParseTree tokens)
         {
 
 
-            if (parameters.Length > 0)
+            if (tokens.DirectObject != null && tokens.IndirectObject != null)
             {
                 InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv'\n ");
                 return;
@@ -366,10 +305,13 @@ namespace Texticular
             InputResponse.Append("\n Inventory\n ");
             InputResponse.Append("------------------------------------------------------\n\n ");
 
-            foreach (StoryItem item in ItemsinInventory)
+            foreach (var item in GameObject.Objects.Values)
             {
+                if (item.LocationKey == "inventory")
+                {
+                    InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
+                }
 
-                InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
 
 
             }
@@ -387,7 +329,7 @@ namespace Texticular
             //when they enter a new location
             InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
             args.NewLocation.TimesVisited += 1;
-            args.NewLocation.Commands["look"](this);
+            args.NewLocation.Commands["look"](new ParseTree() {Verb="look", DirectObject=args.NewLocation.Name, DirectObjectKeyValue=args.NewLocation.KeyValue });
         }
 
         void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)

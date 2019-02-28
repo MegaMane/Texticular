@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -32,42 +33,45 @@ namespace Texticular.Environment
 
 
 
-        void takeItem(GameController controller)
+        void takeItem(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
 
             if (LocationKey != player.LocationKey)
             {
+
+
                 if (LocationKey == "inventory")
                 {
-                    controller.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                    GameController.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                    return;
                 }
 
-                //if the item is in a container and the container is in the players current location
-                else if (controller.Game.Items.ContainsKey(LocationKey))
+
+                //if the item is inside an open container at the players current location
+                foreach (StoryItem item in currentLocation.RoomItems)
                 {
-                    if(controller.Game.Items[LocationKey] is Container && controller.Game.Items[LocationKey].LocationKey == player.LocationKey)
+                    if(item is Container && this.LocationKey == item.KeyValue && (item as Container).IsOpen)
                     {
                         if (player.BackPack.ItemCount < player.BackPack.Slots)
                         {
                             LocationKey = "inventory";
-                            controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                            GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                             player.BackPack.ItemCount += 1;
                         }
 
                         else
                         {
-                            controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                            GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                         }
+
+                        return;
                     }
                 }
 
-                else
-                {
-                    controller.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
-                }
-                
+
+                GameController.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
                 return;
             }
 
@@ -76,45 +80,47 @@ namespace Texticular.Environment
                 if (player.BackPack.ItemCount < player.BackPack.Slots)
                 {
                     LocationKey = "inventory";
-                    controller.InputResponse.AppendFormat($"{Name} taken.\n");
+                    GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                     player.BackPack.ItemCount += 1;
                 }
 
                 else
                 {
-                    controller.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                    GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                 }
             }
 
             else
             {
-                controller.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
+                GameController.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
             }
             
         }
 
-        void dropItem(GameController controller)
+        void dropItem(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
 
             if (LocationKey == "inventory")
             {
                 LocationKey = player.PlayerLocation.KeyValue;
-                controller.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
+                GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
                 player.BackPack.ItemCount -= 1;
             }
 
             else
             {
-                controller.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
+                GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
             }
         }
 
-        void putItem(GameController controller)
+        void putItem(ParseTree tokens)
         {
-            //check the target after the word in/on
-            //if it's a container check if it's open and put the item in
-            controller.InputResponse.AppendFormat($"put {Name} in the target?\n");
+            //check if the direct object is in the players possesion or the current room
+                //check if the indirect object is in the room and not locked
+                    //check if there is enough space in the container
+                        //if so then change the items location to the container and let the player know
+            GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
 
         }
 

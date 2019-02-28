@@ -8,6 +8,7 @@ using Texticular;
 
 namespace Texticular.GameEngine
 {
+
     public class Lexer
     {
         public List<string> KnownCommands { get { return knownCommands; } }
@@ -47,15 +48,16 @@ namespace Texticular.GameEngine
         };
         
 
-        public string [] Tokenize(string userInput)
+        public ParseTree Tokenize(string userInput)
         {
-            List<string> Tokens = new List<string>();
+            ParseTree tokens = new ParseTree();
+            tokens.UnparsedInput = userInput;
 
             char[] delimiters = { ' ', ',' };
             
             string[] commandParts = userInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (commandParts.Length == 0) return new string[] { } ;
+            if (commandParts.Length == 0) return null ;
 
 
             int offset = 0;
@@ -77,7 +79,7 @@ namespace Texticular.GameEngine
                     {
 
                         commandFound = true;
-                        Tokens.Add(commandName);
+                        tokens.Verb = commandName;
                         break;
                     }
                 }
@@ -122,7 +124,7 @@ namespace Texticular.GameEngine
                 remainingInput = remainingInput.GetRange(0, prepositionIndex);
             }
 
-            foreach (GameObject obj in GameObject.Objects.Values)
+            foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
             {
                 offset = 0;
                 string objectName = "";
@@ -132,19 +134,45 @@ namespace Texticular.GameEngine
                     objectName = String.Join(" ", remainingInput.ToArray(), 0, i + 1);
                     offset = i + 1;
 
-                    if (objectName == obj.Name.ToLower())
+                    if (objectName == obj.Value.Name.ToLower())
                     {
 
-                        Tokens.Add(objectName);
+                        tokens.DirectObject = objectName;
+                        tokens.DirectObjectKeyValue = obj.Key;
                         remainingInput.RemoveRange(0, offset);
                         break;
                     }
                 }
             }
 
+
+            //check direction
+            if (tokens.DirectObject == null && remainingInput.Count > 0)
+            {
+
+                string directionName = "";
+
+                directionName = GameController.FirstCharToUpper(String.Join("", remainingInput.ToArray()));
+
+                try
+                {
+                    Direction desiredDirecton = (Direction)Enum.Parse(typeof(Direction), directionName);
+                    tokens.DirectObject = directionName;
+                }
+                
+                catch (ArgumentException e)
+                {
+                    ///GameController.InputResponse.AppendFormat("{0} is not a valid direction. Type Help for more.\n", directionName);
+                    tokens.DirectObject = null;
+                }
+
+                    
+            }
+
+
             if(secondaryObject.Count > 0)
             {
-                foreach (GameObject obj in GameObject.Objects.Values)
+                foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
                 {
                     offset = 0;
                     string objectName = "";
@@ -154,10 +182,11 @@ namespace Texticular.GameEngine
                         objectName = String.Join(" ", secondaryObject.ToArray(), 0, i + 1);
                         offset = i + 1;
 
-                        if (objectName == obj.Name.ToLower())
+                        if (objectName == obj.Value.Name.ToLower())
                         {
 
-                            Tokens.Add(objectName);
+                            tokens.IndirectObject = objectName;
+                            tokens.IndirectObjectKeyValue = obj.Key;
                             secondaryObject.RemoveRange(0, offset);
                             break;
                         }
@@ -167,9 +196,21 @@ namespace Texticular.GameEngine
             }
 
 
-            return Tokens.ToArray();
+            return tokens;
 
         }
+
+    }
+
+
+    public class ParseTree
+    {
+        public String Verb { get; set; } = null;
+        public String DirectObject { get; set; } = null;
+        public String DirectObjectKeyValue { get; set; } = null;
+        public String IndirectObject { get; set; } = null;
+        public String IndirectObjectKeyValue { get; set; } = null;
+        public String UnparsedInput { get; set; } = null;
 
     }
 }

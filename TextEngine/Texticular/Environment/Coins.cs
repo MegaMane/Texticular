@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -17,9 +18,9 @@ namespace Texticular.Environment
             Commands["use"] = useCoins;
         }
 
-        public void useCoins(GameController controller)
+        public void useCoins(ParseTree tokens)
         {
-            controller.InputResponse.AppendFormat($"You use the {Name}.\n");
+            GameController.InputResponse.AppendFormat($"You use the {Name}.\n");
         }
     }
 }

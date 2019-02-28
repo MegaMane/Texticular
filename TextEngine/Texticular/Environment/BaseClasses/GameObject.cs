@@ -76,15 +76,15 @@ namespace Texticular.Environment
             }
         }
 
-        private Dictionary<string, Action<GameController>> commands;
-        public Dictionary<string, Action<GameController>> Commands { get { return commands; } protected set { commands = value; } }
+        private Dictionary<string, Action<ParseTree>> commands;
+        public Dictionary<string, Action<ParseTree>> Commands { get { return commands; } protected set { commands = value; } }
 
 
         public GameObject(string name, string description)
         {
             ID = ++_nextGameID;
 
-            commands = new Dictionary<string, Action<GameController>>();
+            commands = new Dictionary<string, Action<ParseTree>>();
             KeyValue = createStringKey(name) + "_" + this.ID.ToString();
             Name = name;
             Description = description;
@@ -100,7 +100,7 @@ namespace Texticular.Environment
         {
             ID = ++_nextGameID;
 
-            commands = new Dictionary<string, Action<GameController>>();
+            commands = new Dictionary<string, Action<ParseTree>>();
             this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
             Name = name;
             Description = description;
@@ -156,9 +156,10 @@ namespace Texticular.Environment
         }
 
 
-        void examine(GameController controller)
+        void examine(ParseTree tokens)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
             string response;
 
             if (ExamineResponse == "" || ExamineResponse == null)
@@ -170,44 +171,45 @@ namespace Texticular.Environment
 
             if (LocationKey == "inventory")
             {
-                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
+                GameController.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
                 return;
             }
 
             else if(LocationKey == player.LocationKey)
             {
-                controller.InputResponse.Append(response);
+                GameController.InputResponse.Append(response);
                 return;
             }
 
 
 
-            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+            GameController.InputResponse.AppendFormat($"There is no {Name} here.\n");
 
 
         }
 
 
-        void look(GameController controller)
+        void look(ParseTree tokens)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
 
 
             if (LocationKey == "inventory")
             {
-                controller.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
+                GameController.InputResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
                 return;
             }
 
             else if (LocationKey == player.LocationKey)
             {
-                controller.InputResponse.Append(Description);
+                GameController.InputResponse.Append(Description);
                 return;
             }
 
 
 
-            controller.InputResponse.AppendFormat($"There is no {Name} here.\n");
+            GameController.InputResponse.AppendFormat($"There is no {Name} here.\n");
 
 
 
