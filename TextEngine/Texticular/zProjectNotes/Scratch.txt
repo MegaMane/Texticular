@@ -1,6 +1,11 @@
 ﻿
+Game States
 
+https://gamedevelopment.tutsplus.com/articles/how-to-build-a-jrpg-a-primer-for-game-developers--gamedev-6676#state
+http://gameprogrammingpatterns.com/state.html
 
+http://www.blackwasp.co.uk/State.aspx
+http://www.blackwasp.co.uk/GofPatterns.aspx
 
 Parser example sentences
 
