@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Media;
 using Texticular.Environment;
 using Texticular.GameEngine;
+using Texticular.GameStates;
 using Texticular.UI;
 
 namespace Texticular
@@ -13,7 +14,7 @@ namespace Texticular
     public class GameController
     {
         public static StringBuilder InputResponse = new StringBuilder();
-
+        public static IGameState CurrentGameState { get; private set; }
         public Game Game;
         public Story story = new Story();
         public string UserInput;

@@ -59,12 +59,15 @@
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
     <Compile Include="GameEngine\Events\GameEvents.cs" />
-    <Compile Include="GameEngine\Gamestats.cs" />
+    <Compile Include="GameEngine\GameStatistics.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Story.cs" />
+    <Compile Include="GameStates\ExplorationState.cs" />
     <Compile Include="GameStates\GameStateManager.cs" />
+    <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="GameStates\MainGameState.cs" />
+    <Compile Include="GameStates\StateStack.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
