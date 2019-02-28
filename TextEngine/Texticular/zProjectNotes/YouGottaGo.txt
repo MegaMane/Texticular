@@ -1,0 +1,104 @@
+[Opening Scene]
+
+You wake up disoriented with a pounding headache in a shabby looking hotel room 
+surrounded by a bunch of empty cans. You've got a taste in your mouth like a dirty old rat crawled in and died in there.
+Disoriented, you roll out of the bed you woke up in, barely avoiding some questionable stains on the sheets, as you stumble 
+to your feet sending cans flying like bowling pins in your wake. You bend over to take a closer look at the
+pile of crushed aluminum. You read one of the labels: "Fast Eddie's Colon Cleanse: When in doubt flush it out!"
+"Side effects may include: Dizzines, vomiting, diarrhea, cold sweats, hallucinations, intense panic, 
+paranoia, permanent tongue discoloration, mild brain damage, amnesia, bowel implosion, and occasionally hiccups". 
+The can has a purple iridescent sludge oozing out of it that's really similar to the shade of purple that your hands are.
+Come to think of it, you vaguely remember signing up for a test group that was supposed to try out a new health drink.
+Looks like your part time job as a barrista just wasn't paying the bills, nothing like easy money! The thing is you 
+don't remember anything about going to a hotel last night, and you definitely don't remember anything about drinking a 24
+pack of Fast Eddie's Colon Cleanse. Your stomach starts to feel a little uneasy, but never mind that, it's time to 
+spend some of that hard earned cash! You reach into your wallet and realize in that moment that you don't even remember your name.
+You look at your license and focus your still hazy eyes and barely make out that it says...<Name>.
+
+
+
+When you open your wallet to pull out the cash all you find is a letter. It reads:
+
+Dear <Name>.
+
+Thank you so much for signing up to try out our exciting new drink! 
+We hope you don't mind but we've taken the liberty of putting you up for the night
+in one of our sponsors hotels with a generous supply of Fast Eddie's to keep you company.
+
+
+One things for sure you reaaallly gotta go!
+
+Welcome to "A Game of Thrones...Porcelain Thrones"
+
+[Your Hotel Room [201] Description]
+
+As you look around the hotel room you see an old {TV} with rabbit ears that looks like it came straight out of the 1950's.
+Against the wall there is a beat up {night stand} with a little {drawer} built into it and an old {phone} on top. Next to it is 
+a lumpy old {bed} that looks like it's seen better days with a dark brown stain on the sheets and a funny smell coming from it. 
+There is an obnoxious orange {couch} in the corner next to a small {window} smudged with sticky purple hand prints, 
+the stuffing is coming out of the cushions which are also spotted with purple, and the floor is covered with {cans} of 
+Fast Eddies Colon Cleanse. The {door} that leads to the hallway is to the west, and there is a {door} to the east that leads to that 
+sweet sweet porcelain throne.
+
+[Bathroom Room Description]
+You crack open the door to the bathroom and it looks like it's seen better days. From the smell of it, it looks like someone beat you to it and narrowly escaped
+a hard fought battle an eight pound burrito. The {sink} is old and yellowed. Caked with brown muck in the corners. The {mirror} is cracked and something is written on it red 
+but you can't quite make it out. But you don't care...you've gotta take a shit! You rush to be the first in line to make a deposit in the porcelain bank {toilet}. But just as you are about to
+Drop it like it's hot you notice there is an an angry {Great Dane} guarding the toilet and he looks hungry! You quickly shut the door and somehow manage to not lose your shit (literally). Looks like you have to find somewh
+
+[West Hallway]
+You eagerly enter the hallway leaving your room behind you to the West. The glow of the yellow fluorescent lights are complimented by the well worn red carpet. 
+The diamond pattern urges you forward. To the North you see room 204 to the North East Room 205. To the east the diamond pattern stretches into more hallway. 
+There is a small alcove with a vending machine.
+
+[East Hallway]
+
+You rush into the east hallway. To the east there is a door marked supply closet. To the South there is an elevator that hopefully leads somewhere with a toilet. 
+To the South East you see another room marked 207. To the Northwest there is a door marked Fire Exit. 
+Back to the West is the stretch of hallway you just came from. 
+
+[Vending Machine]
+
+The vending machine is in stark contrast to the rest of your well worn surroundings. 
+It's shiny and new and stocked to the brim with Fast Eddie's colon cleanse. 
+A marquee taunts you in large bold letters " Fast Eddie's: When in doubt, flush it out!" 
+You notice a scrap of paper taped to one of the cans with some numbers written on it.
+
+[The Elevator] 
+opens and you throw yourself inside frantically 
+
+Lobby
+Clerk
+
+Choice
+
+Bathroom Foyer
+
+Mens Bathroom
+
+Under maintenance
+Janitor
+
+Women's Bathroom
+All stalls but one are locked
+Mysterious Woman
+Choice
+
+If you drink any Fast Eddie's
+Game over
+
+If you go into the bathroom in your hotel
+Game over
+
+If you lie down three times 
+Game Over
+
+
+A lexer is a software program that performs lexical analysis.  Lexical analysis is the process of separating a stream of characters into different words, which in computer science we call 'tokens' .  
+When you read my answer you are performing the lexical operation of breaking the string of text at the space characters into multiple words.
+
+A parser goes one level further than the lexer and takes the tokens produced by the lexer and tries to determine if proper sentences have been formed.  Parsers work at the grammatical level, lexers work at the word level.
+
+A lexer is part of a compiler that converts the statements in code into various categories of like key words,constants,variable etc jus like identifying parts of speech in a sentence and produce token (each converted unit is called as a token )
+
+A parser defines rules of grammer for these tokens and determines whether these statements are semantically correct

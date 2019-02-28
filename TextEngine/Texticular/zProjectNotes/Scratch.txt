@@ -1,0 +1,50 @@
+﻿
+
+
+
+Parser example sentences
+
+Go North
+Go To the Kitchen
+Hide under the Bed
+Pick up the green apple
+put the pocket change in the vending machine
+open the drawer and put the pocket change inside
+put the pocket change in the drawer
+use the phone
+talk to Fred
+Attack the Cobra with the sword
+
+To Do:
+
+        /*
+         * Move Between Rooms with unlocked doors {complete}
+         * Move using the location name or a cardinal direction
+         * Look at surroundings {complete}
+         * Examine Objects {complete}
+         * Take and Drop Items {complete}
+         * Unlock doors with correct key {complete}
+         * lock/unlock/open containers and place and retrieve items locker, chest
+		      *Containers have a number of slots
+              *items take up a number of slots
+         * use special context sensitive items * use phone/keypad/vending machine/magic medicine etc
+         * trigger game events or "cut scenes" and update game state as needed
+		 * Implement Choices that are rememberd in a PlayerChoices collection
+         * talk to people
+         * equip special items {these don't count in inventory}
+         * fight
+         * add a splash screen
+         * Unity
+         * add visuals
+         * add sound
+        */
+
+Need to be able to trigger story scenes based on events
+
+Certain action methods can raise events
+	Steel the Janitors Key
+	Kill the Janitor =>change the players state
+	Drink the potion
+
+Entering a location can raise an event
+

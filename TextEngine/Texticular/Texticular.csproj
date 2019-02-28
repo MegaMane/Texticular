@@ -82,6 +82,10 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="zProjectNotes\ParserAlgorithm.txt" />
+    <Content Include="zProjectNotes\Scratch.txt" />
+    <Content Include="zProjectNotes\YouGottaGo.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

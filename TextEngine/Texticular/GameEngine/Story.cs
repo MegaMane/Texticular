@@ -63,7 +63,7 @@ namespace Texticular.GameEngine
                 
                 GameController.InputResponse.Clear();
 
-                GameController.InputResponse.Append(scene.SceneText[1].Replace("<Name>", player.FirstName));
+                GameController.InputResponse.Append(scene.SceneText[1].Replace("<Name>", " " + player.FirstName));
                 controller.Render();
 
 
