@@ -51,12 +51,13 @@ namespace Texticular.GameEngine
         public ParseTree Tokenize(string userInput)
         {
             ParseTree tokens = new ParseTree();
+            tokens.UnparsedInput = userInput;
 
             char[] delimiters = { ' ', ',' };
             
             string[] commandParts = userInput.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (commandParts.Length == 0) return tokens ;
+            if (commandParts.Length == 0) return null ;
 
 
             int offset = 0;
@@ -123,7 +124,7 @@ namespace Texticular.GameEngine
                 remainingInput = remainingInput.GetRange(0, prepositionIndex);
             }
 
-            foreach (GameObject obj in GameObject.Objects.Values)
+            foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
             {
                 offset = 0;
                 string objectName = "";
@@ -133,19 +134,20 @@ namespace Texticular.GameEngine
                     objectName = String.Join(" ", remainingInput.ToArray(), 0, i + 1);
                     offset = i + 1;
 
-                    if (objectName == obj.Name.ToLower())
+                    if (objectName == obj.Value.Name.ToLower())
                     {
 
                         tokens.DirectObject = objectName;
+                        tokens.DirectObjectKeyValue = obj.Key;
                         remainingInput.RemoveRange(0, offset);
                         break;
                     }
                 }
             }
 
-            /*
+
             //check direction
-            if (tokens.DirectObject == null)
+            if (tokens.DirectObject == null && remainingInput.Count > 0)
             {
 
                 string directionName = "";
@@ -160,16 +162,17 @@ namespace Texticular.GameEngine
                 
                 catch (ArgumentException e)
                 {
-                    GameController.InputResponse.Append(e.Message);
+                    ///GameController.InputResponse.AppendFormat("{0} is not a valid direction. Type Help for more.\n", directionName);
+                    tokens.DirectObject = null;
                 }
 
                     
             }
-            */
+
 
             if(secondaryObject.Count > 0)
             {
-                foreach (GameObject obj in GameObject.Objects.Values)
+                foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
                 {
                     offset = 0;
                     string objectName = "";
@@ -179,10 +182,11 @@ namespace Texticular.GameEngine
                         objectName = String.Join(" ", secondaryObject.ToArray(), 0, i + 1);
                         offset = i + 1;
 
-                        if (objectName == obj.Name.ToLower())
+                        if (objectName == obj.Value.Name.ToLower())
                         {
 
                             tokens.IndirectObject = objectName;
+                            tokens.IndirectObjectKeyValue = obj.Key;
                             secondaryObject.RemoveRange(0, offset);
                             break;
                         }
@@ -203,6 +207,10 @@ namespace Texticular.GameEngine
     {
         public String Verb { get; set; } = null;
         public String DirectObject { get; set; } = null;
+        public String DirectObjectKeyValue { get; set; } = null;
         public String IndirectObject { get; set; } = null;
+        public String IndirectObjectKeyValue { get; set; } = null;
+        public String UnparsedInput { get; set; } = null;
+
     }
 }
