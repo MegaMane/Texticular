@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -72,16 +73,16 @@ namespace Texticular.Environment
             return base.ToString() + $"TimesVisited: {TimesVisited}\n\n";
         }
 
-        void look(GameController controller)
+        void look(ParseTree tokens)
         {
             Room currentRoom = this;
-            Game game = controller.Game;
+            //Game game = controller.Game;
 
             //location description
             GameController.InputResponse.AppendFormat("You are in {0}: {1}", currentRoom.Name, currentRoom.Description);
-            foreach (StoryItem item in game.Items.Values)
+            foreach (StoryItem item in currentRoom.RoomItems)
             {
-                if(item.LocationKey == currentRoom.KeyValue && !String.IsNullOrEmpty(item.DescriptionInRoom))
+                if(!String.IsNullOrEmpty(item.DescriptionInRoom))
                 {
                     GameController.InputResponse.Append(item.DescriptionInRoom );
                 }
@@ -92,14 +93,11 @@ namespace Texticular.Environment
             //list items
             GameController.InputResponse.Append("You see:\n ");
             string itemString = "";
-            foreach (StoryItem item in game.Items.Values)
+
+            foreach (StoryItem item in currentRoom.RoomItems)
             {
-                if (item.LocationKey == currentRoom.KeyValue)
-                {
-
-                     itemString += item.Name + " : " + item.Description + "\n ";
-                }
-
+                itemString += item.Name + " : " + item.Description + "\n ";
+                
             }
 
             GameController.InputResponse.Append(itemString != "" ? itemString + "\n " : "Nothing\n\n ");
@@ -122,7 +120,8 @@ namespace Texticular.Environment
 
                 else
                 {
-                    GameController.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, game.Rooms[exit.Value.DestinationKey].Name);
+                    Room destination = GameObject.GetComponent<Room>(exit.Value.DestinationKey);
+                    GameController.InputResponse.AppendFormat("To the {0} you see: {1}\n ", exit.Key, destination.Name);
                 }
 
 

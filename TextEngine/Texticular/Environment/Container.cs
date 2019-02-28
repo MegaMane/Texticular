@@ -23,7 +23,7 @@ namespace Texticular.Environment
             Commands["shut"] = closeContainer;
         }
 
-        void openContainer(GameController controller)
+        void openContainer(ParseTree tokens)
         {
 
             IsOpen = true;
@@ -37,7 +37,7 @@ namespace Texticular.Environment
         }
 
 
-        void closeContainer(GameController controller)
+        void closeContainer(ParseTree tokens)
         {
             IsOpen = false;
             GameController.InputResponse.Append($"You shut the {Description}\n ");

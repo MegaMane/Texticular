@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -32,7 +33,7 @@ namespace Texticular.Environment
 
 
 
-        void takeItem(GameController controller)
+        void takeItem(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
@@ -96,7 +97,7 @@ namespace Texticular.Environment
             
         }
 
-        void dropItem(GameController controller)
+        void dropItem(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
 
@@ -113,11 +114,13 @@ namespace Texticular.Environment
             }
         }
 
-        void putItem(GameController controller)
+        void putItem(ParseTree tokens)
         {
-            //check the target after the word in/on
-            //if it's a container check if it's open and put the item in
-            GameController.InputResponse.AppendFormat($"put {Name} in the target?\n");
+            //check if the direct object is in the players possesion or the current room
+                //check if the indirect object is in the room and not locked
+                    //check if there is enough space in the container
+                        //if so then change the items location to the container and let the player know
+            GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
 
         }
 

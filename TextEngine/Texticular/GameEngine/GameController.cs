@@ -183,12 +183,12 @@ namespace Texticular
                 GameObject objectToFind = GameObject.Objects[tokens.DirectObjectKeyValue];
 
 
-                Action<GameController> contextCommand;
+                Action<ParseTree> contextCommand;
                 bool validcontextCommand = objectToFind.Commands.TryGetValue(tokens.Verb, out contextCommand);
 
                 if (validcontextCommand)
                 {
-                    contextCommand(this);
+                    contextCommand(tokens);
                 }
 
                 else
@@ -329,7 +329,7 @@ namespace Texticular
             //when they enter a new location
             InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
             args.NewLocation.TimesVisited += 1;
-            args.NewLocation.Commands["look"](this);
+            args.NewLocation.Commands["look"](new ParseTree() {Verb="look", DirectObject=args.NewLocation.Name, DirectObjectKeyValue=args.NewLocation.KeyValue });
         }
 
         void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)

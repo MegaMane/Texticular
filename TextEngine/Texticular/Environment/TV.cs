@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -38,20 +39,20 @@ namespace Texticular.Environment
             Commands["change channel"] = changeChannel;
         }
 
-        void turnOn (GameController GameController)
+        void turnOn (ParseTree tokens)
         {
             GameController.InputResponse.Append("You turn on the TV...\n\n ");
             GameController.InputResponse.Append( Channel );
             isON = true;
         }
 
-        void turnOff(GameController controller)
+        void turnOff(ParseTree tokens)
         {
             GameController.InputResponse.Append(TurnOffResponse + "\n");
             isON = false;
         }
 
-        void changeChannel(GameController controller)
+        void changeChannel(ParseTree tokens)
         {
             if (isON)
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Texticular.GameEngine;
 
 
 namespace Texticular.Environment
@@ -38,9 +39,11 @@ namespace Texticular.Environment
             Commands["unlock"] = openDoor;
         }
 
-        void openDoor(GameController controller)
+        void openDoor(ParseTree tokens)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+
 
             if (player.LocationKey != this.LocationKey)
             {
@@ -48,16 +51,28 @@ namespace Texticular.Environment
                 return;
             }
 
+            //If the door is locked check to see if the player has the correct key in inventory
             if (IsLocked)
             {
-               DoorKey doorKey = (DoorKey)controller.checkInventory(new string[] {KeyName});
+                Inventory inventory = GameObject.GetComponent<Inventory>("inventory");
+                DoorKey doorKey = null;
+
+                foreach (StoryItem item in inventory.RoomItems)
+                {
+                    if(item.Name == this.KeyName)
+                    {
+                        doorKey = (DoorKey)item;
+                        break;
+                    }
+                }
+                
                if (doorKey != null)
                 {
                     GameController.InputResponse.Append($"{this.Name} opens...\n");
+                    Room destination = GameObject.GetComponent<Room>(DestinationKey);
                     IsLocked = false;
                     player.BackPack.ConsumeItem(doorKey);
-                    player.PlayerLocation = controller.Game.Rooms[DestinationKey];
-                    controller.Parse("look");
+                    player.PlayerLocation = destination;
                     return;
                 }
 

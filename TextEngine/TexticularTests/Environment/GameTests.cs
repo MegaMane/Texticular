@@ -13,7 +13,7 @@ namespace Texticular.Environment.Tests
     [TestClass()]
     public class GameTests
     {
-
+        /*
 
         //need to implement
         [TestMethod()]
@@ -204,7 +204,7 @@ namespace Texticular.Environment.Tests
 
 
 
-
+    */
 
     }
 

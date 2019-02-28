@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -14,24 +15,25 @@ namespace Texticular.Environment
             Commands["use"] = useKey;
         }
 
-        void useKey(GameController controller)
+        void useKey(ParseTree tokens)
         {
-            Player player = controller.Game.Player;
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
 
 
             if (LocationKey == "inventory")
             {
                 //the key is taken from the players inventory
                 //the player is moved to the destination for the door
-                foreach (Exit door in player.PlayerLocation.Exits.Values)
+                foreach (Exit door in currentLocation.Exits.Values)
                 {
                     if (door.KeyName.ToLower() == this.Name.ToLower())
                     {
+                        Room destination = GameObject.GetComponent<Room>(door.DestinationKey);
                         GameController.InputResponse.Append($"{door.Name} opens...");
                         door.IsLocked = false;
                         player.BackPack.ConsumeItem(this);
-                        player.PlayerLocation = controller.Game.Rooms[door.DestinationKey];
-                        controller.Parse("look");
+                        player.PlayerLocation = destination;
                         return;
                     }
                 }

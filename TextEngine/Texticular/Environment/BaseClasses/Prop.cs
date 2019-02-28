@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.GameEngine;
 
 namespace Texticular.Environment
 {
@@ -25,16 +26,16 @@ namespace Texticular.Environment
             Commands["open"] = openProp;
         }
 
-        void takeProp(GameController controller)
+        void takeProp(ParseTree tokens)
         {
             GameController.InputResponse.Append($"The {Name} won't budge.");
         }
 
-        void openProp(GameController controller)
+        void openProp(ParseTree tokens)
         {
             if(this.Container != null)
             {
-                Container.Commands["open"](controller);
+                Container.Commands["open"](new ParseTree() {Verb="open", DirectObject=Container.Name, DirectObjectKeyValue=Container.KeyValue });
             }
 
             else
