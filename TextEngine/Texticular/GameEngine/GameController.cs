@@ -67,21 +67,21 @@ namespace Texticular
             Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
             //Console.SetCursorPosition(0, 40);
 
-            Gamestats testStats = new Gamestats();
+            GameStatistics testStats = new GameStatistics();
 
-            testStats.HP = testStats.MaxHP = 20;
-            testStats.MP = testStats.MaxMP = 10;
-            testStats.ST = testStats.MaxST = 10;
-            testStats.GP = 0;
-            testStats.Level = 1;
-            testStats.Strength = 3;
-            testStats.Intelligence = 2;
-            testStats.Piety = 1;
-            testStats.Vitality = 3;
-            testStats.Dexterity = 1;
-            testStats.Speed = 2;
-            testStats.Personality = 1;
-            testStats.Luck = 1;
+            //testStats.HP = testStats.MaxHP = 20;
+            //testStats.MP = testStats.MaxMP = 10;
+            //testStats.ST = testStats.MaxST = 10;
+            //testStats.GP = 0;
+            //testStats.Level = 1;
+            //testStats.Strength = 3;
+            //testStats.Intelligence = 2;
+            //testStats.Piety = 1;
+            //testStats.Vitality = 3;
+            //testStats.Dexterity = 1;
+            //testStats.Speed = 2;
+            //testStats.Personality = 1;
+            //testStats.Luck = 1;
 
 
             this.ui = new UserInterface(testStats);

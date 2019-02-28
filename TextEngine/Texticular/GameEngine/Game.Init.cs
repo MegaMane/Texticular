@@ -16,7 +16,7 @@ namespace Texticular
 
             Rooms = new Dictionary<string, Room>();
             Items = new Dictionary<string, StoryItem>();
-            Gamestats = new Gamestats();
+            Gamestats = new GameStatistics();
             GameLog = new List<string>(50);
 
             #region create Game Objects

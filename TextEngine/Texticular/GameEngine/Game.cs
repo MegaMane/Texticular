@@ -18,7 +18,7 @@ namespace Texticular
         private List<Room> gameRooms;
         public Player Player;
         public List<string> GameLog;
-        public Gamestats Gamestats;
+        public GameStatistics Gamestats;
 
 
 

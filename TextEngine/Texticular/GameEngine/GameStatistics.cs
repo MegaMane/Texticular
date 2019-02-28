@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Texticular
 {
-    public class Gamestats
+    public class GameStatistics
     {
         public int Moves { get; set; }
         public int Score { get; set; }
@@ -33,7 +33,7 @@ namespace Texticular
         public int Personality { get; set; }
         public int Luck { get; set; }
 
-        public Gamestats()
+        public GameStatistics()
         {
             Moves = 0;
             Score = 0;
