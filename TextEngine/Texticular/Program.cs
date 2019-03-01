@@ -34,25 +34,33 @@ namespace Texticular
             //    render(); draws the game so the player can see what happened.
             //}
 
+            string savedState = Controller.CurrentGameState.ToString();
+            string currentState = Controller.CurrentGameState.ToString();
 
             while (gameRunning)
             {
 
-                Controller.GetInput();
-
-
-                if (Controller.UserInput.ToLower() == "exit")
-                {
-                    Console.WriteLine("Thanks for Playing!");
-                    gameRunning = false;
-                    ActiveGame.Gamestats.StopWatch.Stop();
-                    break;
-                }
 
                 Controller.Update();
+                
+                // if the state changes in between the update and render methods
+                // restart the loop and run update and render again
+                currentState = Controller.CurrentGameState.ToString();
+                if (currentState != savedState)
+                {
+                    savedState = currentState;
+                    continue;
+                }
+
                 Controller.Render();
 
 
+
+                if (Controller.CurrentGameState.ToString() == "PlayerQuitState")
+                {
+                    gameRunning = false;
+                    break;
+                }
 
 
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.Environment;
 
 namespace Texticular.GameEngine
 {
@@ -47,23 +48,23 @@ namespace Texticular.GameEngine
 
             void playIntro(GameController controller)
             {
-                Player player = controller.Game.Player;
-                Scene scene = controller.story.Scenes["intro"];
+                Player player = GameObject.GetComponent<Player>("player");
+                //Scene scene = controller.story.Scenes["intro"];
 
                 GameController.InputResponse.Clear();
-                GameController.InputResponse.Append(scene.SceneText[0]);
+                //GameController.InputResponse.Append(scene.SceneText[0]);
                 GameController.InputResponse.Append("What is your name?\n\n ");
                 while (player.FirstName == "")
                 {
                     controller.Render();
-                    controller.GetInput();
-                    player.FirstName = controller.UserInput;
+                    controller.Update();
+                    //player.FirstName = GameController.UserInput;
                 }
 
                 
                 GameController.InputResponse.Clear();
 
-                GameController.InputResponse.Append(scene.SceneText[1].Replace("<Name>", " " + player.FirstName));
+                //GameController.InputResponse.Append(scene.SceneText[1].Replace("<Name>", " " + player.FirstName));
                 controller.Render();
 
 
@@ -85,7 +86,7 @@ namespace Texticular.GameEngine
                 controller.Render();
                 if (scene.Substring(0,1) == "?")
                 {
-                    controller.GetInput();
+                    controller.Update();
                 }
                 
             }
