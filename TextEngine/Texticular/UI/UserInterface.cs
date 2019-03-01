@@ -8,7 +8,7 @@ namespace Texticular.UI
 {
     public class UserInterface
     {
-        public UserInterface(Gamestats stats)
+        public UserInterface(GameStatistics stats)
         {
             statsBuffer = Terminal.CreateBuffer(80, 3);
             attrBuffer = Terminal.CreateBuffer(30, 43);
@@ -18,7 +18,7 @@ namespace Texticular.UI
 
         private Buffer statsBuffer;
         private Buffer attrBuffer;
-        private Gamestats stats;
+        private GameStatistics stats;
 
         public void DrawGameUI(GameController controller)
         {

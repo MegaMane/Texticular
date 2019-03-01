@@ -59,12 +59,20 @@
     <Compile Include="GameEngine\Game.Init.cs" />
     <Compile Include="GameEngine\GameController.cs" />
     <Compile Include="GameEngine\Events\GameEvents.cs" />
-    <Compile Include="GameEngine\Gamestats.cs" />
+    <Compile Include="GameEngine\GameStatistics.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Story.cs" />
-    <Compile Include="GameStates\GameStateManager.cs" />
-    <Compile Include="GameStates\MainGameState.cs" />
+    <Compile Include="GameStates\CombatState.cs" />
+    <Compile Include="GameStates\DialogueState.cs" />
+    <Compile Include="GameStates\GameLaunchState.cs" />
+    <Compile Include="GameStates\PlayerChoiceState.cs" />
+    <Compile Include="GameStates\StorySequenceState.cs" />
+    <Compile Include="GameStates\GameOverState.cs" />
+    <Compile Include="GameStates\PlayerQuitState.cs" />
+    <Compile Include="GameStates\ExplorationState.cs" />
+    <Compile Include="GameStates\IGameState.cs" />
+    <Compile Include="GameStates\StateStack.cs" />
     <Compile Include="Player\Inventory.cs" />
     <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
@@ -82,6 +90,10 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="zProjectNotes\ParserAlgorithm.txt" />
+    <Content Include="zProjectNotes\Scratch.txt" />
+    <Content Include="zProjectNotes\YouGottaGo.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
