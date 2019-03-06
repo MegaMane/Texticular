@@ -9,6 +9,7 @@ namespace Texticular.GameEngine
     public enum Scene
     {
         Intro,
-        IntroLetter
+        IntroLetter,
+        Bathroom201FirstVisit
     }
 }

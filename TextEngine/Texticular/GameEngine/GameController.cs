@@ -95,9 +95,22 @@ namespace Texticular
         {
             //look at the players surroundings automatically 
             //when they enter a new location
+            Player Player = (Player)sender;
+
             InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
             args.NewLocation.TimesVisited += 1;
+            checkTriggers(Player, args);
             args.NewLocation.Commands["look"](new ParseTree() {Verb="look", DirectObject=args.NewLocation.Name, DirectObjectKeyValue=args.NewLocation.KeyValue });
+            
+        }
+
+        void checkTriggers(Player player, PlayerLocationChangedEventArgs args)
+        {
+            if(args.NewLocation.KeyValue == "room201_bathroom" && args.NewLocation.TimesVisited == 1)
+            {
+                ActiveStoryScene = Scene.Bathroom201FirstVisit;
+                CurrentGameState = GameStates["StoryScene"];
+            }
         }
 
         void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)

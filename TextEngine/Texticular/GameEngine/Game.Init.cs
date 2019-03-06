@@ -248,7 +248,7 @@ namespace Texticular
 
             };
 
-            GameScene introLetter = new GameScene("intro:Letter");
+            GameScene introLetter = new GameScene("IntroLetter");
             introLetter.SceneText.Enqueue($"Dear <firstName>,\n\n Thank you so much for signing up to try out our exciting new drink! "
                                 + "We hope you don't mind but we've taken the liberty of putting you up for the night "
                                 + "in one of our sponsors hotels with a generous supply of Fast Eddie's to keep you company.\n\n "
@@ -259,9 +259,32 @@ namespace Texticular
 
             };
 
+            GameScene Bathroom201FirstVisit = new GameScene("Bathroom201FirstVisit");
+            Bathroom201FirstVisit.SceneText.Enqueue(@"You crack open the door to the bathroom and it looks like it's seen better days. From the smell of it, it looks like "
+                     + "someone beat you to it and narrowly escaped a hard fought battle with an eight pound burrito. The {sink} is old and yellowed. "
+                     + "and caked with brown muck in the corners. The {mirror} is cracked and something is written on it red. You can't quite "
+                     + "make it out. But you don't care...you've gotta take a shit! You rush to be the first in line to make a deposit in the "
+                     + "porcelain bank {toilet}. But just as you are about to Drop it like it's hot you notice there is an an angry {Great Dane} "
+                     + "guarding the toilet and he looks hungry! You quickly shut the door and somehow manage to not lose your shit (literally). "
+                     + "Looks like you have to find somewhere else to go if you value your junk...and your life.");
+            Bathroom201FirstVisit.SceneAction = delegate (GameController controller)
+            {
+                //put the player back in the previous room as the story suggests the player quickly shuts the door 
+                //and leaves the bathroom
+                Player player = GameObject.GetComponent<Player>("player");
+                Room destination = GameObject.GetComponent<Room>("room201");
+
+                controller.Game.Player.PlayerLocation = destination;
+                controller.SetGameState("Explore");
+
+            };
 
             Scenes[Scene.Intro] = intro;
             Scenes[Scene.IntroLetter] = introLetter;
+            Scenes[Scene.Bathroom201FirstVisit] = Bathroom201FirstVisit;
+
+
+
         }
 
         #endregion

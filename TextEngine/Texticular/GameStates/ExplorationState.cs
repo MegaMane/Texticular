@@ -55,6 +55,7 @@ namespace Texticular.GameStates
 
         public void OnEnter()
         {
+            GameController.InputResponse.Clear();
             if (TimesEntered == 1)
             {
                 GameController.InputResponse.Append("Type Help for a list of commands...\n\n ");
