@@ -12,19 +12,39 @@ namespace Texticular.GameStates
 {
     class PlayerChoiceState: IGameState
     {
-
+        public Dictionary<string, Choice> Choices;
         public int TimesEntered { get; set; } = 0;
         public string UserInput;
         GameController Controller;
+        Choice ActiveChoice;
+
+        //UI Stuff
+        private Texticular.UI.Buffer mainBuffer;
+        private UserInterface ui;
+        private Narrative narrative;
 
         public PlayerChoiceState(GameController controller)
         {
             Controller = controller;
+            Choices = new Dictionary<string, Choice>();
+            AddChoices();
+
+            //UI Stuff
+            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            GameStatistics testStats = new GameStatistics();
+            this.ui = new UserInterface(testStats);
+
+            mainBuffer = Terminal.CreateBuffer(80, 41);
+            Terminal.SetCurrentConsoleFontEx(8, 10);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
         }
 
         public void OnEnter()
         {
-            throw new NotImplementedException();
+            ActiveChoice = Choices[Controller.ActiveChoice];
+            ActiveChoice.ChoicePrompt(Controller,"");
+            Render();
         }
 
         public void OnExit()
@@ -34,26 +54,79 @@ namespace Texticular.GameStates
 
         public void Render()
         {
-            Console.WriteLine(GameController.InputResponse);
-            Console.ReadKey();
-        
+
+            Console.Clear();
+            ui.DrawGameUI(Controller);
+
+            mainBuffer = Terminal.CreateBuffer(80, 41);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
+            narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
+            mainBuffer.Blit(0, 2);
+            Console.SetCursorPosition(0, 45);
+
+
         }
 
         public void Update(float elapsedTime)
         {
-            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            Console.Clear();
+
+            GetInput();
             GameController.InputResponse.Clear();
-            GameController.InputResponse.Append("Thanks for Playing!\n Press any Key to exit...");
-            Controller.Game.Gamestats.StopWatch.Stop();
-            Controller.ElapsedTime.Stop();
+            bool ChoiceMade = ActiveChoice.ChoicePrompt(Controller, UserInput);
+            
+            //the criteria for the choice have been met so handle any work and change the game state
+            if (ChoiceMade)
+            {
+                ActiveChoice.ChoiceResult(Controller);
+            }
+
+            
 
 
+
+        }
+
+        void GetInput()
+        {
+
+            Console.Write("\n>> ");
+            string userInput = Console.ReadLine();
+            this.UserInput = userInput.ToLower().Trim();
         }
 
         public override string ToString()
         {
             return this.GetType().Name;
+        }
+
+        public void AddChoices ()
+        {
+            Choice askPlayerName = new Choice("PlayerName");
+
+            askPlayerName.ChoicePrompt = delegate (GameController controller, string userInput)
+            {
+                Player player = controller.Game.Player;
+
+                if (userInput != "")
+                {
+                    player.FirstName = userInput;
+                    return true;
+                }
+
+                GameController.InputResponse.Append("What is your name");
+                return false;
+
+            };
+
+            askPlayerName.ChoiceResult = delegate (GameController controller)
+            {
+                controller.ActiveStoryScene = "intro:Letter";
+                controller.SetGameState("StoryScene");
+            };
+
+            Choices["PlayerName"] = askPlayerName;
+                
         }
     }
 }

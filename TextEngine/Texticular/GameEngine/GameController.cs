@@ -15,6 +15,7 @@ namespace Texticular
     public class GameController
     {
         public Dictionary<string, IGameState> GameStates;
+        public StateStack StateStack;
 
         private IGameState _gamestate;
         public IGameState CurrentGameState
@@ -27,6 +28,7 @@ namespace Texticular
             {
                 _gamestate = value;
                 _gamestate.TimesEntered += 1;
+                _gamestate.OnEnter();
             }
         }
 
@@ -34,6 +36,8 @@ namespace Texticular
         public static StringBuilder InputResponse = new StringBuilder();
 
         public Game Game;
+        public string ActiveStoryScene;
+        public string ActiveChoice;
 
 
 
@@ -42,13 +46,6 @@ namespace Texticular
         {
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
-
-            GameStates = new Dictionary<string, IGameState>();
-            GameStates["Explore"] = new ExplorationState(this);
-            GameStates["PlayerQuit"] = new PlayerQuitState(this);
-
-            CurrentGameState = GameStates["Explore"];
-
             Game = game;
             Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
 
@@ -57,12 +54,22 @@ namespace Texticular
                 item.LocationChanged += ItemLocationChangedHandler;
             }
 
+            GameStates = new Dictionary<string, IGameState>();
+
+            GameStates["Explore"] = new ExplorationState(this);
+            GameStates["PlayerQuit"] = new PlayerQuitState(this);
+            GameStates["StoryScene"] = new StorySequenceState(this);
+            GameStates["PlayerChoice"] = new PlayerChoiceState(this);
+
+            ActiveStoryScene = "intro";
+            CurrentGameState = GameStates["StoryScene"];
+
         }
 
 
         public void Start()
         {
-            CurrentGameState.OnEnter();
+            //CurrentGameState.OnEnter();
         }
 
         
