@@ -51,10 +51,12 @@
     <Compile Include="Environment\DoorKey.cs" />
     <Compile Include="Environment\Exit.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
-    <Compile Include="Environment\BaseClasses\MovementDirection.cs" />
+    <Compile Include="GameEngine\Enums\MovementDirection.cs" />
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
-    <Compile Include="GameEngine\Choice.cs" />
+    <Compile Include="GameEngine\PlayerChoice.cs" />
+    <Compile Include="GameEngine\Enums\Choices.cs" />
+    <Compile Include="GameEngine\Enums\Scenes.cs" />
     <Compile Include="GameEngine\Events\ItemLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\Game.cs" />
     <Compile Include="GameEngine\Game.Init.cs" />
@@ -63,7 +65,7 @@
     <Compile Include="GameEngine\GameStatistics.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
-    <Compile Include="GameEngine\Scene.cs" />
+    <Compile Include="GameEngine\GameScene.cs" />
     <Compile Include="GameStates\CombatState.cs" />
     <Compile Include="GameStates\DialogueState.cs" />
     <Compile Include="GameStates\GameLaunchState.cs" />

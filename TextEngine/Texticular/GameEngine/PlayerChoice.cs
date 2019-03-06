@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Texticular.GameEngine
 {
-    class Choice
+    public class PlayerChoice
     {
         public string ChoiceName { get; set; }
         public Func<GameController,String, bool> ChoicePrompt { get; set; }
         public Action<GameController> ChoiceResult { get; set; }
 
-        public Choice(string choiceName)
+        public PlayerChoice(string choiceName)
         {
             this.ChoiceName = choiceName;
         }

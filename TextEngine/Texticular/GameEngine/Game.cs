@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using Texticular.Environment;
+using Texticular.GameEngine;
 
 namespace Texticular
 {
@@ -19,6 +20,9 @@ namespace Texticular
         public Player Player;
         public List<string> GameLog;
         public GameStatistics Gamestats;
+
+        public Dictionary<Scene, GameScene> Scenes;
+        public Dictionary<Choice, PlayerChoice> Choices;
 
 
 

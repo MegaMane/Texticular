@@ -36,8 +36,8 @@ namespace Texticular
         public static StringBuilder InputResponse = new StringBuilder();
 
         public Game Game;
-        public string ActiveStoryScene;
-        public string ActiveChoice;
+        public Scene ActiveStoryScene;
+        public Choice ActiveChoice;
 
 
 
@@ -61,7 +61,7 @@ namespace Texticular
             GameStates["StoryScene"] = new StorySequenceState(this);
             GameStates["PlayerChoice"] = new PlayerChoiceState(this);
 
-            ActiveStoryScene = "intro";
+            ActiveStoryScene = Scene.Intro;
             CurrentGameState = GameStates["StoryScene"];
 
         }

@@ -12,11 +12,11 @@ namespace Texticular.GameStates
 {
     class PlayerChoiceState: IGameState
     {
-        public Dictionary<string, Choice> Choices;
+
         public int TimesEntered { get; set; } = 0;
         public string UserInput;
         GameController Controller;
-        Choice ActiveChoice;
+        PlayerChoice ActiveChoice;
 
         //UI Stuff
         private Texticular.UI.Buffer mainBuffer;
@@ -26,8 +26,6 @@ namespace Texticular.GameStates
         public PlayerChoiceState(GameController controller)
         {
             Controller = controller;
-            Choices = new Dictionary<string, Choice>();
-            AddChoices();
 
             //UI Stuff
             Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
@@ -42,7 +40,7 @@ namespace Texticular.GameStates
 
         public void OnEnter()
         {
-            ActiveChoice = Choices[Controller.ActiveChoice];
+            ActiveChoice = Controller.Game.Choices[Controller.ActiveChoice];
             ActiveChoice.ChoicePrompt(Controller,"");
             Render();
         }
@@ -98,35 +96,6 @@ namespace Texticular.GameStates
         public override string ToString()
         {
             return this.GetType().Name;
-        }
-
-        public void AddChoices ()
-        {
-            Choice askPlayerName = new Choice("PlayerName");
-
-            askPlayerName.ChoicePrompt = delegate (GameController controller, string userInput)
-            {
-                Player player = controller.Game.Player;
-
-                if (userInput != "")
-                {
-                    player.FirstName = userInput;
-                    return true;
-                }
-
-                GameController.InputResponse.Append("What is your name");
-                return false;
-
-            };
-
-            askPlayerName.ChoiceResult = delegate (GameController controller)
-            {
-                controller.ActiveStoryScene = "intro:Letter";
-                controller.SetGameState("StoryScene");
-            };
-
-            Choices["PlayerName"] = askPlayerName;
-                
         }
     }
 }

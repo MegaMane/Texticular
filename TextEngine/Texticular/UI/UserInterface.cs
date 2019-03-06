@@ -22,10 +22,11 @@ namespace Texticular.UI
 
         public void DrawGameUI(GameController controller)
         {
+            Player player = controller.Game.Player;
 
             statsBuffer.DrawFrameLeft(0, 0, 80, 3, ConsoleColor.DarkGray);
             //statsBuffer.Draw($"HP {stats.HP}/{stats.MaxHP}   MP {stats.MP}/{stats.MaxMP}   ST {stats.ST}/{stats.MaxST}   GP {stats.GP}", 2, 1, ConsoleColor.Cyan);
-            statsBuffer.Draw($"Health: {controller.Game.Player.Health.ToString()}", 2, 1, ConsoleColor.Gray);
+            statsBuffer.Draw($"Health: {player.Health.ToString()}", 2, 1, ConsoleColor.Gray);
             statsBuffer.Draw($"Moves: {controller.Game.Gamestats.Moves.ToString().PadLeft(4, '0')}", 18, 1, ConsoleColor.Gray);
             statsBuffer.Draw($"Score: {controller.Game.Gamestats.Score.ToString().PadLeft(6, '0')}", 32, 1, ConsoleColor.Gray);
             statsBuffer.Draw($"Time: {controller.Game.Gamestats.ElapsedTime}", 47, 1, ConsoleColor.Gray);
@@ -47,7 +48,7 @@ namespace Texticular.UI
             attrBuffer.DrawHDiv(0, 15, 30, ConsoleColor.DarkGray);
             attrBuffer.DrawHDiv(0, 23, 30, ConsoleColor.DarkGray);
             //attrBuffer.Draw(" ATTR ", 2, 0, ConsoleColor.White);
-            attrBuffer.Draw("Name:??????", 2, 1, ConsoleColor.White);
+            attrBuffer.Draw(player.FirstName == "" ?"Name:??????":$"Name:{player.FirstName}", 2, 1, ConsoleColor.White);
             attrBuffer.Draw("Disoriented Barista", 2, 3, ConsoleColor.DarkCyan);
             attrBuffer.Draw($"Status:", 2, 5, ConsoleColor.White);
             attrBuffer.Draw($"Has to take a shit", 2, 7, ConsoleColor.Yellow);

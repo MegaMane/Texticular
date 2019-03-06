@@ -7,14 +7,14 @@ using Texticular.Environment;
 
 namespace Texticular.GameEngine
 {
-    public class Scene
+    public class GameScene
     {
 
         public String SceneName { get; set; }
         public Queue<String> SceneText { get; set; }
         public Action<GameController> SceneAction { get; set; }
 
-        public Scene(string sceneName)
+        public GameScene(string sceneName)
         {
             SceneName = sceneName;
             SceneText = new Queue<string>();
