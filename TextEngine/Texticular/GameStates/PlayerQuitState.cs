@@ -41,7 +41,7 @@ namespace Texticular.GameStates
 
         public void Update(float elapsedTime)
         {
-            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
+
             Console.Clear();
             GameController.InputResponse.Clear();
             GameController.InputResponse.Append("Thanks for Playing!\n Press any Key to exit...");

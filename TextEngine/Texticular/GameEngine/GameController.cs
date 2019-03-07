@@ -39,11 +39,25 @@ namespace Texticular
         public Scene ActiveStoryScene;
         public Choice ActiveChoice;
 
+        //UI Stuff
+        public Texticular.UI.Buffer mainBuffer;
+        public UserInterface ui;
+        public Narrative narrative;
 
 
 
         public GameController(Game game)
         {
+            //UI Stuff
+            Terminal.Init(110, 63, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            GameStatistics testStats = new GameStatistics();
+            this.ui = new UserInterface(testStats);
+
+            mainBuffer = Terminal.CreateBuffer(80, 50);
+            Terminal.SetCurrentConsoleFontEx(8, 10);
+            narrative = new Narrative(mainBuffer);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
+
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
             Game = game;
@@ -66,7 +80,10 @@ namespace Texticular
 
         }
 
-
+        public void SetCursorPosition(int left, int top)
+        {
+            Console.SetCursorPosition(left, top);
+        }
         public void Start()
         {
             //CurrentGameState.OnEnter();
@@ -106,10 +123,19 @@ namespace Texticular
 
         void checkTriggers(Player player, PlayerLocationChangedEventArgs args)
         {
-            if(args.NewLocation.KeyValue == "room201_bathroom" && args.NewLocation.TimesVisited == 1)
+            if(args.NewLocation.KeyValue == "room201_bathroom")
             {
-                ActiveStoryScene = Scene.Bathroom201FirstVisit;
-                CurrentGameState = GameStates["StoryScene"];
+                if (args.NewLocation.TimesVisited == 1)
+                {
+                    ActiveStoryScene = Scene.Bathroom201FirstVisit;
+                    CurrentGameState = GameStates["StoryScene"];
+                }
+
+                else
+                {
+                    ActiveStoryScene = Scene.Bathroom201FirstVisit;
+                    CurrentGameState = GameStates["StoryScene"];
+                }
             }
         }
 

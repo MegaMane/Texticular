@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.Environment;
 
 namespace Texticular.UI
 {
@@ -11,7 +12,7 @@ namespace Texticular.UI
         public UserInterface(GameStatistics stats)
         {
             statsBuffer = Terminal.CreateBuffer(80, 3);
-            attrBuffer = Terminal.CreateBuffer(30, 43);
+            attrBuffer = Terminal.CreateBuffer(30, 52);
             this.stats = stats;
 
         }
@@ -43,10 +44,11 @@ namespace Texticular.UI
             statsBuffer.Draw($"{controller.Game.Player.PlayerLocation.Name}".PadLeft(15), 64, 1, ConsoleColor.Yellow);
             statsBuffer.Blit(0, 0);
 
-            attrBuffer.DrawFrame(0, 0, 30, 43, ConsoleColor.DarkGray);
+            attrBuffer.DrawFrame(0, 0, 30, 52, ConsoleColor.DarkGray);
             attrBuffer.DrawVDiv(0, 0, 3, ConsoleColor.DarkGray);
             attrBuffer.DrawHDiv(0, 15, 30, ConsoleColor.DarkGray);
             attrBuffer.DrawHDiv(0, 23, 30, ConsoleColor.DarkGray);
+            attrBuffer.DrawHDiv(0, 34, 30, ConsoleColor.DarkGray);
             //attrBuffer.Draw(" ATTR ", 2, 0, ConsoleColor.White);
             attrBuffer.Draw(player.FirstName == "" ?"Name:??????":$"Name:{player.FirstName}", 2, 1, ConsoleColor.White);
             attrBuffer.Draw("Disoriented Barista", 2, 3, ConsoleColor.DarkCyan);
@@ -68,12 +70,26 @@ namespace Texticular.UI
             //attrBuffer.Draw("Iron Shield", 2, 20, ConsoleColor.DarkGray);
             //attrBuffer.Draw("Heavy Boots", 2, 21, ConsoleColor.DarkGray);
 
-            attrBuffer.Draw("INVENTORY", 2, 24, ConsoleColor.Gray);
+            attrBuffer.Draw("Exits", 2, 24, ConsoleColor.Gray);
             int currentY = 26;
-            foreach(var item in controller.Game.Player.BackPack.RoomItems)
+            foreach(KeyValuePair<string,Exit> exit in controller.Game.Player.PlayerLocation.Exits)
             {
-                attrBuffer.Draw($"{item.Name}", 2, currentY, ConsoleColor.DarkGray);
+                Room destination = GameObject.GetComponent<Room>(exit.Value.DestinationKey);
+                //display the name of the door to the player if the path is locked else just tell them where the exit leads
+                string nameDisplay = exit.Value.IsLocked ? exit.Value.Name : destination.Name;
+                attrBuffer.Draw($"{exit.Key}: {nameDisplay}", 2, currentY, ConsoleColor.DarkGray);
                 currentY += 1;
+            }
+
+            attrBuffer.Draw("Interesting Things", 2, 36, ConsoleColor.Gray);
+
+            currentY = 38;
+            foreach (StoryItem item in controller.Game.Player.PlayerLocation.RoomItems)
+            {
+                string itemString="";
+                attrBuffer.Draw($"{item.Name }", 2, currentY, ConsoleColor.DarkGray);
+                currentY += 1;
+
             }
 
             attrBuffer.Blit(80, 0);
