@@ -12,7 +12,7 @@ namespace Texticular.UI
         public UserInterface(GameStatistics stats)
         {
             statsBuffer = Terminal.CreateBuffer(80, 3);
-            attrBuffer = Terminal.CreateBuffer(30, 52);
+            attrBuffer = Terminal.CreateBuffer(70, 45);
             this.stats = stats;
 
         }
@@ -44,11 +44,11 @@ namespace Texticular.UI
             statsBuffer.Draw($"{controller.Game.Player.PlayerLocation.Name}".PadLeft(15), 64, 1, ConsoleColor.Yellow);
             statsBuffer.Blit(0, 0);
 
-            attrBuffer.DrawFrame(0, 0, 30, 52, ConsoleColor.DarkGray);
+            //attrBuffer.DrawFrame(0, 0,70, 45, ConsoleColor.DarkGray);
             attrBuffer.DrawVDiv(0, 0, 3, ConsoleColor.DarkGray);
-            attrBuffer.DrawHDiv(0, 15, 30, ConsoleColor.DarkGray);
-            attrBuffer.DrawHDiv(0, 23, 30, ConsoleColor.DarkGray);
-            attrBuffer.DrawHDiv(0, 34, 30, ConsoleColor.DarkGray);
+            attrBuffer.DrawHDiv(0, 15, 45, ConsoleColor.DarkGray);
+            attrBuffer.DrawHDiv(0, 23, 45, ConsoleColor.DarkGray);
+            attrBuffer.DrawHDiv(0, 34, 45, ConsoleColor.DarkGray);
             //attrBuffer.Draw(" ATTR ", 2, 0, ConsoleColor.White);
             attrBuffer.Draw(player.FirstName == "" ?"Name:??????":$"Name:{player.FirstName}", 2, 1, ConsoleColor.White);
             attrBuffer.Draw("Disoriented Barista", 2, 3, ConsoleColor.DarkCyan);

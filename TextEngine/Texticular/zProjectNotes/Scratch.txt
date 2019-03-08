@@ -1,4 +1,12 @@
 ﻿
+UI Notes
+
+In the terminal class the attribute [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 42)]
+was originally set to 32. Increasing this number to 42 allowed the spacing betwween the lines to also be increased
+makinkg it more readable
+
+Set the font to Lucida Console width 8 px Height 12 px
+
 Game States
 
 https://gamedevelopment.tutsplus.com/articles/how-to-build-a-jrpg-a-primer-for-game-developers--gamedev-6676#state

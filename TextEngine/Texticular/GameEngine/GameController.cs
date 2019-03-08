@@ -49,14 +49,14 @@ namespace Texticular
         public GameController(Game game)
         {
             //UI Stuff
-            Terminal.Init(110, 63, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            Terminal.Init(120, 50, "Busted Ass Text Adventure (Texticular)", 8, 12);
             GameStatistics testStats = new GameStatistics();
             this.ui = new UserInterface(testStats);
 
-            mainBuffer = Terminal.CreateBuffer(80, 50);
-            Terminal.SetCurrentConsoleFontEx(8, 10);
+            mainBuffer = Terminal.CreateBuffer(80, 48);
+            Terminal.SetCurrentConsoleFontEx(8, 12);
             narrative = new Narrative(mainBuffer);
-            mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
+            mainBuffer.DrawFrameLeft(0, 0, 80, 48, ConsoleColor.DarkGray);
 
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
