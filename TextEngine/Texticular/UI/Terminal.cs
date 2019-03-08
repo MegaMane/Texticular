@@ -202,7 +202,7 @@ namespace Texticular.UI
         public int FontFamily;
         public int FontWeight;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 45)]
         public string FaceName;
     }
 

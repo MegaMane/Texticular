@@ -18,7 +18,6 @@ namespace Texticular
 
 
 
-
             Game ActiveGame = new Game();
             GameController Controller = new GameController(ActiveGame);
             bool gameRunning = true;

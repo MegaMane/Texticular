@@ -49,14 +49,14 @@ namespace Texticular
         public GameController(Game game)
         {
             //UI Stuff
-            Terminal.Init(110, 63, "Busted Ass Text Adventure (Texticular)", 7, 9);
+            Terminal.Init(110, 63, "Busted Ass Text Adventure (Texticular)", 8, 12);
             GameStatistics testStats = new GameStatistics();
             this.ui = new UserInterface(testStats);
 
-            mainBuffer = Terminal.CreateBuffer(80, 50);
-            Terminal.SetCurrentConsoleFontEx(8, 10);
-            narrative = new Narrative(mainBuffer);
-            mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
+           // mainBuffer = Terminal.CreateBuffer(80, 50);
+            //Terminal.SetCurrentConsoleFontEx(8, 10);
+            //narrative = new Narrative(mainBuffer);
+            //mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
 
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
@@ -70,10 +70,10 @@ namespace Texticular
 
             GameStates = new Dictionary<string, IGameState>();
 
-            GameStates["Explore"] = new ExplorationState(this);
-            GameStates["PlayerQuit"] = new PlayerQuitState(this);
+            //GameStates["Explore"] = new ExplorationState(this);
+            //GameStates["PlayerQuit"] = new PlayerQuitState(this);
             GameStates["StoryScene"] = new StorySequenceState(this);
-            GameStates["PlayerChoice"] = new PlayerChoiceState(this);
+            //GameStates["PlayerChoice"] = new PlayerChoiceState(this);
 
             ActiveStoryScene = Scene.Intro;
             CurrentGameState = GameStates["StoryScene"];

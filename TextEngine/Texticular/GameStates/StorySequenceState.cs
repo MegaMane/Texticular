@@ -54,11 +54,13 @@ namespace Texticular.GameStates
 
             Console.Clear();
             Controller.ui.DrawGameUI(Controller);
-            Controller.mainBuffer = Terminal.CreateBuffer(80, 50);
-            Controller.narrative = new Narrative(Controller.mainBuffer);
-            Controller.mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
-            Controller.narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
-            Controller.mainBuffer.Blit(0, 2);
+            //Controller.mainBuffer = Terminal.CreateBuffer(80, 50);
+            //Controller.narrative = new Narrative(Controller.mainBuffer);
+            //Controller.mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
+            //Controller.narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
+            //Controller.mainBuffer.Blit(0, 2);
+            Controller.SetCursorPosition(0, 5);
+            Console.Write(GameController.InputResponse.ToString());
             Controller.SetCursorPosition(0, 55);
 
         }
