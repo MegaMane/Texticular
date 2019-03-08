@@ -30,6 +30,10 @@ Attack the Cobra with the sword
 
 To Do:
 
+		Finsih Fixing the UI and decouple from Game States and Game controller
+		move the main buffer logic into the UI class and have the game controller call methods on the UI
+		Fix the state machine so that the individual states contain the logic for switching and the controller implements a state stack that just 
+		'plays' the states
         /*
          * Move Between Rooms with unlocked doors {complete}
          * Move using the location name or a cardinal direction
