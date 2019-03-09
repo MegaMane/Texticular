@@ -21,8 +21,8 @@ namespace Texticular
         public List<string> GameLog;
         public GameStatistics Gamestats;
 
-        public Dictionary<Scene, GameScene> Scenes;
-        public Dictionary<Choice, PlayerChoice> Choices;
+
+
 
 
 

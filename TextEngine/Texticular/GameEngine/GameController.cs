@@ -16,6 +16,12 @@ namespace Texticular
     {
         public Dictionary<string, IGameState> GameStates;
         public StateStack StateStack;
+        public Stopwatch ElapsedTime;
+        public static StringBuilder InputResponse = new StringBuilder();
+        public Game Game;
+        public Scene ActiveStoryScene;
+        public Choice ActiveChoice;
+        public UserInterface UI;
 
 
         private IGameState _gamestate;
@@ -29,19 +35,9 @@ namespace Texticular
             {
                 _gamestate = value;
                 _gamestate.TimesEntered += 1;
-                _gamestate.OnEnter();
             }
         }
 
-        public Stopwatch ElapsedTime;
-        public static StringBuilder InputResponse = new StringBuilder();
-
-        public Game Game;
-        public Scene ActiveStoryScene;
-        public Choice ActiveChoice;
-
-
-        public UserInterface UI;
 
 
         public GameController(Game game)
@@ -52,12 +48,8 @@ namespace Texticular
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
             Game = game;
-            Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
 
-            foreach(StoryItem item in Game.Items.Values)
-            {
-                item.LocationChanged += ItemLocationChangedHandler;
-            }
+
 
             GameStates = new Dictionary<string, IGameState>();
 
@@ -66,18 +58,16 @@ namespace Texticular
             GameStates["StoryScene"] = new StorySequenceState(this);
             GameStates["PlayerChoice"] = new PlayerChoiceState(this);
 
-            ActiveStoryScene = Scene.Intro;
-            CurrentGameState = GameStates["StoryScene"];
+
 
         }
 
-        public void SetCursorPosition(int left, int top)
-        {
-            Console.SetCursorPosition(left, top);
-        }
+
         public void Start()
         {
-            //CurrentGameState.OnEnter();
+            ActiveStoryScene = Scene.Intro;
+            CurrentGameState = GameStates["StoryScene"];
+            CurrentGameState.OnEnter();
         }
 
         
@@ -94,65 +84,12 @@ namespace Texticular
 
         public void SetGameState(string stateName)
         {
+            CurrentGameState.OnExit();
             CurrentGameState = GameStates[stateName];
+            CurrentGameState.OnEnter();
         }
 
-        #region event handlers
 
-        void PlayerLocationChangedHandler(object sender, PlayerLocationChangedEventArgs args)
-        {
-            //look at the players surroundings automatically 
-            //when they enter a new location
-            Player Player = (Player)sender;
-
-            InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
-            args.NewLocation.TimesVisited += 1;
-            checkTriggers(Player, args);
-            args.NewLocation.Commands["look"](new ParseTree() {Verb="look", DirectObject=args.NewLocation.Name, DirectObjectKeyValue=args.NewLocation.KeyValue });
-            
-        }
-
-        void checkTriggers(Player player, PlayerLocationChangedEventArgs args)
-        {
-            if(args.NewLocation.KeyValue == "room201_bathroom")
-            {
-                if (args.NewLocation.TimesVisited == 1)
-                {
-                    ActiveStoryScene = Scene.Bathroom201FirstVisit;
-                    CurrentGameState = GameStates["StoryScene"];
-                }
-
-                else
-                {
-                    ActiveStoryScene = Scene.Bathroom201FirstVisit;
-                    CurrentGameState = GameStates["StoryScene"];
-                }
-            }
-        }
-
-        void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)
-        {
-            //the object was removed from a container
-            StoryItem storyItem;
-            bool itemFound = Game.Items.TryGetValue(args.CurrentLocation, out storyItem);
-
-            if (itemFound && storyItem is Container)
-            {
-                Container container = (Container)storyItem;
-                container.Items.Remove((StoryItem) sender);
-            }
-
-            //the object was placed in a container
-            itemFound = Game.Items.TryGetValue(args.NewLocation, out storyItem);
-
-            if (itemFound && storyItem is Container)
-            {
-                Container container = (Container)storyItem;
-                container.Items.Add((StoryItem)sender);
-            }
-        }
-
-        #endregion
 
         #region helper methods
 

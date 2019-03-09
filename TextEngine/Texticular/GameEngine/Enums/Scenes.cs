@@ -10,6 +10,7 @@ namespace Texticular.GameEngine
     {
         Intro,
         IntroLetter,
-        Bathroom201FirstVisit
+        Bathroom201FirstVisit,
+        GameOverBathroom201
     }
 }
