@@ -20,10 +20,6 @@ namespace Texticular.GameStates
         Dictionary<string, Action<ParseTree>> commands;
         Lexer Tokenizer;
 
-        //UI Stuff
-        private Texticular.UI.Buffer mainBuffer;
-        private UserInterface ui;
-        private Narrative narrative;
 
         public ExplorationState(GameController controller)
         {
@@ -42,25 +38,6 @@ namespace Texticular.GameStates
 
             commands["help"] = help;
 
-            ////UI Stuff
-            //Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            //GameStatistics testStats = new GameStatistics();
-            //this.ui = new UserInterface(testStats);
-
-            //mainBuffer = Terminal.CreateBuffer(80, 41);
-            //Terminal.SetCurrentConsoleFontEx(8, 10);
-            //narrative = new Narrative(mainBuffer);
-            //mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
-
-            //UI Stuff
-            //Terminal.Init(110, 75, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            //GameStatistics testStats = new GameStatistics();
-            //this.ui = new UserInterface(testStats);
-
-            //mainBuffer = Terminal.CreateBuffer(80, 50);
-            //Terminal.SetCurrentConsoleFontEx(8, 10);
-            //narrative = new Narrative(mainBuffer);
-            //mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
         }
 
         public void OnEnter()
@@ -82,24 +59,7 @@ namespace Texticular.GameStates
 
         public void Render()
         {
-            Console.Clear();
-
-
-            //mainBuffer = Terminal.CreateBuffer(80, 41);
-            //narrative = new Narrative(mainBuffer);
-            //mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
-            //narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
-            //mainBuffer.Blit(0, 2);
-            //Console.SetCursorPosition(0, 45);
-
-            Console.Clear();
-            Controller.ui.DrawGameUI(Controller);
-            Controller.mainBuffer = Terminal.CreateBuffer(80, 50);
-            Controller.narrative = new Narrative(Controller.mainBuffer);
-            Controller.mainBuffer.DrawFrameLeft(0, 0, 80, 50, ConsoleColor.DarkGray);
-            Controller.narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
-            Controller.mainBuffer.Blit(0, 2);
-            Controller.SetCursorPosition(0, 55);
+            Controller.UI.DrawGameUI();
         }
 
         public void Update(float elapsedTime)

@@ -17,6 +17,7 @@ namespace Texticular
         public Dictionary<string, IGameState> GameStates;
         public StateStack StateStack;
 
+
         private IGameState _gamestate;
         public IGameState CurrentGameState
         {
@@ -39,24 +40,14 @@ namespace Texticular
         public Scene ActiveStoryScene;
         public Choice ActiveChoice;
 
-        //UI Stuff
-        public Texticular.UI.Buffer mainBuffer;
-        public UserInterface ui;
-        public Narrative narrative;
 
+        public UserInterface UI;
 
 
         public GameController(Game game)
         {
-            //UI Stuff
-            Terminal.Init(120, 50, "Busted Ass Text Adventure (Texticular)", 8, 12);
-            GameStatistics testStats = new GameStatistics();
-            this.ui = new UserInterface(testStats);
 
-            mainBuffer = Terminal.CreateBuffer(80, 48);
-            Terminal.SetCurrentConsoleFontEx(8, 12);
-            narrative = new Narrative(mainBuffer);
-            mainBuffer.DrawFrameLeft(0, 0, 80, 48, ConsoleColor.DarkGray);
+            UI = new UserInterface(this);
 
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
