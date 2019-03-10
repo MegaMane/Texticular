@@ -13,6 +13,7 @@ namespace Texticular.Environment
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
         public string DescriptionInRoom { get; set; }
+        public int SlotsOccupied { get; set; } = 1;
 
 
         [JsonConstructor]
@@ -54,8 +55,11 @@ namespace Texticular.Environment
                 {
                     if(item is Container && this.LocationKey == item.KeyValue && (item as Container).IsOpen)
                     {
+                        Container chest = (Container)item;
+
                         if (player.BackPack.ItemCount < player.BackPack.Slots)
                         {
+                            chest.RemoveItem(this);
                             LocationKey = "inventory";
                             GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                             player.BackPack.ItemCount += 1;
@@ -116,11 +120,45 @@ namespace Texticular.Environment
 
         void putItem(ParseTree tokens)
         {
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+            Room inventory = player.BackPack;
+            GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
+
+            
+            
+           
+            
             //check if the direct object is in the players possesion or the current room
+            if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
+            {
                 //check if the indirect object is in the room and not locked
-                    //check if there is enough space in the container
-                        //if so then change the items location to the container and let the player know
-            GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
+                if(target.LocationKey == currentLocation.KeyValue)
+                {
+                    if(target is Container)
+                    {
+                        Container chest = (Container)target;
+                        if (chest.IsLocked)
+                        {
+                            GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
+                        }
+
+                        else
+                        {
+                            //check if there is enough space in the container
+                            bool itemAdded = chest.AddItem(this);
+
+                            //if so then change the items location to the container and let the player know
+                            if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
+                            //if not let the player know the item did not fit
+                            else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
+                        }
+                    }
+
+                }
+
+            }
+            //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
 
         }
 

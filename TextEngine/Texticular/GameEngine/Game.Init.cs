@@ -19,6 +19,7 @@ namespace Texticular
             Gamestats = new GameStatistics();
             GameLog = new List<string>(50);
 
+
             #region create Game Objects
             //rooms, items and exits
 
@@ -172,7 +173,7 @@ namespace Texticular
             Player player = new Player("Jonny Rotten", "A strapping young lad with a rotten disposition.", playerStartingLocation, 100);
             
             
-            Inventory playerInventory = new Inventory("playerInventory","Inventory", "Your trusty backpack.", 10, 0);
+            Inventory playerInventory = new Inventory("inventory","Inventory", "Your trusty backpack.", 10, 0);
 
             player.BackPack = playerInventory;
             
@@ -186,32 +187,27 @@ namespace Texticular
             //Add the player to the game
             AddPlayer(player);
 
-            #endregion
-
             //Add any room and inventory items to the global list of game items
             foreach (Room room in Rooms.Values)
             {
-                foreach(StoryItem item in room.RoomItems)
+                foreach (StoryItem item in room.RoomItems)
                 {
-                    Items.Add(item.KeyValue,item);
+                    Items.Add(item.KeyValue, item);
                     if (item is Container)
                     {
                         var chest = item as Container;
-                        foreach(StoryItem loot in chest.Items)
+                        foreach (StoryItem loot in chest.Items)
                         {
-                            Items.Add(loot.KeyValue,loot);
+                            Items.Add(loot.KeyValue, loot);
                         }
                     }
                 }
-                
+
             }
 
 
-           
-            
-            
+            #endregion
 
-           
 
 
         }

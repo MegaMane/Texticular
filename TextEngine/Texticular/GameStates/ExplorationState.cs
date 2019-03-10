@@ -13,21 +13,28 @@ namespace Texticular.GameStates
     class ExplorationState : IGameState
     {
         public int TimesEntered { get; set; } = 0;
-        public string UserInput;
+        public string UserInput="";
         GameController Controller;
+        Player Player;
 
 
         Dictionary<string, Action<ParseTree>> commands;
         Lexer Tokenizer;
 
-        //UI Stuff
-        private Texticular.UI.Buffer mainBuffer;
-        private UserInterface ui;
-        private Narrative narrative;
 
         public ExplorationState(GameController controller)
         {
             Controller = controller;
+
+            Player = Controller.Game.Player;
+
+            Controller.Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
+
+            foreach (StoryItem item in Controller.Game.Items.Values)
+            {
+                item.LocationChanged += ItemLocationChangedHandler;
+            }
+
             commands = new Dictionary<string, Action<ParseTree>>();
             Tokenizer = new Lexer();
 
@@ -42,51 +49,37 @@ namespace Texticular.GameStates
 
             commands["help"] = help;
 
-            //UI Stuff
-            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            GameStatistics testStats = new GameStatistics();
-            this.ui = new UserInterface(testStats);
-
-            mainBuffer = Terminal.CreateBuffer(80, 41);
-            Terminal.SetCurrentConsoleFontEx(8, 10);
-            narrative = new Narrative(mainBuffer);
-            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
         }
 
         public void OnEnter()
         {
+            GameController.InputResponse.Clear();
             if (TimesEntered == 1)
             {
                 GameController.InputResponse.Append("Type Help for a list of commands...\n\n ");
             }
+
+            //force the player location changed event so the player automatically 'looks' at their surroundings.
+            //Controller.Game.Player.PlayerLocation = Controller.Game.Player.PlayerLocation;
             UserInput = "look";
-            Parse("look");
-            Render();
+            Update(Controller.ElapsedTime.ElapsedMilliseconds);
         }
 
         public void OnExit()
         {
-            throw new NotImplementedException();
+            //code to cleanup state here
         }
 
         public void Render()
         {
-            Console.Clear();
-            ui.DrawGameUI(Controller);
-
-
-            mainBuffer = Terminal.CreateBuffer(80, 41);
-            narrative = new Narrative(mainBuffer);
-            mainBuffer.DrawFrameLeft(0, 0, 80, 41, ConsoleColor.DarkGray);
-            narrative.Write(GameController.InputResponse.ToString(), fg: ConsoleColor.DarkGreen);
-            mainBuffer.Blit(0, 2);
-            Console.SetCursorPosition(0, 45);
+            Controller.UI.DrawGameUI();
+            GameController.InputResponse.Clear();
+            GetInput();
         }
 
         public void Update(float elapsedTime)
         {
-            GetInput();
-            GameController.InputResponse.Clear();
+
             Parse(UserInput);
             Controller.Game.Gamestats.updateStats(10);
         }
@@ -101,19 +94,23 @@ namespace Texticular.GameStates
 
         void Parse(String userInput)
         {
-            if (UserInput.ToLower().Trim() == "exit")
+
+            if (userInput.ToLower().Trim() == "exit")
             {
                 Controller.SetGameState("PlayerQuit");
                 return;
             }
-            ParseTree tokens = Tokenizer.Tokenize(UserInput);
+            ParseTree tokens = Tokenizer.Tokenize(userInput);
 
-            if (tokens == null) return; //the player just hit enter without typing anything
+            if (tokens == null)
+            {
+                tokens = new ParseTree() { Verb = "look", DirectObject = Player.PlayerLocation.Name, DirectObjectKeyValue = Player.PlayerLocation.KeyValue };
+            }
 
 
             if (tokens.Verb == null)
             {
-                GameController.InputResponse.Append($"I dont understand '{UserInput}'! Type help for some examples of what I do understand.");
+                GameController.InputResponse.Append($"I dont understand '{userInput}'! Type help for some examples of what I do understand.");
                 return;
             }
 
@@ -276,7 +273,48 @@ namespace Texticular.GameStates
 
         #endregion
 
+        #region event handlers
 
+        void PlayerLocationChangedHandler(object sender, PlayerLocationChangedEventArgs args)
+        {
+            //look at the players surroundings automatically 
+            //when they enter a new location
+            Player Player = (Player)sender;
+
+            GameController.InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
+            args.NewLocation.TimesVisited += 1;
+            args.NewLocation.Commands["look"](new ParseTree() { Verb = "look", DirectObject = args.NewLocation.Name, DirectObjectKeyValue = args.NewLocation.KeyValue });
+            
+            //see if entering the location should change the game state
+            checkTriggers(Player, args);
+
+        }
+
+        void checkTriggers(Player player, PlayerLocationChangedEventArgs args)
+        {
+            if (args.NewLocation.KeyValue == "room201_bathroom")
+            {
+                if (args.NewLocation.TimesVisited == 1)
+                {
+                    Controller.ActiveStoryScene = Scene.Bathroom201FirstVisit;
+                    Controller.SetGameState("StoryScene");
+
+                }
+
+                else
+                {
+                    Controller.ActiveStoryScene = Scene.GameOverBathroom201;
+                    Controller.SetGameState("StoryScene");
+                }
+            }
+        }
+
+        void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)
+        {
+            //Special events for specific item location changes
+        }
+
+        #endregion
 
     }
 }

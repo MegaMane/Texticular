@@ -15,6 +15,14 @@ namespace Texticular
     public class GameController
     {
         public Dictionary<string, IGameState> GameStates;
+        public StateStack StateStack;
+        public Stopwatch ElapsedTime;
+        public static StringBuilder InputResponse = new StringBuilder();
+        public Game Game;
+        public Scene ActiveStoryScene;
+        public Choice ActiveChoice;
+        public UserInterface UI;
+
 
         private IGameState _gamestate;
         public IGameState CurrentGameState
@@ -30,38 +38,35 @@ namespace Texticular
             }
         }
 
-        public Stopwatch ElapsedTime;
-        public static StringBuilder InputResponse = new StringBuilder();
-
-        public Game Game;
-
-
 
 
         public GameController(Game game)
         {
+
+            UI = new UserInterface(this);
+
             ElapsedTime = new Stopwatch();
             ElapsedTime.Start();
+            Game = game;
+
+
 
             GameStates = new Dictionary<string, IGameState>();
+
             GameStates["Explore"] = new ExplorationState(this);
             GameStates["PlayerQuit"] = new PlayerQuitState(this);
+            GameStates["StoryScene"] = new StorySequenceState(this);
+            GameStates["PlayerChoice"] = new PlayerChoiceState(this);
 
-            CurrentGameState = GameStates["Explore"];
 
-            Game = game;
-            Game.Player.PlayerLocationChanged += PlayerLocationChangedHandler;
-
-            foreach(StoryItem item in Game.Items.Values)
-            {
-                item.LocationChanged += ItemLocationChangedHandler;
-            }
 
         }
 
 
         public void Start()
         {
+            ActiveStoryScene = Scene.Intro;
+            CurrentGameState = GameStates["StoryScene"];
             CurrentGameState.OnEnter();
         }
 
@@ -79,43 +84,12 @@ namespace Texticular
 
         public void SetGameState(string stateName)
         {
+            CurrentGameState.OnExit();
             CurrentGameState = GameStates[stateName];
+            CurrentGameState.OnEnter();
         }
 
-        #region event handlers
 
-        void PlayerLocationChangedHandler(object sender, PlayerLocationChangedEventArgs args)
-        {
-            //look at the players surroundings automatically 
-            //when they enter a new location
-            InputResponse.AppendFormat("Moving to {0}\n ", args.NewLocation.Name);
-            args.NewLocation.TimesVisited += 1;
-            args.NewLocation.Commands["look"](new ParseTree() {Verb="look", DirectObject=args.NewLocation.Name, DirectObjectKeyValue=args.NewLocation.KeyValue });
-        }
-
-        void ItemLocationChangedHandler(object sender, ItemLocationChangedEventArgs args)
-        {
-            //the object was removed from a container
-            StoryItem storyItem;
-            bool itemFound = Game.Items.TryGetValue(args.CurrentLocation, out storyItem);
-
-            if (itemFound && storyItem is Container)
-            {
-                Container container = (Container)storyItem;
-                container.Items.Remove((StoryItem) sender);
-            }
-
-            //the object was placed in a container
-            itemFound = Game.Items.TryGetValue(args.NewLocation, out storyItem);
-
-            if (itemFound && storyItem is Container)
-            {
-                Container container = (Container)storyItem;
-                container.Items.Add((StoryItem)sender);
-            }
-        }
-
-        #endregion
 
         #region helper methods
 

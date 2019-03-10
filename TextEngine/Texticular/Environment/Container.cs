@@ -11,6 +11,9 @@ namespace Texticular.Environment
     {
         public List<StoryItem> Items;
         public bool IsOpen { get; set; } = false;
+        public bool IsLocked { get; set; } = false;
+        public int SlotsFull { get; set; } = 0;
+        public int MaxSlots { get; set; } = 10;
 
         public Container(string locationKey, string name, string description, string keyValue = "", string examine = "", Container container = null)
             : base(name, description, locationKey, isPortable: false, examine: examine, weight: 99, keyValue: keyValue)
@@ -35,15 +38,42 @@ namespace Texticular.Environment
             
 
         }
-
-
         void closeContainer(ParseTree tokens)
         {
             IsOpen = false;
             GameController.InputResponse.Append($"You shut the {Description}\n ");
         }
 
+        public bool AddItem(StoryItem item)
+        {
+            int SlotsRequested = item.SlotsOccupied;
 
+            SlotsFull += SlotsRequested;
+
+            if (SlotsFull <= MaxSlots)
+            {
+                Items.Add(item);
+                item.LocationKey = this.KeyValue;
+                return true;
+            }
+
+            SlotsFull -= SlotsRequested;
+            return false;
+        }
+
+        public bool RemoveItem(StoryItem item)
+        {
+            int SlotsEmptied = item.SlotsOccupied;
+
+            SlotsFull -= SlotsEmptied;
+
+
+            Items.Remove(item);
+            return true;
+            
+
+
+        }
 
 
     }

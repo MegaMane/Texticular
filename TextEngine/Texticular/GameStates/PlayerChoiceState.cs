@@ -14,46 +14,107 @@ namespace Texticular.GameStates
     {
 
         public int TimesEntered { get; set; } = 0;
-        public string UserInput;
+        public string UserInput="";
         GameController Controller;
+        PlayerChoice ActiveChoice;
+        public Dictionary<Choice, PlayerChoice> Choices;
+
 
         public PlayerChoiceState(GameController controller)
         {
             Controller = controller;
+            Choices = new Dictionary<Choice, PlayerChoice>();
+            AddChoices();
+
         }
 
         public void OnEnter()
         {
-            throw new NotImplementedException();
+            ActiveChoice = Choices[Controller.ActiveChoice];
+            Update(Controller.ElapsedTime.ElapsedMilliseconds);
         }
 
         public void OnExit()
         {
-            throw new NotImplementedException();
+            //code to cleanup state here
         }
 
         public void Render()
         {
-            Console.WriteLine(GameController.InputResponse);
-            Console.ReadKey();
-        
+
+            Controller.UI.DrawGameUI();
+            GetInput();
+
         }
 
         public void Update(float elapsedTime)
         {
-            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            Console.Clear();
+
             GameController.InputResponse.Clear();
-            GameController.InputResponse.Append("Thanks for Playing!\n Press any Key to exit...");
-            Controller.Game.Gamestats.StopWatch.Stop();
-            Controller.ElapsedTime.Stop();
+            bool ChoiceMade = ActiveChoice.ChoicePrompt(Controller, UserInput);
+
+            //the criteria for the choice have been met so handle any work and change the game state
+            if (ChoiceMade)
+            {
+                ActiveChoice.ChoiceResult(Controller);
+            }
+
+            
 
 
+
+        }
+
+        void GetInput()
+        {
+
+            Console.Write("\n>> ");
+            string userInput = Console.ReadLine();
+            this.UserInput = userInput.ToLower().Trim();
         }
 
         public override string ToString()
         {
             return this.GetType().Name;
         }
+
+        #region create Player Choices
+
+        public void AddChoices()
+        {
+            PlayerChoice askPlayerName = new PlayerChoice("PlayerName");
+
+            askPlayerName.ChoicePrompt = delegate (GameController controller, string userInput)
+            {
+                Player player = controller.Game.Player;
+
+                if (userInput != "")
+                {
+                    player.FirstName = userInput;
+                    return true;
+                }
+
+                GameController.InputResponse.Append("What is your name");
+                return false;
+
+            };
+
+            askPlayerName.ChoiceResult = delegate (GameController controller)
+            {
+                StorySequenceState StoryState = (StorySequenceState) controller.GameStates["StoryScene"];
+                Player player = controller.Game.Player;
+                GameScene scene = StoryState.Scenes[Scene.IntroLetter];
+                string scenePage = scene.SceneText.Dequeue();
+                scenePage = scenePage.Replace("<firstName>", player.FirstName);
+                scene.SceneText.Enqueue(scenePage);
+                controller.ActiveStoryScene = Scene.IntroLetter;
+                controller.SetGameState("StoryScene");
+            };
+
+            Choices[Choice.PlayerName] = askPlayerName;
+
+        }
+
+        #endregion
     }
 }

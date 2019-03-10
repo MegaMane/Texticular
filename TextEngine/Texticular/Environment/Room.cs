@@ -88,8 +88,10 @@ namespace Texticular.Environment
                 }
             }
 
+            /*
             GameController.InputResponse.Append(" \n\n ");
 
+    
             //list items
             GameController.InputResponse.Append("You see:\n ");
             string itemString = "";
@@ -126,6 +128,7 @@ namespace Texticular.Environment
 
 
             }
+            */
 
 
         }

@@ -24,31 +24,37 @@ namespace Texticular.GameStates
         }
         public void OnEnter()
         {
-            throw new NotImplementedException();
+            Update(Controller.ElapsedTime.ElapsedMilliseconds);
         }
 
         public void OnExit()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void Render()
         {
-            Console.WriteLine(GameController.InputResponse);
-            Console.ReadKey();
-        
+            Controller.UI.DrawGameUI();
+            GetInput();
+
         }
 
         public void Update(float elapsedTime)
         {
-            Terminal.Init(110, 60, "Busted Ass Text Adventure (Texticular)", 7, 9);
-            Console.Clear();
             GameController.InputResponse.Clear();
-            GameController.InputResponse.Append("Thanks for Playing!\n Press any Key to exit...");
+            GameController.InputResponse.Append("Thanks for Playing!\n");
             Controller.Game.Gamestats.StopWatch.Stop();
             Controller.ElapsedTime.Stop();
 
 
+        }
+
+        void GetInput()
+        {
+
+            Console.Write("Press Enter to exit....\n>>");
+            string userInput = Console.ReadLine();
+            this.UserInput = userInput.ToLower().Trim();
         }
 
         public override string ToString()

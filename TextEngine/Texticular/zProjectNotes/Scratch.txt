@@ -1,4 +1,12 @@
 ﻿
+UI Notes
+
+In the terminal class the attribute [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 42)]
+was originally set to 32. Increasing this number to 42 allowed the spacing betwween the lines to also be increased
+makinkg it more readable
+
+Set the font to Lucida Console width 8 px Height 12 px
+
 Game States
 
 https://gamedevelopment.tutsplus.com/articles/how-to-build-a-jrpg-a-primer-for-game-developers--gamedev-6676#state
@@ -21,19 +29,19 @@ talk to Fred
 Attack the Cobra with the sword
 
 To Do:
-
+         Think about the delegate pattern in story and choice game states and how to make switching more clear
+         Move using the location name or a cardinal direction
+		 implement the rest of the items and the rest of the map
         /*
          * Move Between Rooms with unlocked doors {complete}
-         * Move using the location name or a cardinal direction
          * Look at surroundings {complete}
          * Examine Objects {complete}
          * Take and Drop Items {complete}
          * Unlock doors with correct key {complete}
-         * lock/unlock/open containers and place and retrieve items locker, chest
-		      *Containers have a number of slots
-              *items take up a number of slots
+         * place and retrieve items locker, chest {complete}
+		 * lock/unlock/open containers 
          * use special context sensitive items * use phone/keypad/vending machine/magic medicine etc
-         * trigger game events or "cut scenes" and update game state as needed
+         * trigger game events or "cut scenes" and update game state as needed {complete}
 		 * Implement Choices that are rememberd in a PlayerChoices collection
          * talk to people
          * equip special items {these don't count in inventory}

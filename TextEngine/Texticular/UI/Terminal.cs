@@ -202,7 +202,7 @@ namespace Texticular.UI
         public int FontFamily;
         public int FontWeight;
 
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 42)]
         public string FaceName;
     }
 
@@ -624,7 +624,7 @@ namespace Texticular.UI
 
         /// <summary> 
         /// This method draws any text to the buffer with given color. 
-        /// To chance the color, pass in a value above 0. (0 being black text, 15 being white text). 
+        /// To change the color, pass in a value above 0. (0 being black text, 15 being white text). 
         /// Put in the starting width and height you want the input string to be. 
         /// </summary> 
         /// <param name="str"></param> 
