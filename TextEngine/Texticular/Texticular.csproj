@@ -51,6 +51,7 @@
     <Compile Include="Environment\DoorKey.cs" />
     <Compile Include="Environment\Exit.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
+    <Compile Include="Environment\VendingMachine.cs" />
     <Compile Include="GameEngine\Enums\MovementDirection.cs" />
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\GameScene.cs" />
+    <Compile Include="GameStates\VendingState.cs" />
     <Compile Include="GameStates\WestHallway.cs" />
     <Compile Include="GameStates\Room201Bathroom.cs" />
     <Compile Include="GameStates\Room201.cs" />

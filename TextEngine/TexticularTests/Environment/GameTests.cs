@@ -13,6 +13,56 @@ namespace Texticular.Environment.Tests
     [TestClass()]
     public class GameTests
     {
+        [TestMethod()]
+        public void VendingMachineTest()
+        {
+            //Arrange
+            Game ActiveGame = new Game();
+            GameController Controller = new GameController(ActiveGame);
+
+            VendingMachine testMachine =
+                new VendingMachine
+                (
+                    name: "west",
+                    description: "The vending machine is in stark contrast to the rest of your well worn surroundings."
+                                 + "It's shiny and new and stocked to the brim with Fast Eddie's colon cleanse and a few other odds and ends."
+                                 + "A marquee taunts you in large bold letters \" Fast Eddie's: When in doubt, flush it out!\"",
+                    locationKey: "westHallway",
+                    keyValue: "westVendingMachine",
+                    timeVisited: 0
+                 );
+
+            /*
+             * 
+             * -----------------------------
+                Vending Machine
+                -----------------------------
+
+                A1: Fast Eddies Special Edition      $0.75 
+                A2: Hungry Muncher Trail Mix         $1.25
+                A3: Gently Used Underwear            $2.75
+                A4: Fast Eddies: Special Edition     $0.75 
+                A5: Fast Eddies: Special Edition     $0.75 
+                A6: Fast Eddies: Special Edition     $0.75 
+
+                1. Make a Selection
+                2. Put Money In
+                3. Nevermind
+
+
+                >>
+            */
+
+            //Assert
+            Assert.AreEqual(1, 1);
+
+
+        }
+
+
+
+
+
         /*
 
         //need to implement
@@ -206,7 +256,7 @@ namespace Texticular.Environment.Tests
 
     */
 
+        }
+
+
     }
-
-
-}

@@ -36,6 +36,7 @@ namespace Texticular
          }
         public int Health { get; set; }
         public Inventory BackPack;
+        public int Money { get; set; } = 0;
         private string _firstName ="";
         public string FirstName { get { return _firstName; } set { _firstName = GameController.FirstCharToUpper(value); } } 
         public string LastName { get; set; } = "";
