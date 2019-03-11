@@ -45,9 +45,66 @@ namespace Texticular
         {
             this.PlayerLocation = playerlocation;
             this.Health = health;
+            Commands["help"] = help;
 
-            
+            Commands["inventory"] = inventory;
+            Commands["backpack"] = inventory;
+            Commands["inventory"] = inventory;
+
         }
+
+
+        void help(ParseTree tokens)
+        {
+            if (tokens.DirectObject == null && tokens.IndirectObject == null)
+            {
+                GameController.InputResponse.Append("\n\n----------------------\n" +
+                                     "Command List\n" +
+                                     "----------------------\n\n");
+                GameController.InputResponse.Append(
+                "Go, Walk, Move: Typing any of these will move the character in the direction specified.\n"
+                + "Look: take a look at your sorroundings and list any obvious exits and visible items.\n"
+                + "Examine: Take a closer look at an object.\n"
+                + "Get, Take, Grab, Pick Up: Typing any of these will attempt to pick up the \n\t\t\t  specified object and add it to your invnetory.\n"
+                + "Drop: Drop the specified object at the players current position. \n      Some objects my persist in the location they were dropped.\n"
+                + "Inventory: Open the player Inventory.\n\n"
+                );
+            }
+
+            else
+            {
+                GameController.InputResponse.Append("I don't understand. If you wan't help just type help!\n");
+            }
+
+        }
+
+        void inventory(ParseTree tokens)
+        {
+
+
+            if (tokens.DirectObject != null && tokens.IndirectObject != null)
+            {
+                GameController.InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv'\n ");
+                return;
+            }
+
+            GameController.InputResponse.Append("\n Inventory\n ");
+            GameController.InputResponse.Append("------------------------------------------------------\n\n ");
+
+            foreach (var item in GameObject.Objects.Values)
+            {
+                if (item.LocationKey == "inventory")
+                {
+                    GameController.InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
+                }
+
+
+
+            }
+
+            GameController.InputResponse.Append("\n ");
+        }
+
 
 
 

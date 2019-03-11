@@ -14,6 +14,9 @@ namespace Texticular.GameStates
     {
 
         public int TimesEntered { get; set; } = 0;
+        string IGameState.UserInput { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Dictionary<string, Action<ParseTree>> Commands { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public string UserInput;
         GameController Controller;
 
@@ -60,6 +63,11 @@ namespace Texticular.GameStates
         public override string ToString()
         {
             return this.GetType().Name;
+        }
+
+        void IGameState.GetInput()
+        {
+            throw new NotImplementedException();
         }
     }
 }

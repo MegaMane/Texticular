@@ -20,6 +20,7 @@ namespace Texticular
         public static StringBuilder InputResponse = new StringBuilder();
         public Game Game;
         public Scene ActiveStoryScene;
+        public string ActiveScene { get; set; }
         public Choice ActiveChoice;
         public UserInterface UI;
 
@@ -53,10 +54,11 @@ namespace Texticular
 
             GameStates = new Dictionary<string, IGameState>();
 
-            GameStates["Explore"] = new ExplorationState(this);
+            GameStates["Room201"] = new Room201(this);
+            GameStates["Room201Bathroom"] = new Room201Bathroom(this);
             GameStates["PlayerQuit"] = new PlayerQuitState(this);
-            GameStates["StoryScene"] = new StorySequenceState(this);
-            GameStates["PlayerChoice"] = new PlayerChoiceState(this);
+            //GameStates["StoryScene"] = new StorySequenceState(this);
+            //GameStates["PlayerChoice"] = new PlayerChoiceState(this);
 
 
 
@@ -65,8 +67,8 @@ namespace Texticular
 
         public void Start()
         {
-            ActiveStoryScene = Scene.Intro;
-            CurrentGameState = GameStates["StoryScene"];
+            //ActiveStoryScene = Scene.Intro;
+            CurrentGameState = GameStates["Room201"];
             CurrentGameState.OnEnter();
         }
 

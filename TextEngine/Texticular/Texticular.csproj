@@ -66,14 +66,9 @@
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\GameScene.cs" />
-    <Compile Include="GameStates\CombatState.cs" />
-    <Compile Include="GameStates\DialogueState.cs" />
-    <Compile Include="GameStates\GameLaunchState.cs" />
-    <Compile Include="GameStates\PlayerChoiceState.cs" />
-    <Compile Include="GameStates\StorySequenceState.cs" />
-    <Compile Include="GameStates\GameOverState.cs" />
+    <Compile Include="GameStates\Room201Bathroom.cs" />
+    <Compile Include="GameStates\Room201.cs" />
     <Compile Include="GameStates\PlayerQuitState.cs" />
-    <Compile Include="GameStates\ExplorationState.cs" />
     <Compile Include="GameStates\IGameState.cs" />
     <Compile Include="GameStates\StateStack.cs" />
     <Compile Include="Player\Inventory.cs" />

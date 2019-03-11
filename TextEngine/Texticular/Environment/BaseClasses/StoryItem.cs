@@ -84,6 +84,7 @@ namespace Texticular.Environment
                 if (player.BackPack.ItemCount < player.BackPack.Slots)
                 {
                     LocationKey = "inventory";
+                    player.PlayerLocation.RoomItems.Remove(this);
                     GameController.InputResponse.AppendFormat($"{Name} taken.\n");
                     player.BackPack.ItemCount += 1;
                 }
@@ -108,6 +109,7 @@ namespace Texticular.Environment
             if (LocationKey == "inventory")
             {
                 LocationKey = player.PlayerLocation.KeyValue;
+                player.PlayerLocation.RoomItems.Add(this);
                 GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
                 player.BackPack.ItemCount -= 1;
             }
