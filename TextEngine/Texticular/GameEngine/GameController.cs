@@ -56,6 +56,7 @@ namespace Texticular
 
             GameStates["Room201"] = new Room201(this);
             GameStates["Room201Bathroom"] = new Room201Bathroom(this);
+            GameStates["WestHallway"] = new WestHallway(this);
             GameStates["PlayerQuit"] = new PlayerQuitState(this);
             //GameStates["StoryScene"] = new StorySequenceState(this);
             //GameStates["PlayerChoice"] = new PlayerChoiceState(this);

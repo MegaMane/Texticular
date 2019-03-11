@@ -66,6 +66,7 @@
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
     <Compile Include="GameEngine\GameScene.cs" />
+    <Compile Include="GameStates\WestHallway.cs" />
     <Compile Include="GameStates\Room201Bathroom.cs" />
     <Compile Include="GameStates\Room201.cs" />
     <Compile Include="GameStates\PlayerQuitState.cs" />
