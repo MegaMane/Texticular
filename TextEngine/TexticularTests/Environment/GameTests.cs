@@ -31,6 +31,64 @@ namespace Texticular.Environment.Tests
                     keyValue: "westVendingMachine",
                     timeVisited: 0
                  );
+            //Dictionary<string, Tuple<StoryItem, int>>
+            testMachine.Items["A1"] = new Tuple<StoryItem, int>(new StoryItem
+            (
+                name: "Fast Eddies Special Edition",
+                description:"Same Shit just faster: This can entitles you to one entry into the Fast Eddie's Sweepstakes",
+                locationKey: "westVendingMachine",
+                examine:"The number on the side reads 1983"
+
+            ), 75);
+
+            testMachine.Items["A2"] = new Tuple<StoryItem, int>(new StoryItem
+            (
+                name: "Hungry Muncher Trail Mix",
+                description: "Eager Beavers know Hungry Muncher is the way to go!",
+                locationKey: "westVendingMachine",
+                examine: "Restores 50hp"
+
+            ), 125);
+
+            testMachine.Items["A3"] = new Tuple<StoryItem, int>(new StoryItem
+            (
+                name: "Gently Used Underwear",
+                description: "It's red and lacy and just your size.",
+                locationKey: "westVendingMachine",
+                examine: "Raises Defense by 5 lowers self respect by 30"
+
+            ), 275);
+
+
+            testMachine.Items["A4"] = new Tuple<StoryItem, int>(new StoryItem
+            (
+                name: "Fast Eddies Special Edition",
+                description: "Same Shit just faster: This can entitles you to one entry into the Fast Eddie's Sweepstakes",
+                locationKey: "westVendingMachine",
+                examine: "The number on the side reads 1983"
+
+            ), 75);
+
+            testMachine.Items["A5"] = new Tuple<StoryItem, int>(new StoryItem
+           (
+               name: "Fast Eddies Special Edition",
+               description: "Same Shit just faster: This can entitles you to one entry into the Fast Eddie's Sweepstakes",
+               locationKey: "westVendingMachine",
+               examine: "The number on the side reads 1983"
+
+           ), 75);
+
+            testMachine.Items["A6"] = new Tuple<StoryItem, int>(new StoryItem
+           (
+               name: "Fast Eddies Special Edition",
+               description: "Same Shit just faster: This can entitles you to one entry into the Fast Eddie's Sweepstakes",
+               locationKey: "westVendingMachine",
+               examine: "The number on the side reads 1983"
+
+           ), 75);
+
+            testMachine.ViewSelection();
+
 
             /*
              * 

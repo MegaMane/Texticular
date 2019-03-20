@@ -25,6 +25,7 @@ namespace Texticular.Environment
             TimesVisited = timeVisited;
             Commands["look"] = look;
             Commands["examine"] = look;
+            Items = new Dictionary<string, Tuple<StoryItem, int>>();
         }
 
         public void Vend(string currentSelection)
