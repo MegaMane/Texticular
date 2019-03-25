@@ -3,19 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticular.Engine.Events;
 
 
 namespace Texticular.Engine.Environment
 {
-    public abstract class GameObject
+    public class GameObject
     {
 
         private static int _nextGameID = 0;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
 
-        public static T GetComponent<T>(string objKey, string objName="") where T: GameObject
+
+        public static T GetComponent<T>(T objectType, string objIdentifier) where T: GameObject
         {
             GameObject obj;
+
+            var objKey = objIdentifier;
+            var objName = objIdentifier;
 
             //search by key
             bool objectFound = Objects.TryGetValue(objKey, out obj);
@@ -44,6 +49,9 @@ namespace Texticular.Engine.Environment
 
 
         public event ItemLocationChangedEventHandler LocationChanged;
+
+        //private Dictionary<string, Action<ParseTree>> _Commands;
+        //public Dictionary<string, Action<ParseTree>> Commands { get { return _Commands; } protected set { _Commands = value; } }
 
         public int ID { get; private set; }
         public String KeyValue { get; set; }
@@ -76,45 +84,41 @@ namespace Texticular.Engine.Environment
             }
         }
 
-        private Dictionary<string, Action<ParseTree>> commands;
-        public Dictionary<string, Action<ParseTree>> Commands { get { return commands; } protected set { commands = value; } }
 
 
-        public GameObject(string name, string description)
+        public GameObject()
+        {
+            ID = ++_nextGameID;
+            KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
+            Objects[this.KeyValue] = this;
+        }
+
+
+
+        public GameObject(string name, string description, string keyValue = "")
         {
             ID = ++_nextGameID;
 
-            commands = new Dictionary<string, Action<ParseTree>>();
-            KeyValue = createStringKey(name) + "_" + this.ID.ToString();
+            
+            KeyValue = keyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : keyValue;
             Name = name;
             Description = description;
             ExamineResponse = description;
-            Commands["look"] = look;
-            Commands["examine"] = examine;
+            //_Commands = new Dictionary<string, Action<ParseTree>>();
+            //Commands["look"] = look;
+            //Commands["examine"] = examine;
 
             Objects[this.KeyValue] = this;
         }
 
 
-        public GameObject(string name, string description, string examineResponse, string LocationKey, string KeyValue = "")
-        {
-            ID = ++_nextGameID;
 
-            commands = new Dictionary<string, Action<ParseTree>>();
-            this.KeyValue = KeyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : KeyValue;
-            Name = name;
-            Description = description;
-            this.LocationKey = LocationKey;
-            ExamineResponse = examineResponse;
-            Commands["look"] = look;
-            Commands["examine"] = examine;
-
-            Objects[this.KeyValue] = this;
-        }
 
         public override string ToString()
         {
-            return $"Class: {this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\nExamine Response: {ExamineResponse}\n";
+            return $"Class: {this.GetType().Name}\n----------------------\nGame ID: "+
+                   $"{ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: "+
+                   $"{LocationKey}\nExamine Response: {ExamineResponse}\n";
         }
 
 
@@ -155,7 +159,7 @@ namespace Texticular.Engine.Environment
             return result;
         }
 
-
+        /*
         void examine(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
@@ -216,6 +220,7 @@ namespace Texticular.Engine.Environment
 
 
         }
+        */
 
     }
 }
