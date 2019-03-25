@@ -55,6 +55,7 @@
     <Compile Include="GameEngine\Enums\MovementDirection.cs" />
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\TV.cs" />
+    <Compile Include="GameEngine\GameLog.cs" />
     <Compile Include="GameEngine\PlayerChoice.cs" />
     <Compile Include="GameEngine\Enums\Choices.cs" />
     <Compile Include="GameEngine\Enums\Scenes.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="GameEngine\GameStatistics.cs" />
     <Compile Include="GameEngine\Lexer.cs" />
     <Compile Include="GameEngine\Events\PlayerLocationChangedEventArgs.cs" />
-    <Compile Include="GameEngine\GameScene.cs" />
     <Compile Include="GameStates\VendingState.cs" />
     <Compile Include="GameStates\WestHallway.cs" />
     <Compile Include="GameStates\Room201Bathroom.cs" />
