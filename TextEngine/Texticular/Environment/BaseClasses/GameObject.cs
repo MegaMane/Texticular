@@ -13,26 +13,30 @@ namespace Texticular.Environment
         private static int _nextGameID = 0;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
 
-        public static T GetComponent<T>(string objKey, string objName="") where T: GameObject
+
+        public static T GetComponent<T>(string objIdentifier) where T : GameObject
         {
             GameObject obj;
+
+            var objKey = objIdentifier;
+            var objName = objIdentifier;
 
             //search by key
             bool objectFound = Objects.TryGetValue(objKey, out obj);
 
             //search by value.Name
-            if(!objectFound)
+            if (!objectFound)
             {
-                foreach(GameObject gObject in Objects.Values)
+                foreach (GameObject gObject in Objects.Values)
                 {
-                    if(objName.ToLower() == gObject.Name.ToLower())
+                    if (objName.ToLower() == gObject.Name.ToLower())
                     {
                         obj = gObject;
                         break;
                     }
                 }
             }
-            
+
             if (obj != null && obj is T)
             {
                 return (T)obj;
@@ -40,6 +44,7 @@ namespace Texticular.Environment
 
             return null;
         }
+
 
 
 
