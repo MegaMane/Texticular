@@ -1,5 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<room>
+<room name="Room 201" keyValue="room201">
+  <descriptions>
+    <description>
+      As you look around the hotel room you see an old TV with rabbit ears that looks like it came straight
+      out of the 1950's. Against the wall there is a beat up night stand with a little drawer built into it
+      and an old phone on top. Next to it is a lumpy old bed that looks like it's seen better days with a
+      dark brown stain on the sheets and a funny smell coming from it. There is an obnoxious orange couch in
+      the corner next to a small window smudged with sticky purple hand prints, the stuffing is coming out of
+      the cushions which are also spotted with purple, and the floor is covered with cans of Fast Eddies Colon
+      Cleanse. The door that leads to the hallway is to the east. There is a door to the west that leads to that sweet sweet porcelain throne.
+    </description>
+  </descriptions>
+
   <scenes>
     <scene>
       <name>Intro</name>
