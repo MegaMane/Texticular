@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\Player.cs" />
+    <Compile Include="Engine\Enums\Choices.cs" />
+    <Compile Include="Engine\Enums\MovementDirection.cs" />
+    <Compile Include="Engine\Enums\Scenes.cs" />
+    <Compile Include="Engine\GameLog.cs" />
+    <Compile Include="Engine\Parser.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
     <Compile Include="Events\GameEvents.cs" />

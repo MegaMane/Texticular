@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Texticle.GameEngine
+namespace Texticle.Events
 {
     //public delegate void PlayerLocationChangedEventHandler (object sender, PlayerLocationChangedEventArgs args);
 

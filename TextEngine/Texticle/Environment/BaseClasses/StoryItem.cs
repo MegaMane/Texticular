@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Texticle.GameEngine;
+using Texticle.Engine;
+using Texticle.Events;
+using static Texticle.Engine.Parser;
 
 namespace Texticle.Environment
 {
