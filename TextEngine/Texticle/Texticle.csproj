@@ -49,6 +49,7 @@
     <Compile Include="Engine\Enums\Scenes.cs" />
     <Compile Include="Engine\GameLog.cs" />
     <Compile Include="Engine\Parser.cs" />
+    <Compile Include="Engine\ParseTree.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
     <Compile Include="Events\GameEvents.cs" />

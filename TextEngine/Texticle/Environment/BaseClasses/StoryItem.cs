@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Texticle.Engine;
 using Texticle.Events;
-using static Texticle.Engine.Parser;
+using Texticle.Actors;
 
 namespace Texticle.Environment
 {
@@ -66,8 +66,8 @@ namespace Texticle.Environment
             //Commands["put"] = putItem;
         }
 
-        /*
 
+/*
         void takeItem(ParseTree tokens)
         {
             Player player = GameObject.GetComponent<Player>("player");
