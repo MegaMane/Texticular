@@ -8,5 +8,6 @@ namespace Texticle.Environment
 {
     public class Room:GameObject
     {
+        public List<StoryItem> Items = new List<StoryItem>();
     }
 }

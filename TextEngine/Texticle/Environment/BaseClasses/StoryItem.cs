@@ -78,7 +78,7 @@ namespace Texticle.Environment
 
 
                 //if the item is inside an open container at the players current location
-                foreach (StoryItem item in currentLocation.RoomItems)
+                foreach (StoryItem item in currentLocation.Items)
                 {
                     if(item is Container && this.LocationKey == item.KeyValue && (item as Container).IsOpen)
                     {
@@ -88,7 +88,7 @@ namespace Texticle.Environment
                         {
                             chest.RemoveItem(this);
                             LocationKey = "inventory";
-                            GameController.InputResponse.AppendFormat($"{Name} taken.\n");
+                            GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
                             player.BackPack.ItemCount += 1;
                         }
 
@@ -111,8 +111,8 @@ namespace Texticle.Environment
                 if (player.BackPack.ItemCount < player.BackPack.Slots)
                 {
                     LocationKey = "inventory";
-                    player.PlayerLocation.RoomItems.Remove(this);
-                    GameController.InputResponse.AppendFormat($"{Name} taken.\n");
+                    player.PlayerLocation.Items.Remove(this);
+                    GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
                     player.BackPack.ItemCount += 1;
                 }
 

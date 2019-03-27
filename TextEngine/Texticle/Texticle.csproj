@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Engine\Commands\ITakeable.cs" />
     <Compile Include="Engine\Commands\IViewable.cs" />
@@ -56,6 +57,8 @@
     <Compile Include="Engine\ParseTree.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
+    <Compile Include="Environment\Coins.cs" />
+    <Compile Include="Environment\Container.cs" />
     <Compile Include="Environment\Room.cs" />
     <Compile Include="Events\GameEvents.cs" />
     <Compile Include="Events\ItemLocationChangedEventArgs.cs" />

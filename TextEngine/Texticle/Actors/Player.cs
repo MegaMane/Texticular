@@ -38,7 +38,7 @@ namespace Texticle.Actors
          }
          
         public int Health { get; set; }
-        //public Inventory BackPack;
+        public Inventory BackPack;
         public int Money { get; set; } = 0;
         private string _firstName ="";
         public string FirstName { get { return _firstName; } set { _firstName = value.First().ToString().ToUpper() + value.Substring(1); } } 
