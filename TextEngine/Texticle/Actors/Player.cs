@@ -10,8 +10,9 @@ namespace Texticle.Actors
 {
     public class Player:GameObject
     {
-        /*
-        public event PlayerLocationChangedEventHandler PlayerLocationChanged;
+
+        //public event PlayerLocationChangedEventHandler PlayerLocationChanged;
+        public String LocationKey { get; private set; }
         private Room _playerLocation;
         public Room PlayerLocation
         {
@@ -22,7 +23,7 @@ namespace Texticle.Actors
             set
             {
 
-
+                /*
                 if(PlayerLocationChanged != null)
                 {
                     PlayerLocationChangedEventArgs args = new PlayerLocationChangedEventArgs();
@@ -30,12 +31,12 @@ namespace Texticle.Actors
                     args.NewLocation = value;
                     PlayerLocationChanged(this, args);
                 }
-
+                */
                 _playerLocation = value;
                 LocationKey = value.KeyValue;
             }
          }
-         */
+         
         public int Health { get; set; }
         //public Inventory BackPack;
         public int Money { get; set; } = 0;

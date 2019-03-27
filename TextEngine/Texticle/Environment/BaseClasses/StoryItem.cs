@@ -7,9 +7,10 @@ using Texticle.Engine;
 using Texticle.Events;
 using Texticle.Actors;
 
+
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject
+    public class StoryItem : GameObject, ITakeable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
@@ -56,19 +57,11 @@ namespace Texticle.Environment
             Weight = weight;
             ContextualDescription = contextualDescription;
             
-            //Commands["take"] = takeItem;
-            //Commands["get"] = takeItem;
-            //Commands["pick up"] = takeItem;
-            //Commands["grab"] = takeItem;
-
-            //Commands["drop"] = dropItem;
-
-            //Commands["put"] = putItem;
         }
 
 
-/*
-        void takeItem(ParseTree tokens)
+
+        public void Take()
         {
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
@@ -79,7 +72,7 @@ namespace Texticle.Environment
 
                 if (LocationKey == "inventory")
                 {
-                    GameController.InputResponse.AppendFormat($"You already have the item {Name}.\n");
+                    GameLog.InputResponse.AppendFormat($"You already have the item {Name}.\n");
                     return;
                 }
 
@@ -101,7 +94,7 @@ namespace Texticle.Environment
 
                         else
                         {
-                            GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                            GameLog.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                         }
 
                         return;
@@ -109,7 +102,7 @@ namespace Texticle.Environment
                 }
 
 
-                GameController.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
+                GameLog.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
                 return;
             }
 
@@ -125,79 +118,90 @@ namespace Texticle.Environment
 
                 else
                 {
-                    GameController.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                    GameLog.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                 }
             }
 
             else
             {
-                GameController.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
+                GameLog.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
             }
             
         }
 
-        void dropItem(ParseTree tokens)
+
+        public void Drop()
         {
-            Player player = GameObject.GetComponent<Player>("player");
-
-            if (LocationKey == "inventory")
-            {
-                LocationKey = player.PlayerLocation.KeyValue;
-                player.PlayerLocation.RoomItems.Add(this);
-                GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
-                player.BackPack.ItemCount -= 1;
-            }
-
-            else
-            {
-                GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
-            }
+            throw new NotImplementedException();
         }
 
-        void putItem(ParseTree tokens)
+        public void Put()
         {
-            Player player = GameObject.GetComponent<Player>("player");
-            Room currentLocation = player.PlayerLocation;
-            Room inventory = player.BackPack;
-            GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
-
-            
-            
-           
-            
-            //check if the direct object is in the players possesion or the current room
-            if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
-            {
-                //check if the indirect object is in the room and not locked
-                if(target.LocationKey == currentLocation.KeyValue)
-                {
-                    if(target is Container)
-                    {
-                        Container chest = (Container)target;
-                        if (chest.IsLocked)
-                        {
-                            GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
-                        }
-
-                        else
-                        {
-                            //check if there is enough space in the container
-                            bool itemAdded = chest.AddItem(this);
-
-                            //if so then change the items location to the container and let the player know
-                            if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
-                            //if not let the player know the item did not fit
-                            else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
-                        }
-                    }
-
-                }
-
-            }
-            //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
-
+            throw new NotImplementedException();
         }
-        */
+        /*
+       void dropItem(ParseTree tokens)
+       {
+           Player player = GameObject.GetComponent<Player>("player");
+
+           if (LocationKey == "inventory")
+           {
+               LocationKey = player.PlayerLocation.KeyValue;
+               player.PlayerLocation.RoomItems.Add(this);
+               GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
+               player.BackPack.ItemCount -= 1;
+           }
+
+           else
+           {
+               GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
+           }
+       }
+
+       void putItem(ParseTree tokens)
+       {
+           Player player = GameObject.GetComponent<Player>("player");
+           Room currentLocation = player.PlayerLocation;
+           Room inventory = player.BackPack;
+           GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
+
+
+
+
+
+           //check if the direct object is in the players possesion or the current room
+           if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
+           {
+               //check if the indirect object is in the room and not locked
+               if(target.LocationKey == currentLocation.KeyValue)
+               {
+                   if(target is Container)
+                   {
+                       Container chest = (Container)target;
+                       if (chest.IsLocked)
+                       {
+                           GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
+                       }
+
+                       else
+                       {
+                           //check if there is enough space in the container
+                           bool itemAdded = chest.AddItem(this);
+
+                           //if so then change the items location to the container and let the player know
+                           if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
+                           //if not let the player know the item did not fit
+                           else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
+                       }
+                   }
+
+               }
+
+           }
+           //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
+
+       }
+       */
 
     }
 }
