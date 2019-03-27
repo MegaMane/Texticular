@@ -79,8 +79,9 @@ namespace Texticle.Environment
 
         public override string ToString()
         {
-            return $"Class: {this.GetType().Name}\n----------------------\nGame ID: " +
-                   $"{ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: ";
+            return $"\n-----------------------------------------------------\n"
+                  +$"Class: {this.GetType().Name}\n-----------------------------------------------------\n" 
+                  +$"Game ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\n";
         }
 
 

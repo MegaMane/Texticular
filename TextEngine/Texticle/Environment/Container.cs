@@ -13,38 +13,49 @@ namespace Texticle.Environment
         public bool IsOpen { get; set; } = false;
         public bool IsLocked { get; set; } = false;
         public int SlotsFull { get; set; } = 0;
-        public int MaxSlots { get; set; } = 10;
+        public int MaxSlots { get; set; }
+        public int ItemCount { get; private set; }
 
-        public Container(string locationKey, string name, string description, string keyValue = "", string examine = "", Container container = null)
-            : base(name, description, locationKey, isPortable: false, weight: 99, keyValue: keyValue)
+        public Container(string locationKey, string name, string description, string keyValue = "", int maxSlots = 10, string contextualDescription = "")
+            : base(name, description, locationKey, isPortable: false, weight: 99, keyValue: keyValue, contextualDescription: contextualDescription)
         {
             Items = new List<StoryItem>();
-
-            //Commands["open"] = openContainer;
-
-            //Commands["close"] = closeContainer;
-            //Commands["shut"] = closeContainer;
+            MaxSlots = maxSlots;
         }
 
-        /*
-        void openContainer(ParseTree tokens)
+        public override void Take()
+        {
+            GameLog.Append($"The {this.Description} is firmly attached. ");
+        }
+
+        public override void Drop()
+        {
+            GameLog.Append($"You cant drop {this.Description} since you don't possess it.");
+        }
+
+        public override void Put(string target)
+        {
+            GameLog.Append($"This isn't russian dolls man! You can't put the {this.Description} in the {target}!.");
+        }
+
+        void Open()
         {
 
             IsOpen = true;
-            GameController.InputResponse.Append($"You open the {Description} and look inside.\n\n ");
+            GameLog.Append($"You open the {Description} and look inside.\n\n ");
             foreach (StoryItem item in Items)
             {
-                GameController.InputResponse.Append($"{item.Name}:{item.Description}\n ");
+                GameLog.Append($"{item.Name}:{item.Description}\n ");
             }
             
 
         }
-        void closeContainer(ParseTree tokens)
+        void Close(ParseTree tokens)
         {
             IsOpen = false;
-            GameController.InputResponse.Append($"You shut the {Description}\n ");
+            GameLog.Append($"You shut the {Description}\n ");
         }
-        */
+
 
         public bool AddItem(StoryItem item)
         {
@@ -56,6 +67,7 @@ namespace Texticle.Environment
             {
                 Items.Add(item);
                 item.LocationKey = this.KeyValue;
+                ItemCount++;
                 return true;
             }
 
@@ -71,6 +83,7 @@ namespace Texticle.Environment
 
 
             Items.Remove(item);
+            ItemCount--;
             return true;
             
 

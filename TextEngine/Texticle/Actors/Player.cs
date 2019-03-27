@@ -57,6 +57,13 @@ namespace Texticle.Actors
 
         }
 
+
+        public void ConsumeItem(StoryItem item)
+        {
+            throw new NotImplementedException();
+
+        }
+
         /*
         void help(ParseTree tokens)
         {

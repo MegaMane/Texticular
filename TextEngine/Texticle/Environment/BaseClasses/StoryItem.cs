@@ -48,20 +48,25 @@ namespace Texticle.Environment
         }
 
 
-        public StoryItem(string name, string description, string locationKey, bool isPortable = false, string examineResponse="", int weight = 0, string keyValue="", string contextualDescription="") 
+        public StoryItem(string name, string description, string locationKey=null, bool isPortable = false, string examineResponse="", int weight = 0, string keyValue="", string contextualDescription="") 
             :base(name, description, keyValue)
         {
             _locationKey = locationKey;
             IsPortable = isPortable;
             ExamineResponse = examineResponse ==""? description: examineResponse;
             Weight = weight;
-            ContextualDescription = contextualDescription;
+            ContextualDescription = contextualDescription == ""? ExamineResponse: contextualDescription;
             
+        }
+
+        public override string ToString()
+        {
+            return base.ToString() + $"Contextual Description: {ContextualDescription}\n";;
         }
 
 
 
-        public void Take()
+        public virtual void Take()
         {
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
@@ -70,7 +75,7 @@ namespace Texticle.Environment
             {
 
 
-                if (LocationKey == "inventory")
+                if (LocationKey == player.BackPack.KeyValue)
                 {
                     GameLog.InputResponse.AppendFormat($"You already have the item {Name}.\n");
                     return;
@@ -84,12 +89,12 @@ namespace Texticle.Environment
                     {
                         Container chest = (Container)item;
 
-                        if (player.BackPack.ItemCount < player.BackPack.Slots)
+                        if ((player.BackPack.MaxSlots - player.BackPack.SlotsOccupied) <= this.SlotsOccupied)
                         {
                             chest.RemoveItem(this);
-                            LocationKey = "inventory";
+                            player.BackPack.AddItem(this);
                             GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
-                            player.BackPack.ItemCount += 1;
+                            
                         }
 
                         else
@@ -108,12 +113,12 @@ namespace Texticle.Environment
 
             if (IsPortable)
             {
-                if (player.BackPack.ItemCount < player.BackPack.Slots)
+                if ((player.BackPack.MaxSlots - player.BackPack.SlotsOccupied) <= this.SlotsOccupied)
                 {
-                    LocationKey = "inventory";
                     player.PlayerLocation.Items.Remove(this);
+                    player.BackPack.AddItem(this);
                     GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
-                    player.BackPack.ItemCount += 1;
+                   
                 }
 
                 else
@@ -130,12 +135,12 @@ namespace Texticle.Environment
         }
 
 
-        public void Drop()
+        public virtual void Drop()
         {
             throw new NotImplementedException();
         }
 
-        public void Put()
+        public virtual void Put(string target)
         {
             throw new NotImplementedException();
         }

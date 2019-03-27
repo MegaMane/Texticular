@@ -63,9 +63,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Texticular\Texticular.csproj">
-      <Project>{1E1BE408-7D71-40EA-AAB0-367101F129DA}</Project>
-      <Name>Texticular</Name>
+    <ProjectReference Include="..\Texticle\Texticle.csproj">
+      <Project>{8e3fcdf6-1bc0-4b6d-8a9c-73d2dcd2326b}</Project>
+      <Name>Texticle</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

@@ -7,12 +7,33 @@ using Texticle.Environment;
 
 namespace Texticle.Engine
 {
-    class TakeCommand<T>:ICommand where T : GameObject,ITakeable
-    {
-        T Target;
-        public TakeCommand(T objectType, string objectKey)
+    //Itakeable storyItem = new Coins();
+    //new TakeCommand(storyItem)
+
+    /*
+     * 
+    class TakeCommand<T>:ICommand where T : GameObject,ITakeable {
+            T Target;
+
+            public TakeCommand(T objectType, string objectKey) {
+                Target = GameObject.GetComponent<T>(objectKey);
+            }
+
+                public void Execute()
         {
-            Target = GameObject.GetComponent<T>(objectKey);
+            Target.Take();
+        }
+
+     *
+     */
+
+
+    class TakeCommand:ICommand
+    {
+        public ITakeable Target { get; set; }
+        public TakeCommand(ITakeable target)
+        {
+            Target = target;
         }
         public void Execute()
         {

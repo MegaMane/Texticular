@@ -10,6 +10,6 @@ namespace Texticle.Engine
     {
         void Take();
         void Drop();
-        void Put();
+        void Put(string target);
     }
 }
