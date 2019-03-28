@@ -7,7 +7,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Container : StoryItem
+    public class Container : GameObject, IOpenable, ILockable
     {
         public List<StoryItem> Items;
         public bool IsOpen { get; set; } = false;
@@ -16,41 +16,39 @@ namespace Texticle.Environment
         public int MaxSlots { get; set; }
         public int ItemCount { get; private set; }
 
+        public string ContextualDescription { get; set; }
+        public string LocationKey { get; private set; }
+
         public Container(string locationKey, string name, string description, string keyValue = "", int maxSlots = 10, string contextualDescription = "")
-            : base(name, description, locationKey, isPortable: false, weight: 99, keyValue: keyValue, contextualDescription: contextualDescription)
+            : base(name, description,  keyValue)
         {
             Items = new List<StoryItem>();
             MaxSlots = maxSlots;
+            LocationKey = locationKey;
         }
 
-        public override void Take()
-        {
-            GameLog.Append($"The {this.Description} is firmly attached. ");
-        }
 
-        public override void Drop()
+        public virtual void Open()
         {
-            GameLog.Append($"You cant drop {this.Description} since you don't possess it.");
-        }
-
-        public override void Put(string target)
-        {
-            GameLog.Append($"This isn't russian dolls man! You can't put the {this.Description} in the {target}!.");
-        }
-
-        void Open()
-        {
-
-            IsOpen = true;
-            GameLog.Append($"You open the {Description} and look inside.\n\n ");
-            foreach (StoryItem item in Items)
+            if (IsLocked)
             {
-                GameLog.Append($"{item.Name}:{item.Description}\n ");
+                GameLog.Append($"{Description} is securely locked. You need the key\n\n ");
             }
-            
+
+            else
+            {
+                IsOpen = true;
+                GameLog.Append($"You open the {Description} and look inside.\n\n ");
+                foreach (StoryItem item in Items)
+                {
+                    GameLog.Append($"{item.Name}:{item.Description}\n ");
+                }
+
+            }
+
 
         }
-        void Close(ParseTree tokens)
+        public virtual void Close()
         {
             IsOpen = false;
             GameLog.Append($"You shut the {Description}\n ");
@@ -59,38 +57,55 @@ namespace Texticle.Environment
 
         public bool AddItem(StoryItem item)
         {
-            int SlotsRequested = item.SlotsOccupied;
-
-            SlotsFull += SlotsRequested;
-
-            if (SlotsFull <= MaxSlots)
+            if (IsOpen)
             {
-                Items.Add(item);
-                item.LocationKey = this.KeyValue;
-                ItemCount++;
-                return true;
-            }
+                int SlotsRequested = item.SlotsOccupied;
 
-            SlotsFull -= SlotsRequested;
+                SlotsFull += SlotsRequested;
+
+                if (SlotsFull <= MaxSlots)
+                {
+                    Items.Add(item);
+                    item.LocationKey = this.KeyValue;
+                    ItemCount++;
+                    return true;
+                }
+
+                SlotsFull -= SlotsRequested;
+                return false;
+            }
             return false;
         }
 
         public bool RemoveItem(StoryItem item)
         {
-            int SlotsEmptied = item.SlotsOccupied;
+            if (IsOpen)
+            {
+                int SlotsEmptied = item.SlotsOccupied;
 
-            SlotsFull -= SlotsEmptied;
+                SlotsFull -= SlotsEmptied;
 
 
-            Items.Remove(item);
-            ItemCount--;
-            return true;
-            
+                Items.Remove(item);
+                ItemCount--;
+                return true;
+
+            }
+
+            return false;
 
 
         }
 
+        public virtual void Lock()
+        {
+            throw new NotImplementedException();
+        }
 
+        public virtual void Unlock()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

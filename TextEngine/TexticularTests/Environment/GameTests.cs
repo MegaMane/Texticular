@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Texticle.Environment;
 using Texticle.Engine;
+using Texticle.Actors;
 
 namespace Texticular.Environment.Tests
 {
@@ -18,6 +19,10 @@ namespace Texticular.Environment.Tests
         {
             //Arrange
 
+            string firstName = "Jon";
+            string lastName = "";
+
+            Console.WriteLine(GameLog.FirstCharToUpper(firstName) + " " + GameLog.FirstCharToUpper(lastName));
 
             //Act
             GameLog.UserInput = ("Some Input From the User");
@@ -85,7 +90,9 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void PlayerTest()
         {
-
+            Room playerStartingLocation = new Room("Positive Tech Office", "A hot stuffy little office that smells faintly of farts.", "Otis");
+            Player testPlayer = new Player(playerName: "Jonny Rotten", description: "A strapping young lad with a rotten disposition.", playerLocation: playerStartingLocation);
+            Console.Write(testPlayer.ToString());
         }
 
         [TestMethod()]

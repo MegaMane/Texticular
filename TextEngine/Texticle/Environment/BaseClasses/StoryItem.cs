@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Texticle.Engine;
-using Texticle.Events;
 using Texticle.Actors;
 
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject, ITakeable
+    public class StoryItem : GameObject, ITakeable, IExaminable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
@@ -18,9 +17,9 @@ namespace Texticle.Environment
         //The item is on the bed the item is on the floor etc.
         public string ContextualDescription { get; set; }
         public int SlotsOccupied { get; set; } = 1;
-        public String ExamineResponse { get; set; }
-        private String _locationKey;
-        public String LocationKey
+        public string ExamineResponse { get; set; }
+        private string _locationKey;
+        public string LocationKey
         {
             get { return _locationKey; }
             set
@@ -83,13 +82,13 @@ namespace Texticle.Environment
 
 
                 //if the item is inside an open container at the players current location
-                foreach (StoryItem item in currentLocation.Items)
+                foreach (var item in currentLocation.Items)
                 {
                     if(item is Container && this.LocationKey == item.KeyValue && (item as Container).IsOpen)
                     {
                         Container chest = (Container)item;
 
-                        if ((player.BackPack.MaxSlots - player.BackPack.SlotsOccupied) <= this.SlotsOccupied)
+                        if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) <= this.SlotsOccupied)
                         {
                             chest.RemoveItem(this);
                             player.BackPack.AddItem(this);
@@ -113,7 +112,7 @@ namespace Texticle.Environment
 
             if (IsPortable)
             {
-                if ((player.BackPack.MaxSlots - player.BackPack.SlotsOccupied) <= this.SlotsOccupied)
+                if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) <= this.SlotsOccupied)
                 {
                     player.PlayerLocation.Items.Remove(this);
                     player.BackPack.AddItem(this);
@@ -142,71 +141,82 @@ namespace Texticle.Environment
 
         public virtual void Put(string target)
         {
+            //call targets target.AddItem(this) method and if it returns false let the player know it won't fit
+            throw new NotImplementedException();
+        }
+
+        public void Look()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Examine()
+        {
             throw new NotImplementedException();
         }
         /*
-       void dropItem(ParseTree tokens)
-       {
-           Player player = GameObject.GetComponent<Player>("player");
+void dropItem(ParseTree tokens)
+{
+  Player player = GameObject.GetComponent<Player>("player");
 
-           if (LocationKey == "inventory")
-           {
-               LocationKey = player.PlayerLocation.KeyValue;
-               player.PlayerLocation.RoomItems.Add(this);
-               GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
-               player.BackPack.ItemCount -= 1;
-           }
+  if (LocationKey == "inventory")
+  {
+      LocationKey = player.PlayerLocation.KeyValue;
+      player.PlayerLocation.RoomItems.Add(this);
+      GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
+      player.BackPack.ItemCount -= 1;
+  }
 
-           else
-           {
-               GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
-           }
-       }
+  else
+  {
+      GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
+  }
+}
 
-       void putItem(ParseTree tokens)
-       {
-           Player player = GameObject.GetComponent<Player>("player");
-           Room currentLocation = player.PlayerLocation;
-           Room inventory = player.BackPack;
-           GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
-
-
+void putItem(ParseTree tokens)
+{
+  Player player = GameObject.GetComponent<Player>("player");
+  Room currentLocation = player.PlayerLocation;
+  Room inventory = player.BackPack;
+  GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
 
 
 
-           //check if the direct object is in the players possesion or the current room
-           if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
-           {
-               //check if the indirect object is in the room and not locked
-               if(target.LocationKey == currentLocation.KeyValue)
-               {
-                   if(target is Container)
-                   {
-                       Container chest = (Container)target;
-                       if (chest.IsLocked)
-                       {
-                           GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
-                       }
 
-                       else
-                       {
-                           //check if there is enough space in the container
-                           bool itemAdded = chest.AddItem(this);
 
-                           //if so then change the items location to the container and let the player know
-                           if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
-                           //if not let the player know the item did not fit
-                           else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
-                       }
-                   }
+  //check if the direct object is in the players possesion or the current room
+  if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
+  {
+      //check if the indirect object is in the room and not locked
+      if(target.LocationKey == currentLocation.KeyValue)
+      {
+          if(target is Container)
+          {
+              Container chest = (Container)target;
+              if (chest.IsLocked)
+              {
+                  GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
+              }
 
-               }
+              else
+              {
+                  //check if there is enough space in the container
+                  bool itemAdded = chest.AddItem(this);
 
-           }
-           //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
+                  //if so then change the items location to the container and let the player know
+                  if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
+                  //if not let the player know the item did not fit
+                  else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
+              }
+          }
 
-       }
-       */
+      }
+
+  }
+  //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
+
+}
+*/
 
     }
 }

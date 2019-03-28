@@ -11,7 +11,7 @@ namespace Texticle.Environment
     {
         private static int roomCount = 0;
         public static int RoomCount { get { return roomCount; } }
-        public List<StoryItem> Items = new List<StoryItem>();
+        public List<GameObject> Items = new List<GameObject>();
 
 
 

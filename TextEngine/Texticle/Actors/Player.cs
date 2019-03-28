@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Texticle.Environment;
 using Texticle.Engine;
 
+
 namespace Texticle.Actors
 {
     public class Player:GameObject
     {
 
-        //public event PlayerLocationChangedEventHandler PlayerLocationChanged;
+        public event OnPlayerLocationChanged PlayerLocationChanged;
         public String LocationKey { get; private set; }
         private Room _playerLocation;
         public Room PlayerLocation
@@ -23,15 +24,15 @@ namespace Texticle.Actors
             set
             {
 
-                /*
-                if(PlayerLocationChanged != null)
+
+                if (PlayerLocationChanged != null)
                 {
                     PlayerLocationChangedEventArgs args = new PlayerLocationChangedEventArgs();
                     args.CurrentLocation = _playerLocation;
                     args.NewLocation = value;
                     PlayerLocationChanged(this, args);
                 }
-                */
+
                 _playerLocation = value;
                 LocationKey = value.KeyValue;
             }
@@ -39,24 +40,31 @@ namespace Texticle.Actors
          
         public int Health { get; set; }
         public Inventory BackPack;
-        public int Money { get; set; } = 0;
+        public int Money { get; set; }
         private string _firstName ="";
-        public string FirstName { get { return _firstName; } set { _firstName = value.First().ToString().ToUpper() + value.Substring(1); } } 
-        public string LastName { get; set; } = "";
+        public string FirstName { get { return _firstName; } set { _firstName = GameLog.FirstCharToUpper(value); } }
+        private string _lastName;
+        public string LastName { get { return _lastName; } set { _lastName = GameLog.FirstCharToUpper(value); } }
+        private string _playerName;
+        public string PlayerName { get { return _playerName; } private set { _playerName = value; } }
 
-        public Player(string name, string description, int health):
-            base(name, description, keyValue:"player")
+        public Player(string description, Room playerLocation, string playerName = "????", int health =100, int money=0):
+            base(name:"Player", description:description, keyValue:"player")
         {
-            //this.PlayerLocation = playerlocation;
-            this.Health = health;
-           // Commands["help"] = help;
-
-            //Commands["inventory"] = inventory;
-           // Commands["backpack"] = inventory;
-           // Commands["inventory"] = inventory;
+            PlayerName = playerName;
+            PlayerLocation = playerLocation;
+            Health = health;
+            BackPack = new Inventory();
+            Money = money;
 
         }
 
+        public void SetName(string firstName, string lastName="")
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            _playerName = (GameLog.FirstCharToUpper(firstName) + " " + GameLog.FirstCharToUpper(firstName)).Trim();
+        }
 
         public void ConsumeItem(StoryItem item)
         {
@@ -64,60 +72,39 @@ namespace Texticle.Actors
 
         }
 
-        /*
-        void help(ParseTree tokens)
+        public void OpenBackpack()
         {
-            if (tokens.DirectObject == null && tokens.IndirectObject == null)
-            {
-                GameController.InputResponse.Append("\n\n----------------------\n" +
-                                     "Command List\n" +
-                                     "----------------------\n\n");
-                GameController.InputResponse.Append(
+            BackPack.Open();
+        }
+
+
+        public void Help()
+        {
+
+            GameLog.Append("\n\n----------------------\n" 
+                           +"Command List\n" 
+                           +"----------------------\n\n");
+                GameLog.Append(
                 "Go, Walk, Move: Typing any of these will move the character in the direction specified.\n"
                 + "Look: take a look at your sorroundings and list any obvious exits and visible items.\n"
                 + "Examine: Take a closer look at an object.\n"
                 + "Get, Take, Grab, Pick Up: Typing any of these will attempt to pick up the \n\t\t\t  specified object and add it to your invnetory.\n"
                 + "Drop: Drop the specified object at the players current position. \n      Some objects my persist in the location they were dropped.\n"
-                + "Inventory: Open the player Inventory.\n\n"
+                + "Inventor or Backpack: View your Inventory.\n\n"
                 );
-            }
 
-            else
-            {
-                GameController.InputResponse.Append("I don't understand. If you wan't help just type help!\n");
-            }
 
         }
 
-        void inventory(ParseTree tokens)
+        public override string ToString()
         {
-
-
-            if (tokens.DirectObject != null && tokens.IndirectObject != null)
-            {
-                GameController.InputResponse.Append("The inventory command is not valid with any other combination of words. Try typing 'Inventory', 'Backpack', or 'Inv'\n ");
-                return;
-            }
-
-            GameController.InputResponse.Append("\n Inventory\n ");
-            GameController.InputResponse.Append("------------------------------------------------------\n\n ");
-
-            foreach (var item in GameObject.Objects.Values)
-            {
-                if (item.LocationKey == "inventory")
-                {
-                    GameController.InputResponse.AppendFormat("{0} : {1}\n ", item.Name, item.Description);
-                }
-
-
-
-            }
-
-            GameController.InputResponse.Append("\n ");
+            return $"\n-----------------------------------------------------\n"
+                  + $"Class: {this.GetType().Name}\n-----------------------------------------------------\n"
+                  + $"Game ID: {ID}\nKeyValue: {KeyValue}\nName: {PlayerName}\nDescription: {Description}\n"
+                  +$"Health: {Health}\nMoney: {Money}\nLocation: {PlayerLocation.Name}";
         }
 
 
-    */
 
 
     }

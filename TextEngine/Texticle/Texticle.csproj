@@ -45,7 +45,10 @@
   <ItemGroup>
     <Compile Include="Actors\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
+    <Compile Include="Engine\Commands\IExaminable.cs" />
+    <Compile Include="Engine\Commands\ILockable.cs" />
     <Compile Include="Engine\Commands\ITakeable.cs" />
+    <Compile Include="Engine\Commands\IOpenable.cs" />
     <Compile Include="Engine\Commands\IViewable.cs" />
     <Compile Include="Engine\Commands\ICommand.cs" />
     <Compile Include="Engine\Commands\TakeCommand.cs" />
@@ -56,14 +59,16 @@
     <Compile Include="Engine\Parser.cs" />
     <Compile Include="Engine\ParseTree.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
+    <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
     <Compile Include="Environment\Coins.cs" />
     <Compile Include="Environment\Container.cs" />
     <Compile Include="Environment\Room.cs" />
-    <Compile Include="Events\GameEvents.cs" />
-    <Compile Include="Events\ItemLocationChangedEventArgs.cs" />
-    <Compile Include="Interfaces\IGameState.cs" />
-    <Compile Include="Interfaces\IInteractable.cs" />
+    <Compile Include="Environment\TV.cs" />
+    <Compile Include="Engine\Events\GameEvents.cs" />
+    <Compile Include="Engine\Events\ItemLocationChangedEventArgs.cs" />
+    <Compile Include="Engine\Events\PlayerLocationChangedEventArgs.cs" />
+    <Compile Include="Engine\GameStates\IGameState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -74,6 +79,9 @@
     <Content Include="Data\Room201.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="zProjectNotes\ParserAlgorithm.txt" />
+    <Content Include="zProjectNotes\Scratch.txt" />
+    <Content Include="zProjectNotes\YouGottaGo.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

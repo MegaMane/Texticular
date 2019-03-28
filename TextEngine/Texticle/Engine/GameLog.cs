@@ -49,5 +49,12 @@ namespace Texticle.Engine
                 return _instance;
             }
         }
-    }
+
+        public static string FirstCharToUpper(string s)
+        {
+            if (s.Length > 0)
+                return s.First().ToString().ToUpper() + s.Substring(1);
+            else return "";
+         }
+}
 }

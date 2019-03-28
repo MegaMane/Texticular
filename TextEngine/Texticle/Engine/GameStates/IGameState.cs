@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Texticle.Interfaces.GameStates
+namespace Texticle.Engine
 {
     public interface IGameState
     {

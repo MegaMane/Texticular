@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Texticle.Events
+namespace Texticle.Engine
 {
     public class ItemLocationChangedEventArgs
     {
