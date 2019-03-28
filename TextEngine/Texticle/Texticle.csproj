@@ -46,6 +46,8 @@
     <Compile Include="Actors\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Engine\Commands\IExaminable.cs" />
+    <Compile Include="Engine\Commands\IConsumable.cs" />
+    <Compile Include="Engine\Commands\IUnlockable.cs" />
     <Compile Include="Engine\Commands\ILockable.cs" />
     <Compile Include="Engine\Commands\ITakeable.cs" />
     <Compile Include="Engine\Commands\IOpenable.cs" />
@@ -55,7 +57,10 @@
     <Compile Include="Engine\Enums\Choices.cs" />
     <Compile Include="Engine\Enums\MovementDirection.cs" />
     <Compile Include="Engine\Enums\Scenes.cs" />
+    <Compile Include="Engine\Game.cs" />
+    <Compile Include="Engine\GameController.cs" />
     <Compile Include="Engine\GameLog.cs" />
+    <Compile Include="Engine\GameStatistics.cs" />
     <Compile Include="Engine\Parser.cs" />
     <Compile Include="Engine\ParseTree.cs" />
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
@@ -63,6 +68,8 @@
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
     <Compile Include="Environment\Coins.cs" />
     <Compile Include="Environment\Container.cs" />
+    <Compile Include="Environment\DoorKey.cs" />
+    <Compile Include="Environment\Door.cs" />
     <Compile Include="Environment\Room.cs" />
     <Compile Include="Environment\TV.cs" />
     <Compile Include="Engine\Events\GameEvents.cs" />

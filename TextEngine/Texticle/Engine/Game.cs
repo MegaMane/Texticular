@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Texticle.Engine
 {
-    public interface ILockable
+    public class Game
     {
-        void Lock();
     }
 }

@@ -108,31 +108,34 @@ namespace Texticular.Environment.Tests
         }
 
 
-        [TestMethod()]
-        public void TakeItemTest()
-        {
-            //Player
-            //Inventory
-            //Room[item]
-            //Room2 { no item}
-            //Container
-        }
 
         [TestMethod()]
-        public void DropItemTest()
+        public void DoorTest()
         {
+
 
         }
 
         [TestMethod()]
-        public void PutItemTest()
+        public void CointTest()
         {
-            //put in container
-            //put in inventory
+
 
         }
 
+        [TestMethod()]
+        public void TVTest()
+        {
 
+
+        }
+
+        [TestMethod()]
+        public void VendingMachineTest()
+        {
+
+
+        }
 
 
     }

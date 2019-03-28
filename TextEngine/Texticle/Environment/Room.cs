@@ -16,7 +16,7 @@ namespace Texticle.Environment
 
 
 
-        //public Dictionary<string, Exit> Exits = new Dictionary<string, Exit>();
+        public Dictionary<string, Door> Exits = new Dictionary<string, Door>();
 
         public Room(string name, string description, string keyValue)
             : base(name, description, keyValue)

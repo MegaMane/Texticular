@@ -12,6 +12,15 @@ namespace Texticle.Environment
 
         private static int _nextGameID = 0;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
+        private static Dictionary<string, GameObject> UsedObjects = new Dictionary<string, GameObject>();
+
+        public static void Consume(string keyVal)
+        {
+            GameObject usedObject = Objects[keyVal];
+            Objects.Remove(keyVal);
+            UsedObjects.Add(keyVal, usedObject);
+            usedObject = null;
+        }
 
         public static T GetComponent<T>(string objIdentifier) where T : GameObject
         {

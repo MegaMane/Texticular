@@ -4,7 +4,7 @@ using Texticle.Engine;
 
 namespace Texticle.Actors
 {
-    public class Inventory:Container
+    public class Inventory:Container, ILockable
     {
 
         public new bool IsOpen { get; private set; }
@@ -38,7 +38,7 @@ namespace Texticle.Actors
             GameLog.Append("\n ");
         }
 
-        public override void Lock()
+        public void Lock()
         {
             GameLog.Append("You zip you backpack up tight.\n ");
         }

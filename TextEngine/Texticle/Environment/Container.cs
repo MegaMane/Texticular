@@ -7,7 +7,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Container : GameObject, IOpenable, ILockable
+    public class Container : GameObject, IOpenable, IUnlockable
     {
         public List<StoryItem> Items;
         public bool IsOpen { get; set; } = false;
@@ -97,10 +97,6 @@ namespace Texticle.Environment
 
         }
 
-        public virtual void Lock()
-        {
-            throw new NotImplementedException();
-        }
 
         public virtual void Unlock()
         {

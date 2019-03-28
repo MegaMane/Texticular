@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Texticle.Engine
 {
-    public interface ILockable
+    public interface IUnlockable
     {
-        void Lock();
+        void Unlock();
     }
 }
