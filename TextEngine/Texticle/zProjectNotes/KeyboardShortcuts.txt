@@ -1,0 +1,6 @@
+﻿Comment Selection:   CTRL + K + C
+Uncomment Selection: CTRL + K + U
+
+Expand all:                         CTRL + M + L
+Collapse all:                       CTRL + M + O
+Expand/Collapse on cursor location: CTRL + M + M

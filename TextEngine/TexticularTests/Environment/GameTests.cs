@@ -98,7 +98,47 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void ContainerTest()
         {
+            Room TestRoom = new Room("Bedroom", "A room with little action figures stacked up to the ceiling. A nerd must live here.", "masterBedroom");
 
+
+            Container chest = new Container("masterBedroom", "Sentry Safe", "a digital safe for keeping things tucked away", "sentrySafe", 5);
+
+            chest.Open();
+
+            chest.AddItem( new StoryItem
+            (
+                name: "Carnage Mug",
+                description: "A red ceramic mug that looks like the marvel villain Carnage",
+                keyValue: "carnageMug",
+                contextualDescription: "There is a red mug that looks like a Carnage head tucked in the corner",
+                slotsOccupied: 4
+            ));
+
+            chest.AddItem(new StoryItem
+            (
+                name: "Stick Of Gum",
+                description: "Your last piece of juicy fruit",
+                keyValue: "gumStick"
+            ));
+
+            chest.AddItem(new StoryItem
+            (
+                name: "Vape Pen",
+                description: "It's caked in resing and cotton candy flavor!",
+                keyValue: "vapePen"
+            ));
+
+            chest.Close();
+
+            Console.WriteLine(chest.ToString());
+
+            chest.Open();
+            chest.RemoveItem("gumStick");
+            chest.AddItem((GameObject.Objects["vapePen"] as StoryItem));
+            Console.WriteLine(chest.ToString());
+
+            Assert.AreEqual(chest.Items.Count, 2);
+            
         }
 
         [TestMethod()]

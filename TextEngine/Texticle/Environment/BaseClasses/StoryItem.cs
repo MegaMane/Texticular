@@ -16,7 +16,7 @@ namespace Texticle.Environment
 
         //The item is on the bed the item is on the floor etc.
         public string ContextualDescription { get; set; }
-        public int SlotsOccupied { get; set; } = 1;
+        public int SlotsOccupied { get; private set; }
         public string ExamineResponse { get; set; }
         private string _locationKey;
         public string LocationKey
@@ -47,7 +47,7 @@ namespace Texticle.Environment
         }
 
 
-        public StoryItem(string name, string description, string locationKey=null, bool isPortable = true, string examineResponse="", int weight = 0, string keyValue="", string contextualDescription="") 
+        public StoryItem(string name, string description, string locationKey=null, bool isPortable = true, string examineResponse="", int weight = 0, string keyValue="", string contextualDescription="", int slotsOccupied=1) 
             :base(name, description, keyValue)
         {
             _locationKey = locationKey;
@@ -55,6 +55,7 @@ namespace Texticle.Environment
             ExamineResponse = examineResponse ==""? description: examineResponse;
             Weight = weight;
             ContextualDescription = contextualDescription == ""? ExamineResponse: contextualDescription;
+            SlotsOccupied = slotsOccupied;
             
         }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Container : GameObject, IOpenable, IUnlockable
+    public class Container : GameObject, IOpenable, IUnlockable, IEnumerable<StoryItem>
     {
         public List<StoryItem> Items;
         public bool IsOpen { get; set; } = false;
@@ -15,6 +16,8 @@ namespace Texticle.Environment
         public int SlotsFull { get; set; } = 0;
         public int MaxSlots { get; set; }
         public int ItemCount { get; private set; }
+
+        public Key Key { get; set; }
 
         public string ContextualDescription { get; set; }
         public string LocationKey { get; private set; }
@@ -32,16 +35,16 @@ namespace Texticle.Environment
         {
             if (IsLocked)
             {
-                GameLog.Append($"{Description} is securely locked. You need the key\n\n ");
+                GameLog.Append($"The {Name} is securely locked. You need the key\n\n ");
             }
 
             else
             {
                 IsOpen = true;
-                GameLog.Append($"You open the {Description} and look inside.\n\n ");
+                GameLog.Append($"You open the {Name} and look inside...\n\n ");
                 foreach (StoryItem item in Items)
                 {
-                    GameLog.Append($"{item.Name}:{item.Description}\n ");
+                    GameLog.Append($"{item.Name}: {item.Description}\n ");
                 }
 
             }
@@ -51,7 +54,7 @@ namespace Texticle.Environment
         public virtual void Close()
         {
             IsOpen = false;
-            GameLog.Append($"You shut the {Description}\n ");
+            GameLog.Append($"You shut the {Name}\n ");
         }
 
 
@@ -98,9 +101,55 @@ namespace Texticle.Environment
         }
 
 
+        public bool RemoveItem(string itemKey)
+        {
+            StoryItem item = Items.Find(i => i.KeyValue == itemKey);
+
+            if (IsOpen)
+            {
+                int SlotsEmptied = item.SlotsOccupied;
+
+                SlotsFull -= SlotsEmptied;
+
+
+                Items.Remove(item);
+                ItemCount--;
+                return true;
+
+            }
+
+            return false;
+
+
+        }
+
+
         public virtual void Unlock()
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder results = new StringBuilder();
+            results.Append(base.ToString());
+            results.Append("\n\n--------------------Items in Container------------------------------------\n\n");
+            foreach (StoryItem item in Items)
+            {
+                results.Append($"{item.Name}: {item.Description}\n");
+            }
+
+            return results.ToString();
+        }
+
+        public IEnumerator<StoryItem> GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 

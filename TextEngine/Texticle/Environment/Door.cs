@@ -12,7 +12,7 @@ namespace Texticle.Environment
     {
         public string DestinationKey;
         public bool IsLocked;
-        public DoorKey Key{ get; set; }
+        public Key Key{ get; set; }
 
 
         //public Exit(string locationKey, Direction exitPosition, string destinationKey, string name = "Exit", string description = "Exit") :

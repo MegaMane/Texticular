@@ -8,9 +8,9 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class DoorKey:StoryItem, IConsumable
+    public class Key:StoryItem, IConsumable
     {
-        public DoorKey(string name, string description, string locationKey, string examineResponse = "", string keyValue = "", string contextualDescription = "")
+        public Key(string name, string description, string locationKey, string examineResponse = "", string keyValue = "", string contextualDescription = "")
             : base(name, description, locationKey, isPortable: true, examineResponse: examineResponse, weight: 0, keyValue: keyValue, contextualDescription: contextualDescription)
         {
 
