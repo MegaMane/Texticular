@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\Inventory.cs" />
+    <Compile Include="Environment\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Engine\Commands\IExaminable.cs" />
     <Compile Include="Engine\Commands\IConsumable.cs" />
@@ -67,7 +67,8 @@
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
     <Compile Include="Environment\Coins.cs" />
-    <Compile Include="Environment\Container.cs" />
+    <Compile Include="Environment\BaseClasses\Container.cs" />
+    <Compile Include="Environment\Chest.cs" />
     <Compile Include="Environment\Key.cs" />
     <Compile Include="Environment\Door.cs" />
     <Compile Include="Environment\Room.cs" />

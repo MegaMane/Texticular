@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticle.Actors;
 using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Container : GameObject, IOpenable, IUnlockable, IEnumerable<StoryItem>
+    public class Container : GameObject, IOpenable, IEnumerable<StoryItem>
     {
         public List<StoryItem> Items;
-        public bool IsOpen { get; set; } = false;
-        public bool IsLocked { get; set; } = false;
+        public virtual bool IsOpen { get; set; }
+
         public int SlotsFull { get; set; } = 0;
         public int MaxSlots { get; set; }
         public int ItemCount { get; private set; }
 
-        public Key Key { get; set; }
-
+  
         public string ContextualDescription { get; set; }
         public string LocationKey { get; private set; }
 
@@ -28,26 +28,22 @@ namespace Texticle.Environment
             Items = new List<StoryItem>();
             MaxSlots = maxSlots;
             LocationKey = locationKey;
+            IsOpen = false;
         }
 
 
         public virtual void Open()
         {
-            if (IsLocked)
+
+
+            IsOpen = true;
+            GameLog.Append($"You open the {Name} and look inside...\n\n ");
+            foreach (StoryItem item in Items)
             {
-                GameLog.Append($"The {Name} is securely locked. You need the key\n\n ");
+                GameLog.Append($"{item.Name}: {item.Description}\n ");
             }
 
-            else
-            {
-                IsOpen = true;
-                GameLog.Append($"You open the {Name} and look inside...\n\n ");
-                foreach (StoryItem item in Items)
-                {
-                    GameLog.Append($"{item.Name}: {item.Description}\n ");
-                }
-
-            }
+            
 
 
         }
@@ -124,10 +120,6 @@ namespace Texticle.Environment
         }
 
 
-        public virtual void Unlock()
-        {
-            throw new NotImplementedException();
-        }
 
         public override string ToString()
         {

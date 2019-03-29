@@ -98,10 +98,25 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void ContainerTest()
         {
+            //test unlocking the container
+            //test adding and removing items
+
+            //Arrange
             Room TestRoom = new Room("Bedroom", "A room with little action figures stacked up to the ceiling. A nerd must live here.", "masterBedroom");
+            Player testPlayer = new Player(playerName: "Jonny Rotten", description: "A strapping young lad with a rotten disposition.", playerLocation: TestRoom);
+            Key SafeCode = new Key("Sentry Safe Code", "A post it note with the code to the safe: 89054", "masterBedroom", consumeText: "You enter the safecode.\n");
+            Chest chest = new Chest("masterBedroom", "Sentry Safe", "a digital safe for keeping things tucked away", "sentrySafe", 5);
+            testPlayer.BackPack.AddItem(SafeCode);
 
+            chest.Key = SafeCode;
+            chest.IsLocked = true;
 
-            Container chest = new Container("masterBedroom", "Sentry Safe", "a digital safe for keeping things tucked away", "sentrySafe", 5);
+            //Act
+            chest.Open();
+
+            Console.Write(GameLog.DisplayResponse());
+            chest.Unlock(chest.Key);
+            Console.Write(GameLog.DisplayResponse());
 
             chest.Open();
 
@@ -124,7 +139,7 @@ namespace Texticular.Environment.Tests
             chest.AddItem(new StoryItem
             (
                 name: "Vape Pen",
-                description: "It's caked in resing and cotton candy flavor!",
+                description: "It's caked in resin and cotton candy flavor!",
                 keyValue: "vapePen"
             ));
 
@@ -137,6 +152,8 @@ namespace Texticular.Environment.Tests
             chest.AddItem((GameObject.Objects["vapePen"] as StoryItem));
             Console.WriteLine(chest.ToString());
 
+
+            //Assert
             Assert.AreEqual(chest.Items.Count, 2);
             
         }

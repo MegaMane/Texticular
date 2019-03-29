@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using Texticle.Environment;
 using Texticle.Engine;
+using System.Collections;
 
-namespace Texticle.Actors
+namespace Texticle.Environment
 {
-    public class Inventory:Container, ILockable
+    public class Inventory:Container
     {
 
-        public new bool IsOpen { get; private set; }
-        public new bool IsLocked { get; private set; }
 
 
         public Inventory():
-            base(locationKey:"player", name:"Inventory", description:"trusty black backback", keyValue:"inventory")
+            base(locationKey:"player",name: "Inventory", description:"trusty black backback", keyValue:"inventory")
 
         {
-            IsLocked = false;
-            IsOpen = true;
             MaxSlots = 20;
+            IsOpen = true;
         }
 
 
@@ -38,15 +36,12 @@ namespace Texticle.Actors
             GameLog.Append("\n ");
         }
 
-        public void Lock()
+        public override void Close()
         {
-            GameLog.Append("You zip you backpack up tight.\n ");
+            GameLog.Append("You zip up your backpack tight.\n\n ");
         }
 
-        public override void Unlock()
-        {
-            Open();
-        }
+
 
     }
 }

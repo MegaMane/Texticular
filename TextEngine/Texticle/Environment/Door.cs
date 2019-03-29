@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Texticle.Actors;
 using Texticle.Engine;
 
 
@@ -90,9 +91,22 @@ namespace Texticle.Environment
             //return $"{this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\n";
         }
 
-        public void Unlock()
+        public void Unlock(Key key)
         {
-            throw new NotImplementedException();
+            if(key.LocationKey == "inventory" && key.KeyValue == this.Key.KeyValue)
+            {
+                Player player = GameObject.GetComponent<Player>("player");
+                player.BackPack.RemoveItem(Key);
+                Key.Consume();
+                GameLog.Append($"{Name} opens...");
+                IsLocked = false;
+
+            }
+
+            else
+            {
+                GameLog.Append("You don't have the right key.");
+            }
         }
     }
 }

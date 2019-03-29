@@ -10,14 +10,17 @@ namespace Texticle.Environment
 {
     public class Key:StoryItem, IConsumable
     {
-        public Key(string name, string description, string locationKey, string examineResponse = "", string keyValue = "", string contextualDescription = "")
+        
+        public Key(string name, string description, string locationKey, string examineResponse = "", string keyValue = "", string contextualDescription = "", string consumeText="")
             : base(name, description, locationKey, isPortable: true, examineResponse: examineResponse, weight: 0, keyValue: keyValue, contextualDescription: contextualDescription)
         {
-
+            ConsumeText = consumeText;
         }
 
+        public string ConsumeText { get; set; }
         public void Consume()
         {
+            GameLog.Append(ConsumeText);
             GameObject.Consume(this.KeyValue);
         }
 
@@ -33,15 +36,16 @@ namespace Texticle.Environment
                 //the player is moved to the destination for the door
                 foreach (Door door in currentLocation.Exits.Values)
                 {
-                    if (door.Key.Name.ToLower() == this.Name.ToLower())
+                    if (door.Key.KeyValue == this.KeyValue)
                     {
-                        Room destination = GameObject.GetComponent<Room>(door.DestinationKey);
+
                         player.BackPack.RemoveItem(this);
                         this.Consume();
                         GameLog.Append($"{door.Name} opens...");
                         door.IsLocked = false;
 
-                        player.PlayerLocation = destination;
+                        //Room destination = GameObject.GetComponent<Room>(door.DestinationKey);
+                        //player.PlayerLocation = destination;
                         return;
                     }
                 }
