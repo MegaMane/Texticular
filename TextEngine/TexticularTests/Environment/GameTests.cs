@@ -169,7 +169,7 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void DoorTest()
         {
-
+            
 
         }
 

@@ -43,6 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Bathroom201.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\EastHallway.cs" />
+    <Compile Include="Engine\GameStates\ExitGame.cs" />
+    <Compile Include="Engine\GameStates\GameOver.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Elevator.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Room201.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Room202.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Room203.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\Room204.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\SupplyCloset.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\VendingDen.cs" />
+    <Compile Include="Engine\GameStates\Hotel\SecondFloor\WestHallway.cs" />
     <Compile Include="Environment\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Engine\Commands\IExaminable.cs" />
@@ -76,7 +88,8 @@
     <Compile Include="Engine\Events\GameEvents.cs" />
     <Compile Include="Engine\Events\ItemLocationChangedEventArgs.cs" />
     <Compile Include="Engine\Events\PlayerLocationChangedEventArgs.cs" />
-    <Compile Include="Engine\GameStates\IGameState.cs" />
+    <Compile Include="Engine\GameStates\Interface\IGameState.cs" />
+    <Compile Include="Environment\VendingMachine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,6 +104,9 @@
     <Content Include="zProjectNotes\ParserAlgorithm.txt" />
     <Content Include="zProjectNotes\Scratch.txt" />
     <Content Include="zProjectNotes\YouGottaGo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UI\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

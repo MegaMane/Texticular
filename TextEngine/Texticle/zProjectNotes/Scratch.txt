@@ -29,9 +29,15 @@ talk to Fred
 Attack the Cobra with the sword
 
 To Do:
-         Think about the delegate pattern in story and choice game states and how to make switching more clear
-         Move using the location name or a cardinal direction
-		 implement the rest of the items and the rest of the map
+         finish implementing prop, coin
+		 finish writing tests for everything I have so far
+		 Inventory, Door, Coins, TV
+		 Add in a Room Navigation test (calling fuctions) {go North, go to the hallway}
+		 Add in Parser Test for Room Navigation
+		
+		Add in Vending Machine, Phone, Couch {emitter: coins}, Bed, Ice Machine {emitter: ice}, Bucket
+
+
         /*
          * Move Between Rooms with unlocked doors {complete}
          * Look at surroundings {complete}

@@ -9,87 +9,114 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Door : GameObject, IUnlockable
+    /// <summary>
+    /// Door is a link between two Rooms or Game States
+    /// the destination Room or State is determined based on the context
+    /// of the players current location. Both Rooms reference the same door that connects them.
+    /// </summary>
+    public class Door : GameObject, IUnlockable, IOpenable
     {
-        public string DestinationKey;
-        public bool IsLocked;
+
+        /// <summary>
+        /// Reperesents a collection of destinatons using the Room KeyValue property 
+        /// (unique Identifier) as its key and a Room (Destination) as its value.
+        /// the correct destination can be determined based on the players location
+        /// so the same door can be referenced by both the rooms it connects
+        /// </summary>
+        public Dictionary <string,Room> Destinations { get; set; }
+        public bool IsLocked { get; set; }
+        bool IsOpen = false;
         public Key Key{ get; set; }
 
 
-        //public Exit(string locationKey, Direction exitPosition, string destinationKey, string name = "Exit", string description = "Exit") :
-        //    base(name, description)
-        //{
-        //    LocationKey = locationKey;
-        //    ExitPosition = exitPosition;
-        //    DestinationKey = destinationKey;
-        //    IsLocked = false;
-        //}
-
-        //public Exit(string locationKey, string destinationKey, bool isLocked, string keyName="none", string name = "Exit", string description = "Exit", string keyValue="") 
-        //    :base (name, description)
-        //{
-        //    LocationKey = locationKey;
-        //    KeyValue = keyValue;
-        //    DestinationKey = destinationKey;
-        //    IsLocked = isLocked;
-        //    KeyName = keyName;
-
-        //    Commands["open"] = openDoor;
-        //    Commands["unlock"] = openDoor;
-        //}
-
-        //void openDoor(ParseTree tokens)
-        //{
-        //    Player player = GameObject.GetComponent<Player>("player");
-        //    Room currentLocation = player.PlayerLocation;
-
-
-        //    if (player.LocationKey != this.LocationKey)
-        //    {
-        //        GameController.InputResponse.Append("I don't see that door.\n");
-        //        return;
-        //    }
-
-        //    //If the door is locked check to see if the player has the correct key in inventory
-        //    if (IsLocked)
-        //    {
-        //        Inventory inventory = GameObject.GetComponent<Inventory>("inventory");
-        //        DoorKey doorKey = null;
-
-        //        foreach (StoryItem item in inventory.RoomItems)
-        //        {
-        //            if(item.Name == this.KeyName)
-        //            {
-        //                doorKey = (DoorKey)item;
-        //                break;
-        //            }
-        //        }
-                
-        //       if (doorKey != null)
-        //        {
-        //            GameController.InputResponse.Append($"{this.Name} opens...\n");
-        //            Room destination = GameObject.GetComponent<Room>(DestinationKey);
-        //            IsLocked = false;
-        //            player.BackPack.ConsumeItem(doorKey);
-        //            player.PlayerLocation = destination;
-        //            return;
-        //        }
-
-        //       else
-        //        {
-        //            GameController.InputResponse.Append("You don't have the key\n");
-        //        }
-        //    }
-        //        //if the player has the correct key in inventory
-            
-        //}
-
-        public override string ToString()
+        public Door() :
+            base(name:"Exit", description:"Exit")
         {
-            return base.ToString() + $"Destination:{DestinationKey}\nIsLocked: {IsLocked.ToString()}\nKeyName: {Key.Name}\n\n";
-            //base code below
-            //return $"{this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\n";
+            IsLocked = false;
+            Key = null;
+            Destinations = new Dictionary<string, Room>();
+                 
         }
+
+        public Door(Dictionary<string, Room> destinations, string name = "Exit", string description = "Exit", string keyValue = "", bool isLocked = false, Key key = null) :
+            base(name, description, keyValue)
+        {
+
+            Destinations = destinations;
+            IsLocked = isLocked;
+            Key = key;
+
+        }
+
+
+        public void Open()
+        {
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+            Room destination;
+            bool exitExists = Destinations.TryGetValue(currentLocation.KeyValue, out destination);
+
+            if (! exitExists)
+            {
+                return;
+            }
+
+
+            //If the door is locked check to see if the player has the correct key in inventory
+            if (IsLocked)
+            {
+
+                Key doorKey=null;
+
+                foreach (StoryItem item in player.BackPack)
+                {
+                    if (item.Name == this.Key.Name)
+                    {
+                        doorKey = (Key)item;
+                        Unlock(doorKey);
+                        break;
+                    }
+                }
+
+                if (doorKey != null)
+                {
+                    IsOpen = true;
+                    
+                    player.PlayerLocation = destination;
+                    return;
+                }
+
+                else
+                {
+                    GameLog.Append("You don't have the key\n");
+                }
+            }
+            
+            else
+            {
+                IsOpen = true;
+                player.PlayerLocation = destination;
+                return;
+            }
+
+        }
+
+
+        public void Close()
+        {
+            if(IsOpen)
+            {
+                GameLog.Append($"Wow! You really weren't raised in a barn. You politely close the {Name}. \n");
+                IsOpen = false;
+            }
+
+            else
+            {
+                GameLog.Append($"The {Name} isn't open.\n");
+            }
+
+        }
+
 
         public void Unlock(Key key)
         {
@@ -108,5 +135,24 @@ namespace Texticle.Environment
                 GameLog.Append("You don't have the right key.");
             }
         }
+
+
+        public override string ToString()
+        {
+            string destinations = "--------------------Destinations-------------------\n\n";
+            
+            foreach(KeyValuePair<string, Room> link in Destinations)
+            {
+                destinations += $"Key: {link.Key} => Room Name: {link.Value.Name}\n";
+            }
+            
+            return base.ToString() + destinations + $"\n\nIsLocked: {IsLocked.ToString()}\nKeyName: {Key.Name}\n\n";
+            //base code below
+            //return $"{this.GetType().Name}\n----------------------\nGame ID: {ID}\nKeyValue: {KeyValue}\nName: {Name}\nDescription: {Description}\nLocationKey: {LocationKey}\n";
+        }
+
+
+
+
     }
 }
