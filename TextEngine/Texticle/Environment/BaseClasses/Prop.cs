@@ -11,7 +11,7 @@ namespace Texticle.Environment
     public class Prop: GameObject, IExaminable
     {
 
-        public string LocationKey { get; private set; }
+        //public string LocationKey { get; private set; }
         public string ExamineResponse { get; set; }
 
 

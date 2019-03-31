@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Texticle.Engine
 {
-    public interface ITakeable
+    public interface IDropable
     {
-        void Take();
-        void Put(string target);
+
+        void Drop();
+
     }
 }

@@ -20,7 +20,7 @@ namespace Texticle.Environment
 
   
         public string ContextualDescription { get; set; }
-        public string LocationKey { get; private set; }
+        //public string LocationKey { get; private set; }
 
         public Container(string locationKey, string name, string description, string keyValue = "", int maxSlots = 10, string contextualDescription = "")
             : base(name, description,  keyValue)
@@ -80,12 +80,12 @@ namespace Texticle.Environment
         {
             if (IsOpen)
             {
+                Player player = GameObject.GetComponent<Player>("player");
                 int SlotsEmptied = item.SlotsOccupied;
 
                 SlotsFull -= SlotsEmptied;
-
-
                 Items.Remove(item);
+                item.LocationKey = player.LocationKey;
                 ItemCount--;
                 return true;
 

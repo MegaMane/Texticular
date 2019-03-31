@@ -40,6 +40,7 @@ namespace Texticle.Environment
                     {
 
                         player.BackPack.RemoveItem(this);
+                        this.LocationKey = door.KeyValue;
                         this.Consume();
                         GameLog.Append($"{door.Name} opens...");
                         door.IsLocked = false;

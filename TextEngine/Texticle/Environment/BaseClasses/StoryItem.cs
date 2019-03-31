@@ -9,7 +9,7 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject, ITakeable, IExaminable
+    public class StoryItem : GameObject, ITakeable, IDropable,IExaminable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
@@ -19,7 +19,7 @@ namespace Texticle.Environment
         public int SlotsOccupied { get; private set; }
         public string ExamineResponse { get; set; }
         private string _locationKey;
-        public string LocationKey
+        public override string LocationKey
         {
             get { return _locationKey; }
             set
@@ -83,7 +83,7 @@ namespace Texticle.Environment
 
 
                 //if the item is inside an open container at the players current location
-                foreach (var item in currentLocation.Items)
+                foreach (var item in currentLocation)
                 {
                     if(item is Container && this.LocationKey == item.KeyValue && (item as Container).IsOpen)
                     {
@@ -115,7 +115,7 @@ namespace Texticle.Environment
             {
                 if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) <= this.SlotsOccupied)
                 {
-                    player.PlayerLocation.Items.Remove(this);
+                    player.PlayerLocation.RemoveItem((GameObject)this);
                     player.BackPack.AddItem(this);
                     GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
                    

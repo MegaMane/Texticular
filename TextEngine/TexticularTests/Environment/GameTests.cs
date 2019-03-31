@@ -14,6 +14,11 @@ namespace Texticular.Environment.Tests
     [TestClass()]
     public class GameTests
     {
+        void Init()
+        {
+            GameObject.Objects = new Dictionary<string, GameObject>();
+        }
+
         [TestMethod()]
         public void GameLogTest()
         {
@@ -66,9 +71,10 @@ namespace Texticular.Environment.Tests
         public void RoomTest()
         {
             //Arrange
+            Init();
 
             Room MyOffice = new Room("Positive Tech Office", "A hot stuffy little office that smells faintly of farts.", "Otis");
-            StoryItem CarnageMug = new StoryItem
+            GameObject CarnageMug = new StoryItem
                 (name: "Carnage Mug",
                 description: "A red ceramic mug that looks like the marvel villain Carnage",
                 keyValue: "carnageMug",
@@ -90,6 +96,8 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void PlayerTest()
         {
+            Init();
+
             Room playerStartingLocation = new Room("Positive Tech Office", "A hot stuffy little office that smells faintly of farts.", "Otis");
             Player testPlayer = new Player(playerName: "Jonny Rotten", description: "A strapping young lad with a rotten disposition.", playerLocation: playerStartingLocation);
             Console.Write(testPlayer.ToString());
@@ -100,6 +108,7 @@ namespace Texticular.Environment.Tests
         {
             //test unlocking the container
             //test adding and removing items
+            Init();
 
             //Arrange
             Room TestRoom = new Room("Bedroom", "A room with little action figures stacked up to the ceiling. A nerd must live here.", "masterBedroom");
@@ -161,36 +170,114 @@ namespace Texticular.Environment.Tests
         [TestMethod()]
         public void InventoryTest()
         {
+            Init();
 
+            Random rnd = new Random();
+            
+
+            Inventory testInventory = new Inventory();
+
+            int itemCount = 0;
+            while (itemCount < testInventory.MaxSlots)
+            {
+                int slots = rnd.Next(1, 4);
+                testInventory.AddItem
+               (
+                    new StoryItem
+                    (
+                    name: "Item" + (itemCount + 1),
+                    description: $"It'a test item that occupies {slots} slots",
+                    slotsOccupied: slots
+                    )
+               );
+
+                itemCount += 1;
+            }
+
+            testInventory.Open();
+
+            Console.Write(GameLog.DisplayResponse());
+            testInventory.AddItem
+           (
+                new StoryItem
+                (
+                name: "Extra Item",
+                description: "One Item too many"
+                )
+           );
+
+            Assert.IsTrue(testInventory.Count() <= testInventory.MaxSlots);
         }
-
 
 
         [TestMethod()]
         public void DoorTest()
         {
-            
+            Init();
+
+            Room Room1 = new Room("Otis Office", "A hot stuffy little office that smells faintly of farts.", "otis");
+            Room Room2 = new Room("Dev Den", "Cubicles full of action figures and the grown men who own them clicking away on their keyboards", "bullPen");
+            Player Player1 = new Player(playerName: "Jonny Rotten", description: "A strapping young lad with a rotten disposition.", playerLocation: Room1);
+
+            var destinations = new Dictionary<string, Room>()
+                {
+                    { "otis",Room2},
+                    { "bullPen",Room1}
+                };
+
+            Door officeDoor = new Door(destinations,name: "Otis Office Door",keyValue:"otisDoor",description:"The door to the Otis Office")
+            {
+
+                IsLocked = false,
+
+            };
+
+            Room1.Exits = new Dictionary<string, Door>() { { "North", officeDoor }, { "Dev Den", officeDoor } };
+            Room2.Exits = new Dictionary<string, Door>() { { "South", officeDoor }, { "Otis Office", officeDoor } };
+
+            Room1.Exits["North"].Open();
+
+            Assert.IsTrue(Player1.PlayerLocation == Room2);
+
+            Room2.Exits["Otis Office"].Open();
+
+            Assert.IsTrue(Player1.PlayerLocation == Room1);
+
+
 
         }
 
         [TestMethod()]
-        public void CointTest()
+        public void MoneyTest()
         {
+            Init();
 
+            Room Subway = new Room("Subway", "It smells like piss and feels like you might get stabbed. Oh the wonders of public transport...", "subway");
+            Player testPlayer = new Player(playerName: "Jonny Rotten", description: "A strapping young lad with a rotten disposition.", playerLocation: Subway);
+
+            Money chumpChange = new Money();
+            chumpChange.LocationKey = "subway";
+
+            chumpChange.Examine();
+            chumpChange.Take();
+
+            Console.Write(GameLog.DisplayResponse());
+
+            Assert.IsTrue(testPlayer.Money > 0);
 
         }
 
         [TestMethod()]
         public void TVTest()
         {
-
+            Init();
 
         }
 
         [TestMethod()]
         public void VendingMachineTest()
         {
-
+            Init();
 
         }
 

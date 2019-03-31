@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Commands\GameTests.cs" />
     <Compile Include="Environment\GameTests.cs" />
+    <Compile Include="Parser\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GameStates\" />
-    <Folder Include="Parser\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\Commands\IDropable.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\Bathroom201.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\EastHallway.cs" />
     <Compile Include="Engine\GameStates\ExitGame.cs" />
@@ -78,7 +79,7 @@
     <Compile Include="Environment\BaseClasses\GameObject.cs" />
     <Compile Include="Environment\BaseClasses\Prop.cs" />
     <Compile Include="Environment\BaseClasses\StoryItem.cs" />
-    <Compile Include="Environment\Coins.cs" />
+    <Compile Include="Environment\Money.cs" />
     <Compile Include="Environment\BaseClasses\Container.cs" />
     <Compile Include="Environment\Chest.cs" />
     <Compile Include="Environment\Key.cs" />

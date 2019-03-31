@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Room:GameObject
+    public class Room:GameObject, IEnumerable<GameObject>
     {
         private static int roomCount = 0;
         public static int RoomCount { get { return roomCount; } }
@@ -16,12 +17,12 @@ namespace Texticle.Environment
 
 
 
-        public Dictionary<string, Door> Exits = new Dictionary<string, Door>();
+        public Dictionary<string, Door> Exits { get; set; }
 
         public Room(string name, string description, string keyValue)
             : base(name, description, keyValue)
         {
-
+            Exits = new Dictionary<string, Door>();
             roomCount++;
 
         }
@@ -29,7 +30,7 @@ namespace Texticle.Environment
 
 
 
-        public void AddItem(StoryItem item)
+        public void AddItem(GameObject item)
         {
             //Set the items location to this room
             item.LocationKey = this.KeyValue;
@@ -38,10 +39,18 @@ namespace Texticle.Environment
 
 
 
-        public void RemoveItem(StoryItem item)
+        public void RemoveItem(GameObject item)
         {
 
             Items.Remove(item);
+        }
+
+
+        public void RemoveItem(string itemKey)
+        {
+            GameObject item = Items.Find(i => i.KeyValue == itemKey);
+            Items.Remove(item);
+           
         }
 
 
@@ -57,15 +66,26 @@ namespace Texticle.Environment
 
             //location description
             GameLog.Append($"You are in {currentRoom.Name}: {currentRoom.Description}");
-            foreach (StoryItem item in currentRoom.Items)
+            foreach (var item in currentRoom.Items)
             {
-                if (!String.IsNullOrEmpty(item.ContextualDescription))
+
+                if (item is StoryItem)
                 {
-                    GameLog.Append(item.ContextualDescription);
+                    GameLog.Append((item as StoryItem).ContextualDescription);
                 }
             }
 
 
+        }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            return this.Items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

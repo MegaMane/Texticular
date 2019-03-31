@@ -13,6 +13,14 @@ namespace Texticle.Engine
 
     public class Parser
     {
+
+        public Parser(Dictionary<string, GameObject> nouns)
+        {
+            Nouns = nouns;
+        }
+
+        public Dictionary<string, GameObject> Nouns { get; set; }
+
         public List<string> KnownCommands { get { return knownCommands; } }
         List<String> knownCommands = new List<string> {
                                                         "backpack",
@@ -126,7 +134,7 @@ namespace Texticle.Engine
                 remainingInput = remainingInput.GetRange(0, prepositionIndex);
             }
 
-            foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
+            foreach (KeyValuePair<string, GameObject> obj in Nouns)
             {
                 offset = 0;
                 string objectName = "";
@@ -175,7 +183,7 @@ namespace Texticle.Engine
 
             if (secondaryObject.Count > 0)
             {
-                foreach (KeyValuePair<string, GameObject> obj in GameObject.Objects)
+                foreach (KeyValuePair<string, GameObject> obj in Nouns)
                 {
                     offset = 0;
                     string objectName = "";

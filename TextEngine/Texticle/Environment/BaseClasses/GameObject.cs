@@ -10,9 +10,11 @@ namespace Texticle.Environment
     public abstract class GameObject
     {
 
+        private Random _random;
         private static int _nextGameID = 0;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
         private static Dictionary<string, GameObject> UsedObjects = new Dictionary<string, GameObject>();
+        public virtual string LocationKey { get; set; }
 
         public static void Consume(string keyVal)
         {
@@ -56,9 +58,11 @@ namespace Texticle.Environment
 
 
         public int ID { get; private set; }
-        public String KeyValue { get; set; }
-        public String Name { get; set; }
-        public String Description { get; set; }
+
+
+        public string KeyValue { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
 
 
@@ -67,8 +71,10 @@ namespace Texticle.Environment
         public GameObject()
         {
             ID = ++_nextGameID;
+            _random = new Random();
             KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
             Objects[this.KeyValue] = this;
+   
         }
 
 
@@ -76,14 +82,19 @@ namespace Texticle.Environment
         public GameObject(string name, string description, string keyValue = "")
         {
             ID = ++_nextGameID;
+            _random = new Random();
             KeyValue = keyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : keyValue;
             Name = name;
             Description = description;
 
+
             Objects[this.KeyValue] = this;
         }
 
-
+        public int GetRandomInt(int startNumberInclusive=0, int endNumberExclusive=int.MaxValue)
+        {
+            return _random.Next(startNumberInclusive, endNumberExclusive);
+        }
 
 
         public override string ToString()
