@@ -56,6 +56,7 @@
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\SupplyCloset.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\VendingDen.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\WestHallway.cs" />
+    <Compile Include="Engine\ObjectFinder.cs" />
     <Compile Include="Environment\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
     <Compile Include="Engine\Commands\IExaminable.cs" />

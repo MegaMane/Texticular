@@ -89,7 +89,7 @@ namespace Texticle.Environment
                     {
                         Container chest = (Container)item;
 
-                        if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) <= this.SlotsOccupied)
+                        if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) >= this.SlotsOccupied)
                         {
                             chest.RemoveItem(this);
                             player.BackPack.AddItem(this);
@@ -113,7 +113,7 @@ namespace Texticle.Environment
 
             if (IsPortable)
             {
-                if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) <= this.SlotsOccupied)
+                if ((player.BackPack.MaxSlots - player.BackPack.SlotsFull) >= this.SlotsOccupied)
                 {
                     player.PlayerLocation.RemoveItem((GameObject)this);
                     player.BackPack.AddItem(this);

@@ -13,7 +13,6 @@ namespace Texticle.Actors
     {
 
         public event OnPlayerLocationChanged PlayerLocationChanged;
-        public String LocationKey { get; private set; }
         private Room _playerLocation;
         public Room PlayerLocation
         {

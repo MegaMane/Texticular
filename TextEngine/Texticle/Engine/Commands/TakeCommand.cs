@@ -28,7 +28,7 @@ namespace Texticle.Engine
      */
 
 
-    class TakeCommand:ICommand
+    public class TakeCommand:ICommand
     {
         public ITakeable Target { get; set; }
         public TakeCommand(ITakeable target)
