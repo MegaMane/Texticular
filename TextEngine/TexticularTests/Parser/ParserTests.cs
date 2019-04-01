@@ -14,8 +14,10 @@ namespace Texticular.ParserTests.Tests
     [TestClass()]
     public class ParserTests
     {
-        [TestMethod()]
-        public void ParserTest()
+        private Parser TestParser;
+
+        [TestInitialize]
+        public void Setup()
         {
             Room MyOffice = new Room("Otis Office", "A hot stuffy little office that smells faintly of farts.", "otis");
             Room DeveloperBullpen = new Room("Dev Den", "Cubicles full of action figures and the grown men who own them clicking away on their keyboards", "bullPen");
@@ -66,20 +68,85 @@ namespace Texticular.ParserTests.Tests
 
             MyOffice.AddItem(CarnageMug);
             MyOffice.AddItem(chest);
+            MyOffice.AddItem(chumpChange);
+            testPlayer.BackPack.AddItem(new StoryItem("Pocket Lint", "Your favorite piece of pocket lint", keyValue:"pocketLint"));
 
-            //the room and the player
-
-            //player inventory
-
-            //items that are located in the room
-            Dictionary <string, GameObject> nouns = GameObject.Objects.Where(k => k.Value.LocationKey == "otis")
-                                                                      .ToDictionary(kv => kv.Key,
-                                                                                    kv => kv.Value);
-            //exits in the room
 
             //items that are in the players inventory
+            var inventoryItems = GameObject.Objects.Where(k => k.Value.LocationKey == testPlayer.BackPack.KeyValue)
+                                                   .ToDictionary(G => G.Key, G => G.Value);
+            //items that are located in the room
+            var nouns = GameObject.Objects.Where(k => k.Value.LocationKey == testPlayer.LocationKey)
+                                           .ToDictionary(G => G.Key, G => G.Value);
 
-            Parser testParser = new Parser(nouns);
+            nouns = nouns.Concat(inventoryItems).ToDictionary(G => G.Key, G => G.Value);
+
+            //exits in the room
+            foreach (var door in testPlayer.PlayerLocation.Exits.Values)
+            {
+                nouns[door.KeyValue] = (GameObject)door;
+            }
+
+            //the room itself
+            nouns[testPlayer.LocationKey] = (GameObject)testPlayer.PlayerLocation;
+
+
+            TestParser = new Parser(nouns);
+        }
+
+        [TestMethod()]
+        public void ParserTest()
+        {
+
+            ParseTree results = TestParser.Tokenize("open the sentry safe");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            results = TestParser.Tokenize("drop the pocket lint");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            results = TestParser.Tokenize("go north");
+            Console.Write(results.ToString());
+
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            results = TestParser.Tokenize("put the Carnage mug in the seNtry safe");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            results = TestParser.Tokenize("put the arrow through the dragons heart!");
+            Console.Write(results.ToString());
+
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            results = TestParser.Tokenize("Hide under the bed");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            //doesn't work correctly
+            results = TestParser.Tokenize("Grab on to the apple");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+ 
+            results = TestParser.Tokenize("Go to the north");
+            Console.Write(results.ToString());
+
+            Console.WriteLine("\n\n----------------------------------------------\n\n");
+
+            
+            results = TestParser.Tokenize("Go to the west hallway");
+            Console.Write(results.ToString());
+
+
         }
     }
 }
