@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine\CommandBuilder.cs" />
     <Compile Include="Engine\Commands\IDropable.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\Bathroom201.cs" />
     <Compile Include="Engine\GameStates\Hotel\SecondFloor\EastHallway.cs" />

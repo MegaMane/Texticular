@@ -32,7 +32,6 @@ namespace Texticle.Engine
                                                         "go" ,
                                                         "grab",
                                                         "help",
-                                                        "hide",
                                                         "inv",
                                                         "inventory",
                                                         "look",

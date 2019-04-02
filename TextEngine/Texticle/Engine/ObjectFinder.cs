@@ -8,9 +8,16 @@ namespace Texticle.Engine
 {
     class ObjectFinder
     {
-        public ObjectFinder(string objName)
-        {
+        private ParseTree _parseTree;
 
+        public ObjectFinder(ParseTree parseTree)
+        {
+            _parseTree = parseTree;
+        }
+
+        public ParseTree FindObjects ()
+        {
+            return _parseTree;
         }
     }
 }
