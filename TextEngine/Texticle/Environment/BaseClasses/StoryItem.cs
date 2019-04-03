@@ -9,7 +9,7 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject, ITakeable, IDropable,IExaminable
+    public class StoryItem : GameObject, ITakeable, IDropable,IViewable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
@@ -66,8 +66,10 @@ namespace Texticle.Environment
 
 
 
-        public virtual void Take()
+        public virtual string Take()
         {
+            ActionResponse.Clear();
+
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
 
@@ -77,8 +79,8 @@ namespace Texticle.Environment
 
                 if (LocationKey == player.BackPack.KeyValue)
                 {
-                    GameLog.InputResponse.AppendFormat($"You already have the item {Name}.\n");
-                    return;
+                    ActionResponse.Append($"You already have the item {Name}.\n");
+                    return ActionResponse.ToString();
                 }
 
 
@@ -93,22 +95,22 @@ namespace Texticle.Environment
                         {
                             chest.RemoveItem(this);
                             player.BackPack.AddItem(this);
-                            GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
+                            ActionResponse.Append($"{Name} taken.\n");
                             
                         }
 
                         else
                         {
-                            GameLog.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                            ActionResponse.Append($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                         }
 
-                        return;
+                        return ActionResponse.ToString();
                     }
                 }
 
 
-                GameLog.InputResponse.AppendFormat($"There is no {Name} here to take.\n");
-                return;
+                ActionResponse.Append($"There is no {Name} here to take.\n");
+                return ActionResponse.ToString();
             }
 
             if (IsPortable)
@@ -117,41 +119,43 @@ namespace Texticle.Environment
                 {
                     player.PlayerLocation.RemoveItem((GameObject)this);
                     player.BackPack.AddItem(this);
-                    GameLog.InputResponse.AppendFormat($"{Name} taken.\n");
+                    ActionResponse.Append($"{Name} taken.\n");
                    
                 }
 
                 else
                 {
-                    GameLog.InputResponse.AppendFormat($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                    ActionResponse.Append($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
                 }
             }
 
             else
             {
-                GameLog.InputResponse.AppendFormat($"You try to take {Name} but it won't budge!\n");
+                ActionResponse.Append($"You try to take {Name} but it won't budge!\n");
             }
+
+            return ActionResponse.ToString();
             
         }
 
 
-        public virtual void Drop()
+        public virtual string Drop()
         {
             throw new NotImplementedException();
         }
 
-        public virtual void Put(string target)
+        public virtual string Put(string target)
         {
             //call targets target.AddItem(this) method and if it returns false let the player know it won't fit
             throw new NotImplementedException();
         }
 
-        public void Look()
+        public string Look()
         {
             throw new NotImplementedException();
         }
 
-        public void Examine()
+        public string Examine()
         {
             throw new NotImplementedException();
         }

@@ -32,25 +32,29 @@ namespace Texticle.Environment
         }
 
 
-        public virtual void Open()
+        public virtual string Open()
         {
-
+            ActionResponse.Clear();
 
             IsOpen = true;
-            GameLog.Append($"You open the {Name} and look inside...\n\n ");
+            ActionResponse.Append($"You open the {Name} and look inside...\n\n ");
             foreach (StoryItem item in Items)
             {
-                GameLog.Append($"{item.Name}: {item.Description}\n ");
+                ActionResponse.Append($"{item.Name}: {item.Description}\n ");
             }
 
-            
+            return ActionResponse.ToString();
 
 
         }
-        public virtual void Close()
+        public virtual string Close()
         {
+            ActionResponse.Clear();
+
             IsOpen = false;
-            GameLog.Append($"You shut the {Name}\n ");
+            ActionResponse.Append($"You shut the {Name}\n ");
+
+            return ActionResponse.ToString();
         }
 
 

@@ -12,6 +12,7 @@ namespace Texticle.Environment
 
         private Random _random;
         private static int _nextGameID = 0;
+        protected StringBuilder ActionResponse;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
         private static Dictionary<string, GameObject> UsedObjects = new Dictionary<string, GameObject>();
         public virtual string LocationKey { get; set; }
@@ -21,7 +22,6 @@ namespace Texticle.Environment
             GameObject usedObject = Objects[keyVal];
             Objects.Remove(keyVal);
             UsedObjects.Add(keyVal, usedObject);
-            usedObject = null;
         }
 
         public static T GetComponent<T>(string objIdentifier) where T : GameObject
@@ -71,6 +71,7 @@ namespace Texticle.Environment
         public GameObject()
         {
             ID = ++_nextGameID;
+            ActionResponse = new StringBuilder();
             _random = new Random();
             KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
             Objects[this.KeyValue] = this;
@@ -82,6 +83,7 @@ namespace Texticle.Environment
         public GameObject(string name, string description, string keyValue = "")
         {
             ID = ++_nextGameID;
+            ActionResponse = new StringBuilder();
             _random = new Random();
             KeyValue = keyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : keyValue;
             Name = name;

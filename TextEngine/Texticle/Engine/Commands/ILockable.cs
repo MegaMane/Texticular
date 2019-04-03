@@ -8,6 +8,6 @@ namespace Texticle.Engine
 {
     public interface ILockable
     {
-        void Lock();
+        string Lock();
     }
 }

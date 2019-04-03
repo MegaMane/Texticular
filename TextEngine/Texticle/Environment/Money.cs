@@ -8,7 +8,7 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class Money:GameObject, ITakeable, IExaminable, IConsumable
+    public class Money:GameObject, ITakeable, IViewable, IConsumable
     {
         //public string LocationKey { get; set; }
         int Value { get; set; }
@@ -31,26 +31,32 @@ namespace Texticle.Environment
             ConsumeText = "You happily stuff the money in your wallet, after all it's what the money would have wanted.\n ";
         }
 
-        public void Take()
+        public string Take()
         {
+            ActionResponse.Clear();
+
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
 
             if (this.LocationKey == player.LocationKey)
             {
                 player.Money += this.Value;
-                Consume();
+                ActionResponse.Append(Consume());
             }
 
             else
             {
 
-                GameLog.InputResponse.AppendFormat($"There is no {Name} here to take.\n ");
+                ActionResponse.Append($"There is no {Name} here to take.\n ");
             }
+
+            return ActionResponse.ToString();
         }
 
-        public void Put(string target)
+        public string Put(string target)
         {
+            ActionResponse.Clear();
+
             target = target.ToLower();
             if(string.Equals(target,"pocket") || 
                 string.Equals(target, "inventory") || 
@@ -62,26 +68,31 @@ namespace Texticle.Environment
 
             else
             {
-                GameLog.Append("Try putting it in your wallet instead.\n ");
+                ActionResponse.Append("Try putting it in your wallet instead.\n ");
             }
 
+            return ActionResponse.ToString();
         }
 
-        public void Look()
+        public string Look()
         {
-            GameLog.Append(Description);
+            throw new NotImplementedException();
         }
 
-        public void Examine()
+        public string Examine()
         {
-            GameLog.Append(ExamineResponse);
+            throw new NotImplementedException();
         }
 
-        public void Consume()
+        public string Consume()
         {
-            GameLog.Append(ConsumeText);
+            ActionResponse.Clear();
+
+            ActionResponse.Append(ConsumeText);
             this.LocationKey = null;
             GameObject.Consume(this.KeyValue);
+
+            return ActionResponse.ToString();
         }
     }
 }

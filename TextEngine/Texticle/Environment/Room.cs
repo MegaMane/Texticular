@@ -59,23 +59,25 @@ namespace Texticle.Environment
             return base.ToString();
         }
 
-        public void Look()
+        public string Look()
         {
+            ActionResponse.Clear();
+
             Room currentRoom = this;
             //Game game = controller.Game;
 
             //location description
-            GameLog.Append($"You are in {currentRoom.Name}: {currentRoom.Description}");
+            ActionResponse.Append($"You are in {currentRoom.Name}: {currentRoom.Description}");
             foreach (var item in currentRoom.Items)
             {
 
                 if (item is StoryItem)
                 {
-                    GameLog.Append((item as StoryItem).ContextualDescription);
+                    ActionResponse.Append((item as StoryItem).ContextualDescription);
                 }
             }
 
-
+            return ActionResponse.ToString();
         }
 
         public IEnumerator<GameObject> GetEnumerator()

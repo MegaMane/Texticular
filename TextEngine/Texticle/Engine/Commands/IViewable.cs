@@ -8,7 +8,7 @@ namespace Texticle.Engine
 {
     public interface IViewable
     {
-        void Look();
-        void Examine();
+        string Look();
+        string Examine();
     }
 }

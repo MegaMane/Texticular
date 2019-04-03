@@ -9,7 +9,7 @@ namespace Texticle.Engine
     public interface IDropable
     {
 
-        void Drop();
+        string Drop();
 
     }
 }

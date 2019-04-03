@@ -32,21 +32,29 @@ namespace Texticle.Environment
             
         }
 
-        public void TurnOn ()
+        public string TurnOn ()
         {
-            GameLog.Append("You turn on the TV...\n\n ");
-            GameLog.Append( Channel );
+            ActionResponse.Clear();
+
+            ActionResponse.Append("You turn on the TV...\n\n ");
+            ActionResponse.Append( Channel );
             isON = true;
+
+            return ActionResponse.ToString();
         }
 
-        public void TurnOff()
+        public string TurnOff()
         {
-            GameLog.Append(TurnOffResponse + "\n ");
+            ActionResponse.Append(TurnOffResponse + "\n ");
             isON = false;
+
+            return ActionResponse.ToString();
         }
 
-        public void ChangeChannel()
+        public string ChangeChannel()
         {
+            ActionResponse.Clear();
+
             if (isON)
             {
                 if (currentChannel == channels.Count - 1)
@@ -56,12 +64,14 @@ namespace Texticle.Environment
 
                 else currentChannel += 1;
 
-                GameLog.Append("Click...\n\n " + Channel);
+                ActionResponse.Append("Click...\n\n " + Channel);
             }
             else
             {
-                GameLog.Append("You have to turn the TV on first!\n ");
+                ActionResponse.Append("You have to turn the TV on first!\n ");
             }
+
+            return ActionResponse.ToString();
         }
     }
 }

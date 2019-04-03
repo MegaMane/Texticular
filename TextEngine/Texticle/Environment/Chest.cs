@@ -27,25 +27,27 @@ namespace Texticle.Environment
         }
 
 
-        public override void Open()
+        public override string Open()
         {
+            ActionResponse.Clear();
+
             if (IsLocked)
             {
-                GameLog.Append($"The {Name} is securely locked. You need the key\n\n ");
+                ActionResponse.Append($"The {Name} is securely locked. You need the key\n\n ");
             }
 
             else
             {
                 IsOpen = true;
-                GameLog.Append($"You open the {Name} and look inside...\n\n ");
+                ActionResponse.Append($"You open the {Name} and look inside...\n\n ");
                 foreach (StoryItem item in Items)
                 {
-                    GameLog.Append($"{item.Name}: {item.Description}\n ");
+                    ActionResponse.Append($"{item.Name}: {item.Description}\n ");
                 }
 
             }
 
-
+            return ActionResponse.ToString();
         }
 
 
@@ -53,22 +55,26 @@ namespace Texticle.Environment
 
 
 
-        public virtual void Unlock(Key key)
+        public virtual string Unlock(Key key)
         {
+            ActionResponse.Clear();
+
             if (key.LocationKey == "inventory" && key.KeyValue == this.Key.KeyValue)
             {
                 Player player = GameObject.GetComponent<Player>("player");
                 player.BackPack.RemoveItem(Key);
-                Key.Consume();
-                GameLog.Append($"{Name} opens...");
+                ActionResponse.Append(Key.Consume());
+                ActionResponse.Append($"{Name} opens...");
                 IsLocked = false;
 
             }
 
             else
             {
-                GameLog.Append("You don't have the right key.");
+                ActionResponse.Append("You don't have the right key.");
             }
+
+            return ActionResponse.ToString();
         }
 
 

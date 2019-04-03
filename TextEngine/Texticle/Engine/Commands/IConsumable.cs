@@ -9,6 +9,6 @@ namespace Texticle.Engine
     public interface IConsumable
     {
         string ConsumeText { get; set; }
-        void Consume();
+        string Consume();
     }
 }

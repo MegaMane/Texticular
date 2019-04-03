@@ -60,7 +60,6 @@
     <Compile Include="Engine\ObjectFinder.cs" />
     <Compile Include="Environment\Inventory.cs" />
     <Compile Include="Actors\Player.cs" />
-    <Compile Include="Engine\Commands\IExaminable.cs" />
     <Compile Include="Engine\Commands\IConsumable.cs" />
     <Compile Include="Engine\Commands\IUnlockable.cs" />
     <Compile Include="Engine\Commands\ILockable.cs" />

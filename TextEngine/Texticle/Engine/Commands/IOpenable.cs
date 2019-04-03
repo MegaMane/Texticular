@@ -8,7 +8,7 @@ namespace Texticle.Engine
 {
     public interface IOpenable
     {
-        void Open();
-        void Close();
+        string Open();
+        string Close();
     }
 }

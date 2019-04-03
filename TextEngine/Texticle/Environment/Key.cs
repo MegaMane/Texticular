@@ -18,14 +18,18 @@ namespace Texticle.Environment
         }
 
         public string ConsumeText { get; set; }
-        public void Consume()
+        public String Consume()
         {
-            GameLog.Append(ConsumeText);
+            ActionResponse.Clear();
+            ActionResponse.Append(ConsumeText);
             GameObject.Consume(this.KeyValue);
+            return ActionResponse.ToString();
         }
 
-        void UseKey()
+        public string Use()
         {
+            ActionResponse.Clear();
+
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
 
@@ -42,17 +46,17 @@ namespace Texticle.Environment
                         player.BackPack.RemoveItem(this);
                         this.LocationKey = door.KeyValue;
                         this.Consume();
-                        GameLog.Append($"{door.Name} opens...");
+                        ActionResponse.Append($"{door.Name} opens...");
                         door.IsLocked = false;
 
                         //Room destination = GameObject.GetComponent<Room>(door.DestinationKey);
                         //player.PlayerLocation = destination;
-                        return;
+                        return ActionResponse.ToString();
                     }
                 }
 
                 //their are no doors the key opens in the current room
-                GameLog.Append($"{Name} doesn't fit into any of the locks.");
+                ActionResponse.Append($"{Name} doesn't fit into any of the locks.");
 
 
             }
@@ -60,15 +64,17 @@ namespace Texticle.Environment
             else if (LocationKey == player.LocationKey)
             {
 
-                GameLog.Append("You need to be holding the key to use it");
+                ActionResponse.Append("You need to be holding the key to use it");
 
             }
 
             else
             {
-                GameLog.Append("Keep searching...You don't have that item\n");
+                ActionResponse.Append("Keep searching...You don't have that item\n");
 
             }
+
+            return ActionResponse.ToString();
 
         }
     }

@@ -8,7 +8,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Prop: GameObject, IExaminable
+    public class Prop: GameObject, IViewable, ITakeable
     {
 
         //public string LocationKey { get; private set; }
@@ -22,19 +22,26 @@ namespace Texticle.Environment
             ExamineResponse = examineResponse;
         }
 
-        public void Examine()
+        public string Examine()
         {
             throw new NotImplementedException();
         }
 
-        public void Look()
+        public string Look()
         {
             throw new NotImplementedException();
         }
 
-        void TakeProp(ParseTree tokens)
+        public string Take()
         {
-            GameLog.Append($"The {Name} won't budge.");
+            ActionResponse.Clear();
+            ActionResponse.Append($"The {Name} won't budge.");
+            return ActionResponse.ToString();
+        }
+
+        public string Put(string target)
+        {
+            return Take();
         }
 
 

@@ -49,8 +49,10 @@ namespace Texticle.Environment
         }
 
 
-        public void Open()
+        public string Open()
         {
+            ActionResponse.Clear();
+
             Player player = GameObject.GetComponent<Player>("player");
             Room currentLocation = player.PlayerLocation;
             Room destination;
@@ -58,7 +60,7 @@ namespace Texticle.Environment
 
             if (! exitExists)
             {
-                return;
+                return "";
             }
 
 
@@ -73,7 +75,7 @@ namespace Texticle.Environment
                     if (item.Name == this.Key.Name)
                     {
                         doorKey = (Key)item;
-                        Unlock(doorKey);
+                        ActionResponse.Append(Unlock(doorKey));
                         break;
                     }
                 }
@@ -83,57 +85,66 @@ namespace Texticle.Environment
                     IsOpen = true;
                     
                     player.PlayerLocation = destination;
-                    return;
+                    
                 }
 
                 else
                 {
-                    GameLog.Append("You don't have the key\n");
+                   ActionResponse.Append("You don't have the key\n");
                 }
+
+                return ActionResponse.ToString();
             }
             
             else
             {
                 IsOpen = true;
                 player.PlayerLocation = destination;
-                return;
+                return ActionResponse.ToString();
             }
 
         }
 
 
-        public void Close()
+        public string Close()
         {
+            ActionResponse.Clear();
+
             if(IsOpen)
             {
-                GameLog.Append($"Wow! You really weren't raised in a barn. You politely close the {Name}. \n");
+                ActionResponse.Append($"Wow! You really weren't raised in a barn. You politely close the {Name}. \n");
                 IsOpen = false;
             }
 
             else
             {
-                GameLog.Append($"The {Name} isn't open.\n");
+                ActionResponse.Append($"The {Name} isn't open.\n");
             }
 
+            return ActionResponse.ToString();
         }
 
 
-        public void Unlock(Key key)
+        public string Unlock(Key key)
         {
+            ActionResponse.Clear();
+
             if(key.LocationKey == "inventory" && key.KeyValue == this.Key.KeyValue)
             {
                 Player player = GameObject.GetComponent<Player>("player");
                 player.BackPack.RemoveItem(Key);
                 Key.Consume();
-                GameLog.Append($"{Name} opens...");
+                ActionResponse.Append($"{Name} opens...");
                 IsLocked = false;
 
             }
 
             else
             {
-                GameLog.Append("You don't have the right key.");
+                ActionResponse.Append("You don't have the right key.");
             }
+
+            return ActionResponse.ToString();
         }
 
 

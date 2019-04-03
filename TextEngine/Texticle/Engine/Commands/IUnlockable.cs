@@ -9,6 +9,6 @@ namespace Texticle.Engine
 {
     public interface IUnlockable
     {
-        void Unlock(Key key);
+        string Unlock(Key key);
     }
 }

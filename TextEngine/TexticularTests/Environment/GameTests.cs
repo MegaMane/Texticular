@@ -83,8 +83,8 @@ namespace Texticular.Environment.Tests
 
             //Act
             Console.WriteLine("Looking at room...");
-            MyOffice.Look();
-            Console.Write(GameLog.DisplayResponse());
+            
+            Console.Write(MyOffice.Look());
 
             Console.Write("\n-------------------Objects Created----------------------------------------\n\n");
             foreach (KeyValuePair<string, GameObject> Item in GameObject.Objects)

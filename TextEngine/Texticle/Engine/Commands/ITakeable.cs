@@ -8,7 +8,7 @@ namespace Texticle.Engine
 {
     public interface ITakeable
     {
-        void Take();
-        void Put(string target);
+        string Take();
+        string Put(string target);
     }
 }

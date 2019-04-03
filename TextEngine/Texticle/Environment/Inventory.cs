@@ -19,26 +19,32 @@ namespace Texticle.Environment
         }
 
 
-        public override void Open()
+        public override string Open()
         {
+            ActionResponse.Clear();
 
-
-            GameLog.Append("\n Inventory\n ");
-            GameLog.Append("------------------------------------------------------\n\n ");
+            ActionResponse.Append("\n Inventory\n ");
+            ActionResponse.Append("------------------------------------------------------\n\n ");
 
             foreach (var item in Items)
             {
 
-                GameLog.Append($"{item.Name} : {item.Description}\n ");
+                ActionResponse.Append($"{item.Name} : {item.Description}\n ");
                 
             }
 
-            GameLog.Append("\n ");
+            ActionResponse.Append("\n ");
+
+            return ActionResponse.ToString();
         }
 
-        public override void Close()
+        public override string Close()
         {
-            GameLog.Append("You zip up your backpack tight.\n\n ");
+            ActionResponse.Clear();
+
+            ActionResponse.Append("You zip up your backpack tight.\n\n ");
+
+            return ActionResponse.ToString();
         }
 
 
