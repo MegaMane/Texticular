@@ -91,7 +91,7 @@ namespace Texticular.ParserTests.Tests
             nouns[testPlayer.LocationKey] = (GameObject)testPlayer.PlayerLocation;
 
 
-            TestParser = new Parser(nouns);
+            TestParser = new Parser();
         }
 
         [TestMethod()]

@@ -14,12 +14,9 @@ namespace Texticle.Engine
     public class Parser
     {
 
-        public Parser(Dictionary<string, GameObject> nouns)
-        {
-            Nouns = nouns;
-        }
 
-        public Dictionary<string, GameObject> Nouns { get; set; }
+
+        //public Dictionary<string, GameObject> Nouns { get; set; }
 
         public List<string> KnownCommands { get { return knownCommands; } }
         List<String> knownCommands = new List<string> {
@@ -61,7 +58,8 @@ namespace Texticle.Engine
             "over",
             "beside",
             "below",
-            "down" //...{the apple}
+            "down",
+            "to"//...{the apple}
         };
 
 
@@ -143,51 +141,6 @@ namespace Texticle.Engine
                 remainingInput = remainingInput.GetRange(0, prepositionIndex);
             }
 
-            //foreach (KeyValuePair<string, GameObject> obj in Nouns)
-            //{
-            //    offset = 0;
-            //    string objectName = "";
-
-            //    for (int i = 0; i < remainingInput.Count; i++)
-            //    {
-            //        objectName = String.Join(" ", remainingInput.ToArray(), 0, i + 1);
-            //        offset = i + 1;
-
-            //        if (objectName == obj.Value.Name.ToLower())
-            //        {
-
-            //            tokens.DirectObject = objectName;
-            //            tokens.DirectObjectKeyValue = obj.Key;
-            //            remainingInput.RemoveRange(0, offset);
-            //            break;
-            //        }
-            //    }
-            //}
-
-
-            //check direction
-            //if (tokens.DirectObject == null && remainingInput.Count > 0)
-            //{
-
-
-
-            //    var directionName = String.Join("", remainingInput.ToArray());
-            //    directionName = directionName.First().ToString().ToUpper() + directionName.Substring(1);
-
-            //    try
-            //    {
-            //        Direction desiredDirecton = (Direction)Enum.Parse(typeof(Direction), directionName);
-            //        tokens.DirectObject = directionName;
-            //    }
-
-            //    catch (ArgumentException e)
-            //    {
-            //        ///GameController.InputResponse.AppendFormat("{0} is not a valid direction. Type Help for more.\n", directionName);
-            //        tokens.DirectObject = null;
-            //    }
-
-
-            //}
             
             if (remainingInput.Count > 0)
                 tokens.DirectObject = String.Join(" ", remainingInput.ToArray());
@@ -199,127 +152,11 @@ namespace Texticle.Engine
                 tokens.DirectObject = "player";
 
 
-            //if (secondaryObject.Count > 0)
-            //{
-            //    foreach (KeyValuePair<string, GameObject> obj in Nouns)
-            //    {
-            //        offset = 0;
-            //        string objectName = "";
-
-                //        for (int i = 0; i < secondaryObject.Count; i++)
-                //        {
-                //            objectName = String.Join(" ", secondaryObject.ToArray(), 0, i + 1);
-                //            offset = i + 1;
-
-                //            if (objectName == obj.Value.Name.ToLower())
-                //            {
-
-                //                tokens.IndirectObject = objectName;
-                //                tokens.IndirectObjectKeyValue = obj.Key;
-                //                secondaryObject.RemoveRange(0, offset);
-                //                break;
-                //            }
-                //        }
-                //    }
-
-                //}
-
-
             return tokens;
 
         }
 
-        /*
-        public void Parse()
-        {
 
-            Player Player = GameObject.GetComponent<Player>("player");
-         
-
-            string userInput = GameLog.UserInput;
-
-            if (userInput.ToLower().Trim() == "exit")
-            {
-                Controller.SetGameState("PlayerQuit");
-                return;
-            }
-            ParseTree tokens = Tokenize(userInput);
-
-            if (tokens == null)
-            {
-                tokens = new ParseTree() { Verb = "look", DirectObject = Player.PlayerLocation.Name, DirectObjectKeyValue = Player.PlayerLocation.KeyValue };
-            }
-
-
-            if (tokens.Verb == null)
-            {
-                GameLog.InputResponse.Append($"I dont understand '{userInput}'! Type help for some examples of what I do understand.");
-                return;
-            }
-
-            //look with no object after it means look at surroundings
-            if (tokens.Verb == "look" && tokens.DirectObject == null)
-            {
-                tokens.DirectObject = Controller.Game.Player.PlayerLocation.Name.ToLower();
-                tokens.DirectObjectKeyValue = Controller.Game.Player.PlayerLocation.KeyValue;
-            }
-
-            Action<ParseTree> parsedCommand;
-            bool basicCommand = GameState .Commands.TryGetValue(tokens.Verb, out parsedCommand);
-
-            //basic commands go, help, inventory
-            if (basicCommand)
-                parsedCommand(tokens);
-
-
-            else if (tokens.Verb == "help")
-            {
-                Player.Commands["help"](tokens);
-            }
-
-            else if (tokens.Verb == "inventory" || tokens.Verb == "inv" || tokens.Verb == "backpack")
-            {
-                Player.Commands["inventory"](tokens);
-            }
-
-
-            //context sensitive commands
-            else if (!basicCommand && tokens.DirectObject != null)
-            {
-                GameObject objectToFind = GameObject.Objects[tokens.DirectObjectKeyValue];
-
-
-                Action<ParseTree> contextCommand;
-                bool validcontextCommand = objectToFind.Commands.TryGetValue(tokens.Verb, out contextCommand);
-
-                if (validcontextCommand)
-                {
-                    contextCommand(tokens);
-                }
-
-                else
-                {
-                    GameLog.InputResponse.Append($"You cant {tokens.Verb} {tokens.UnparsedInput.Replace(tokens.Verb, "")}.\n");
-                }
-
-
-            }
-
-            else
-            {
-                //bogus command not understood
-                GameLog.InputResponse.Append($"{tokens.Verb} what?");
-            }
-
-
-
-
-        }
-
-
-    
-
-    */
 
     }
 }

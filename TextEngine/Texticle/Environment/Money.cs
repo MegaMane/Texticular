@@ -81,18 +81,16 @@ namespace Texticle.Environment
 
         public string Examine()
         {
-            throw new NotImplementedException();
+            return ExamineResponse.ToString();
         }
 
         public string Consume()
         {
-            ActionResponse.Clear();
 
-            ActionResponse.Append(ConsumeText);
             this.LocationKey = null;
             GameObject.Consume(this.KeyValue);
 
-            return ActionResponse.ToString();
+            return ConsumeText;
         }
     }
 }

@@ -121,13 +121,13 @@ namespace Texticular.Environment.Tests
             chest.IsLocked = true;
 
             //Act
-            chest.Open();
+            
 
-            Console.Write(GameLog.DisplayResponse());
-            chest.Unlock(chest.Key);
-            Console.Write(GameLog.DisplayResponse());
+            Console.Write(chest.Open());
+            
+            Console.Write(chest.Unlock(chest.Key));
 
-            chest.Open();
+            Console.Write(chest.Open());
 
             chest.AddItem( new StoryItem
             (
@@ -152,11 +152,11 @@ namespace Texticular.Environment.Tests
                 keyValue: "vapePen"
             ));
 
-            chest.Close();
+            Console.Write(chest.Close());
 
             Console.WriteLine(chest.ToString());
 
-            chest.Open();
+            Console.Write(chest.Open());
             chest.RemoveItem("gumStick");
             chest.AddItem((GameObject.Objects["vapePen"] as StoryItem));
             Console.WriteLine(chest.ToString());
@@ -258,10 +258,9 @@ namespace Texticular.Environment.Tests
             Money chumpChange = new Money();
             chumpChange.LocationKey = "subway";
 
-            chumpChange.Examine();
-            chumpChange.Take();
-
-            Console.Write(GameLog.DisplayResponse());
+            
+            Console.Write(chumpChange.Examine());
+            Console.Write(chumpChange.Take());
 
             Assert.IsTrue(testPlayer.Money > 0);
 
