@@ -17,16 +17,27 @@ http://www.blackwasp.co.uk/GofPatterns.aspx
 
 Parser example sentences
 
+Gotta Have
 Go North
 Go To the Kitchen
+Move to the backyard
 Hide under the Bed
+Hold the Skull
+Turn on the Light
+Get Out of Bed
+Sit on The Couch
+Leave the room
 Pick up the green apple
-put the pocket change in the vending machine
-open the drawer and put the pocket change inside
+Grab on to the green apple
+Take All
+put the money in the vending machine
 put the pocket change in the drawer
 use the phone
 talk to Fred
 Attack the Cobra with the sword
+
+Nice to have
+open the drawer and put the pocket change inside {drawer}
 
 To Do:
          finish implementing prop, coin
