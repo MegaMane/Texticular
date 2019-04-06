@@ -102,10 +102,14 @@ namespace SandBox
             Console.ReadKey();
         }
 
-
-        //to make a match you must match 0 or more adjectives in any order plus the direct objectName
-        //-or-
+        /// <summary>
+        /// to make a match you must match 0 or more adjectives in any order plus the direct objectName
+        ///-or-
         //1 or more adjectives with an optional direct object name
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="nouns"></param>
+        /// <returns>List<GameObject></returns>
         public static List<GameObject> FindObject(string input, List<GameObject> nouns)
         {
             var results = new List<GameObject>();
@@ -115,7 +119,7 @@ namespace SandBox
             List<GameObject> possibleMatches = new List<GameObject>();
             
 
-            //compile a list of any objects that have at least one matching word with the input string
+            //compile a list of any objects that have at least one word in common with the input string (adjective or object name)
             foreach (var word in words)
             {
              var filtered = nouns.Where(n => n.Name.ToLower().Contains(word) || n.Adjectives.Any(a => a.ToLower().Contains(word)));
@@ -130,10 +134,12 @@ namespace SandBox
                 return results;
             }
 
+            //find the most likely match(s) removing matched words as they are found
             foreach (var gameObject in possibleMatches)
             {
-                List<string> adjectives = new List<string>();
                 List<string> unmatchedWords = new List<string>(words);
+                List<string> adjectives = new List<string>();
+
                 bool directObjectFound = false;
                 bool matchFound = false;
 
@@ -167,7 +173,7 @@ namespace SandBox
 
                 }
 
-
+                
                 if (unmatchedWords.Count == 0)
                 {
                     if(directObjectFound)
