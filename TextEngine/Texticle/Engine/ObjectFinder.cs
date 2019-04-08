@@ -18,6 +18,136 @@ namespace Texticle.Engine
             _ParseTree = parseTree;
             _Nouns = nouns;
         }
+
+        
+            
+         /// <summary>
+        /// to make a match you must match 0 or more adjectives in any order plus the direct objectName
+        ///-or-
+        //1 or more adjectives with an optional direct object name
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="nouns"></param>
+        /// <returns>List<GameObject></returns>
+        public static List<GameObject> FindObject(string input, List<GameObject> nouns)
+        {
+            var results = new List<GameObject>();
+
+            input = input.ToLower().Trim();
+            var words = input.Split();
+            List<GameObject> possibleMatches = new List<GameObject>();
+
+
+            //compile a list of any objects that have at least one word in common with the input string (adjective or object name)
+            foreach (var word in words)
+            {
+                var filtered = nouns.Where(n => n.Name.ToLower().Contains(word) || n.Adjectives.Any(a => a.ToLower().Contains(word)));
+                possibleMatches.AddRange(filtered);
+            }
+
+            //remove any duplicates by checking the object ID property 
+            possibleMatches = possibleMatches.Distinct(new GameObjectComparer()).ToList();
+
+            if (possibleMatches.Count == 0)
+            {
+                return results;
+            }
+
+            //find the most likely match(s) removing matched words as they are found
+            foreach (var gameObject in possibleMatches)
+            {
+                List<string> unmatchedWords = new List<string>(words);
+                List<string> adjectives = new List<string>();
+
+                bool directObjectFound = false;
+                bool matchFound = false;
+
+                //check for the name of the object
+                for (int i = 0; i < unmatchedWords.Count; i++)
+                {
+
+                    if (unmatchedWords[i] == gameObject.Name.ToLower())
+                    {
+                        unmatchedWords.RemoveAt(i);
+                        i--;
+                        directObjectFound = true;
+                    }
+
+                }
+
+                //check if any adjectives match
+                for (int i = 0; i < unmatchedWords.Count; i++)
+                {
+                    for (int j = 0; j < gameObject.Adjectives.Count; j++)
+                    {
+                        if (unmatchedWords[i] == gameObject.Adjectives[j].ToLower())
+                        {
+                            adjectives.Add(unmatchedWords[i]);
+                            unmatchedWords.RemoveAt(i);
+                            i--;
+                            break;
+                        }
+
+                    }
+
+                }
+
+
+                if (unmatchedWords.Count == 0)
+                {
+                    if (directObjectFound)
+                    {
+                        //make sure that it's the last word
+                        matchFound = words[words.Length - 1] == gameObject.Name.ToLower();
+                    }
+
+                    else
+                    {
+                        matchFound = adjectives.Count > 0;
+                    }
+                }
+
+                else
+                {
+                    matchFound = false;
+                }
+
+                if (matchFound)
+                {
+                    results.Add(gameObject);
+                }
+
+            }
+
+            return results;
+        }
+    }
+
+
+
+
+
+
+    internal class GameObjectComparer : IEqualityComparer<GameObject>
+    {
+        public bool Equals(GameObject x, GameObject y)
+        {
+            if (x.ID == y.ID)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public int GetHashCode(GameObject obj)
+        {
+            return obj.Name.GetHashCode();
+        }
+    }
+
+}
+
+
 /*
         private void GetNouns()
         {
@@ -45,25 +175,12 @@ namespace Texticle.Engine
             _Nouns = nouns;
         }
 */
-        public List<GameObject> FindDirectObject ()
-        {
-
-            _Nouns.Values.Where(v => v.Name.Contains(_ParseTree.DirectObject));
-;            return _Nouns.Values.Where(v => v.Name.Contains(_ParseTree.DirectObject)).ToList();
-        }
-    }
-}
-
 
 /*
 I need to find the object and determine if it is something that can be acted on
 	step 1. See if the object exists in the global list of nouns
 	Step 2. See if the object meets the following criteria
-			The object is the player
-            The object is the players current location
-			The object is in the players current location and visible
-			the object is a child of an object in the current location that is currently accessible
-			the object is in the players inventory
+
 	Step 3. If the object meets the above criteria
 
 	Step 4. Insert the resulting command object into a queue
@@ -73,140 +190,3 @@ I need to find the object and determine if it is something that can be acted on
  */
 
 
-//foreach (KeyValuePair<string, GameObject> obj in Nouns)
-//{
-//    offset = 0;
-//    string objectName = "";
-
-//    for (int i = 0; i < remainingInput.Count; i++)
-//    {
-//        objectName = String.Join(" ", remainingInput.ToArray(), 0, i + 1);
-//        offset = i + 1;
-
-//        if (objectName == obj.Value.Name.ToLower())
-//        {
-
-//            tokens.DirectObject = objectName;
-//            tokens.DirectObjectKeyValue = obj.Key;
-//            remainingInput.RemoveRange(0, offset);
-//            break;
-//        }
-//    }
-//}
-
-
-//check direction
-//if (tokens.DirectObject == null && remainingInput.Count > 0)
-//{
-
-
-
-//    var directionName = String.Join("", remainingInput.ToArray());
-//    directionName = directionName.First().ToString().ToUpper() + directionName.Substring(1);
-
-//    try
-//    {
-//        Direction desiredDirecton = (Direction)Enum.Parse(typeof(Direction), directionName);
-//        tokens.DirectObject = directionName;
-//    }
-
-//    catch (ArgumentException e)
-//    {
-//        ///GameController.InputResponse.AppendFormat("{0} is not a valid direction. Type Help for more.\n", directionName);
-//        tokens.DirectObject = null;
-//    }
-
-
-//}
-
-/*
-public bool FindObjects()
-{
-
-Player Player = GameObject.GetComponent<Player>("player");
-
-
-string userInput = GameLog.UserInput;
-
-if (userInput.ToLower().Trim() == "exit")
-{
-    Controller.SetGameState("PlayerQuit");
-    return;
-}
-ParseTree tokens = Tokenize(userInput);
-
-if (tokens == null)
-{
-    tokens = new ParseTree() { Verb = "look", DirectObject = Player.PlayerLocation.Name, DirectObjectKeyValue = Player.PlayerLocation.KeyValue };
-}
-
-
-if (tokens.Verb == null)
-{
-    GameLog.InputResponse.Append($"I dont understand '{userInput}'! Type help for some examples of what I do understand.");
-    return;
-}
-
-//look with no object after it means look at surroundings
-if (tokens.Verb == "look" && tokens.DirectObject == null)
-{
-    tokens.DirectObject = Controller.Game.Player.PlayerLocation.Name.ToLower();
-    tokens.DirectObjectKeyValue = Controller.Game.Player.PlayerLocation.KeyValue;
-}
-
-Action<ParseTree> parsedCommand;
-bool basicCommand = GameState .Commands.TryGetValue(tokens.Verb, out parsedCommand);
-
-//basic commands go, help, inventory
-if (basicCommand)
-    parsedCommand(tokens);
-
-
-else if (tokens.Verb == "help")
-{
-    Player.Commands["help"](tokens);
-}
-
-else if (tokens.Verb == "inventory" || tokens.Verb == "inv" || tokens.Verb == "backpack")
-{
-    Player.Commands["inventory"](tokens);
-}
-
-
-//context sensitive commands
-else if (!basicCommand && tokens.DirectObject != null)
-{
-    GameObject objectToFind = GameObject.Objects[tokens.DirectObjectKeyValue];
-
-
-    Action<ParseTree> contextCommand;
-    bool validcontextCommand = objectToFind.Commands.TryGetValue(tokens.Verb, out contextCommand);
-
-    if (validcontextCommand)
-    {
-        contextCommand(tokens);
-    }
-
-    else
-    {
-        GameLog.InputResponse.Append($"You cant {tokens.Verb} {tokens.UnparsedInput.Replace(tokens.Verb, "")}.\n");
-    }
-
-
-}
-
-else
-{
-    //bogus command not understood
-    GameLog.InputResponse.Append($"{tokens.Verb} what?");
-}
-
-
-
-
-}
-
-
-
-
-*/

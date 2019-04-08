@@ -62,6 +62,7 @@ namespace Texticle.Environment
 
         public string KeyValue { get; set; }
         public string Name { get; set; }
+        public List<string> Adjectives { get; set; }
         public string Description { get; set; }
 
 
@@ -72,6 +73,7 @@ namespace Texticle.Environment
         {
             ID = ++_nextGameID;
             ActionResponse = new StringBuilder();
+            Adjectives = new List<string>();
             _random = new Random();
             KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
             Objects[this.KeyValue] = this;
@@ -87,6 +89,7 @@ namespace Texticle.Environment
             _random = new Random();
             KeyValue = keyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : keyValue;
             Name = name;
+            Adjectives = new List<string>();
             Description = description;
 
 
