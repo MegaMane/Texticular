@@ -46,6 +46,10 @@ namespace Texticle.Environment
             }
         }
 
+        public StoryItem()
+        {
+
+        }
 
         public StoryItem(string name, string description, string locationKey=null, bool isPortable = true, string examineResponse="", int weight = 0, string keyValue="", string contextualDescription="", int slotsOccupied=1) 
             :base(name, description, keyValue)

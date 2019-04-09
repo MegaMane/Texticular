@@ -10,13 +10,12 @@ namespace Texticle.Engine
 {
     public class ObjectFinder
     {
-        private ParseTree _ParseTree;
-        private Dictionary<string, GameObject> _Nouns;
 
-        public ObjectFinder(ParseTree parseTree, Dictionary<string, GameObject> nouns)
+        public Dictionary<string, GameObject> Nouns { get; set; }
+
+        public ObjectFinder(Dictionary<string, GameObject> nouns)
         {
-            _ParseTree = parseTree;
-            _Nouns = nouns;
+            Nouns = nouns;
         }
 
         
@@ -27,9 +26,9 @@ namespace Texticle.Engine
         //1 or more adjectives with an optional direct object name
         /// </summary>
         /// <param name="input"></param>
-        /// <param name="nouns"></param>
+        /// <param name="Nouns"></param>
         /// <returns>List<GameObject></returns>
-        public static List<GameObject> FindObject(string input, List<GameObject> nouns)
+        public List<GameObject> FindObject(string input)
         {
             var results = new List<GameObject>();
 
@@ -41,7 +40,7 @@ namespace Texticle.Engine
             //compile a list of any objects that have at least one word in common with the input string (adjective or object name)
             foreach (var word in words)
             {
-                var filtered = nouns.Where(n => n.Name.ToLower().Contains(word) || n.Adjectives.Any(a => a.ToLower().Contains(word)));
+                var filtered = Nouns.Values.Where(n => n.Name.ToLower().Contains(word) || n.Adjectives.Any(a => a.ToLower().Contains(word)));
                 possibleMatches.AddRange(filtered);
             }
 
@@ -127,7 +126,6 @@ namespace Texticle.Engine
 
 
 
-
     internal class GameObjectComparer : IEqualityComparer<GameObject>
     {
         public bool Equals(GameObject x, GameObject y)
@@ -158,27 +156,27 @@ namespace Texticle.Engine
             var inventoryItems = GameObject.Objects.Where(k => k.Value.LocationKey == player.BackPack.KeyValue)
                                                    .ToDictionary(G => G.Key, G => G.Value);
             //items that are located in the room
-            var nouns = GameObject.Objects.Where(k => k.Value.LocationKey == player.LocationKey)
+            var Nouns = GameObject.Objects.Where(k => k.Value.LocationKey == player.LocationKey)
                                            .ToDictionary(G => G.Key, G => G.Value);
 
-            nouns = nouns.Concat(inventoryItems).ToDictionary(G => G.Key, G => G.Value);
+            Nouns = Nouns.Concat(inventoryItems).ToDictionary(G => G.Key, G => G.Value);
 
             //exits in the room
             foreach (var door in player.PlayerLocation.Exits.Values)
             {
-                nouns[door.KeyValue] = (GameObject)door;
+                Nouns[door.KeyValue] = (GameObject)door;
             }
 
             //the room itself
-            nouns[player.LocationKey] = (GameObject)player.PlayerLocation;
+            Nouns[player.LocationKey] = (GameObject)player.PlayerLocation;
 
-            _Nouns = nouns;
+            _Nouns = Nouns;
         }
 */
 
 /*
 I need to find the object and determine if it is something that can be acted on
-	step 1. See if the object exists in the global list of nouns
+	step 1. See if the object exists in the global list of Nouns
 	Step 2. See if the object meets the following criteria
 
 	Step 3. If the object meets the above criteria

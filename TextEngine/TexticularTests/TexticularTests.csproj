@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Commands\GameTests.cs" />
     <Compile Include="Environment\GameTests.cs" />
+    <Compile Include="Parser\ObjectFinderTests.cs" />
     <Compile Include="Parser\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

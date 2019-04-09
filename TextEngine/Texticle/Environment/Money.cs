@@ -11,8 +11,8 @@ namespace Texticle.Environment
     public class Money:GameObject, ITakeable, IViewable, IConsumable
     {
         //public string LocationKey { get; set; }
-        int Value { get; set; }
-        string ExamineResponse { get; set; }
+        public int Value { get; set; }
+        public string ExamineResponse { get; set; }
         public string ConsumeText { get; set; }
 
         public Money()
