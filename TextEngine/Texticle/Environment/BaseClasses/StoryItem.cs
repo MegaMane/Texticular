@@ -9,7 +9,7 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject, ITakeable, IDropable,IViewable
+    public class StoryItem : GameObject,IViewable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
@@ -60,6 +60,7 @@ namespace Texticle.Environment
             Weight = weight;
             ContextualDescription = contextualDescription == ""? ExamineResponse: contextualDescription;
             SlotsOccupied = slotsOccupied;
+            Commands["take"] = Take;
             
         }
 
@@ -70,7 +71,7 @@ namespace Texticle.Environment
 
 
 
-        public virtual string Take()
+        public virtual string Take(List<GameObject> gameObjects)
         {
             ActionResponse.Clear();
 
@@ -143,7 +144,7 @@ namespace Texticle.Environment
         }
 
 
-        public virtual string Drop()
+        public virtual string Drop(List<GameObject> gameObjects)
         {
             throw new NotImplementedException();
         }

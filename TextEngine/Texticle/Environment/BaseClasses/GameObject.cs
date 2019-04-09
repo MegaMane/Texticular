@@ -65,7 +65,7 @@ namespace Texticle.Environment
         public List<string> Adjectives { get; set; }
         public string Description { get; set; }
 
-
+        public Dictionary<string, Func<List<GameObject>,string>> Commands { get; set; }
 
 
 
@@ -76,8 +76,12 @@ namespace Texticle.Environment
             Adjectives = new List<string>();
             _random = new Random();
             KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
+
+            Commands = new Dictionary<string, Func<List<GameObject>, string>>();
+
             Objects[this.KeyValue] = this;
-   
+
+
         }
 
 
@@ -91,7 +95,7 @@ namespace Texticle.Environment
             Name = name;
             Adjectives = new List<string>();
             Description = description;
-
+            Commands = new Dictionary<string, Func<List<GameObject>, string>>();
 
             Objects[this.KeyValue] = this;
         }
