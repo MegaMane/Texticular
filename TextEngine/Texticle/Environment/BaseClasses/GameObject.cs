@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+
 
 
 namespace Texticle.Environment
 {
     public abstract class GameObject
     {
-
+        public delegate string GameActionDelegate(GameObject target);
         private Random _random;
         private static int _nextGameID = 0;
         protected StringBuilder ActionResponse;
         public static Dictionary<string, GameObject> Objects = new Dictionary<string, GameObject>();
         private static Dictionary<string, GameObject> UsedObjects = new Dictionary<string, GameObject>();
         public virtual string LocationKey { get; set; }
+        public virtual bool IsVisible { get; set; }
 
         public static void Consume(string keyVal)
         {
@@ -65,39 +66,32 @@ namespace Texticle.Environment
         public List<string> Adjectives { get; set; }
         public string Description { get; set; }
 
-        public Dictionary<string, Func<List<GameObject>,string>> Commands { get; set; }
+        public Dictionary<string, GameActionDelegate> Commands { get; set; }
 
 
 
-        public GameObject()
+        public GameObject():this("gameObject", "gameObject")
         {
-            ID = ++_nextGameID;
-            ActionResponse = new StringBuilder();
-            Adjectives = new List<string>();
-            _random = new Random();
-            KeyValue = createStringKey("gameObject") + "_" + this.ID.ToString();
-
-            Commands = new Dictionary<string, Func<List<GameObject>, string>>();
-
-            Objects[this.KeyValue] = this;
-
 
         }
 
 
 
-        public GameObject(string name, string description, string keyValue = "")
+        public GameObject(string name, string description, string keyValue = "", bool isVisible = true)
         {
             ID = ++_nextGameID;
             ActionResponse = new StringBuilder();
             _random = new Random();
+
             KeyValue = keyValue == "" ? createStringKey(name) + "_" + this.ID.ToString() : keyValue;
             Name = name;
-            Adjectives = new List<string>();
             Description = description;
-            Commands = new Dictionary<string, Func<List<GameObject>, string>>();
 
+            Adjectives = new List<string>();
+            Commands = new Dictionary<string, GameActionDelegate>();
             Objects[this.KeyValue] = this;
+
+            IsVisible = true;
         }
 
         public int GetRandomInt(int startNumberInclusive=0, int endNumberExclusive=int.MaxValue)

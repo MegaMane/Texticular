@@ -31,7 +31,7 @@ namespace Texticle.Environment
             ConsumeText = "You happily stuff the money in your wallet, after all it's what the money would have wanted.\n ";
         }
 
-        public string Take()
+        public string Take(GameObject target=null)
         {
             ActionResponse.Clear();
 
@@ -53,15 +53,11 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public string Put(string target)
+        public string Put(GameObject target)
         {
             ActionResponse.Clear();
 
-            target = target.ToLower();
-            if(string.Equals(target,"pocket") || 
-                string.Equals(target, "inventory") || 
-                string.Equals(target, "wallet") ||
-                string.Equals(target, "backpack"))
+            if(target.KeyValue.ToLower() == "inventory")
             {
                 Take();
             }

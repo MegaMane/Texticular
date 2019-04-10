@@ -37,21 +37,6 @@ namespace Texticular.Commands.Tests
             Subway.AddItem(locker);
 
             //still need to determine what type of interface and command to build
-
-            ITakeable target;
-
-            target = testItem as ITakeable;
-
-            if (target != null)
-            {
-                TakeCommand tCommand = new TakeCommand(target);
-                tCommand.Execute();
-                Console.WriteLine(GameLog.DisplayResponse());
-            }
-            else
-            {
-                Console.WriteLine("You can't take the locker");
-            }
         }
 
         [TestMethod()]

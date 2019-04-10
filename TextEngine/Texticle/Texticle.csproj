@@ -67,7 +67,6 @@
     <Compile Include="Engine\Commands\IOpenable.cs" />
     <Compile Include="Engine\Commands\IViewable.cs" />
     <Compile Include="Engine\Commands\ICommand.cs" />
-    <Compile Include="Engine\Commands\TakeCommand.cs" />
     <Compile Include="Engine\Enums\Choices.cs" />
     <Compile Include="Engine\Enums\MovementDirection.cs" />
     <Compile Include="Engine\Enums\Scenes.cs" />

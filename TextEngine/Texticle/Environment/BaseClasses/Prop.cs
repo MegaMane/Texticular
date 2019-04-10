@@ -32,16 +32,21 @@ namespace Texticle.Environment
             throw new NotImplementedException();
         }
 
-        public string Take()
+        public string Take(GameObject target=null)
         {
             ActionResponse.Clear();
             ActionResponse.Append($"The {Name} won't budge.");
             return ActionResponse.ToString();
         }
 
-        public string Put(string target)
+        public string Put(GameObject target)
         {
-            return Take();
+            if (target == null)
+            {
+                return "Put it where?";
+            }
+            else
+                return Take();
         }
 
 

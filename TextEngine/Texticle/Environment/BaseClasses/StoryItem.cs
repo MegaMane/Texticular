@@ -9,10 +9,12 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject,IViewable
+    public class StoryItem : GameObject,IViewable,ITakeable
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
+
+
 
         //The item is on the bed the item is on the floor etc.
         public string ContextualDescription { get; set; }
@@ -46,7 +48,7 @@ namespace Texticle.Environment
             }
         }
 
-        public StoryItem()
+        public StoryItem():this("storyItem","storyItem")
         {
 
         }
@@ -60,7 +62,13 @@ namespace Texticle.Environment
             Weight = weight;
             ContextualDescription = contextualDescription == ""? ExamineResponse: contextualDescription;
             SlotsOccupied = slotsOccupied;
+
             Commands["take"] = Take;
+            Commands["drop"] = Drop;
+            Commands["put"] = Put;
+            //Commands["look"] = Look;
+           // Commands["examine"] = Examine;
+
             
         }
 
@@ -71,7 +79,7 @@ namespace Texticle.Environment
 
 
 
-        public virtual string Take(List<GameObject> gameObjects)
+        public virtual string Take(GameObject target=null)
         {
             ActionResponse.Clear();
 
@@ -144,12 +152,12 @@ namespace Texticle.Environment
         }
 
 
-        public virtual string Drop(List<GameObject> gameObjects)
+        public virtual string Drop(GameObject target=null)
         {
             throw new NotImplementedException();
         }
 
-        public virtual string Put(string target)
+        public virtual string Put(GameObject target)
         {
             //call targets target.AddItem(this) method and if it returns false let the player know it won't fit
             throw new NotImplementedException();

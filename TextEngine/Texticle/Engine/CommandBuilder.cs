@@ -28,20 +28,9 @@ namespace Texticle.Engine
 
         }
 
-        public ICommand GetCommand()
+        public void GetCommand()
         {
-            ICommand command = null;
-            switch (_Verb)
-            {
-                case "take":
-                    command = new TakeCommand(_DirectObject as ITakeable);
-                    break;
-                default:
-                    break;
-            }
-            
 
-            return command;
 
         }
 
