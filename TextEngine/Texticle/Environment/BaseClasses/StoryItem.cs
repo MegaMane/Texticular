@@ -9,13 +9,13 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class StoryItem : GameObject,IViewable,ITakeable
+    public class StoryItem : GameObject
     {
         public bool IsPortable { get; set; }
         public int Weight { get; set; }
 
 
-
+        //The description that should be used inside the room.
         //The item is on the bed the item is on the floor etc.
         public string ContextualDescription { get; set; }
         public int SlotsOccupied { get; private set; }
@@ -30,6 +30,10 @@ namespace Texticle.Environment
                 OnLocationChanged(_locationKey, value);
 
                 _locationKey = value;
+
+                //once an object is moved from it's origin location simplify its 
+                //contextual description.
+                ContextualDescription = $"There is a {Name} here.";
 
 
             }
@@ -78,8 +82,7 @@ namespace Texticle.Environment
         }
 
 
-
-        public virtual string Take(GameObject target=null)
+        public virtual string Take(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -154,87 +157,142 @@ namespace Texticle.Environment
 
         public virtual string Drop(GameObject target=null)
         {
-            throw new NotImplementedException();
+            ActionResponse.Clear();
+
+            Player player = GameObject.GetComponent<Player>("player");
+
+            if (LocationKey == "inventory")
+            {
+
+                player.BackPack.RemoveItem(this);
+                player.PlayerLocation.AddItem(this);
+                ActionResponse.Append($"You dropped the {Name} like it's hot.\n");
+            }
+
+            else
+            {
+                ActionResponse.Append($"You don't have a {Name} to drop.\n");
+            }
+
+            return ActionResponse.ToString();
         }
 
         public virtual string Put(GameObject target)
         {
-            //call targets target.AddItem(this) method and if it returns false let the player know it won't fit
-            throw new NotImplementedException();
+
+            ActionResponse.Clear();
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+            Container inventory = player.BackPack;
+
+
+
+            //check if the direct object is in the players possesion or the current room
+            if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
+            {
+                //check if the indirect object is in the room and not locked
+                if (target.LocationKey == currentLocation.KeyValue)
+                {
+                    if (target is Container)
+                    {
+                        Container chest = (Container)target;
+                        if ((chest as Chest).IsLocked)
+                        {
+                            ActionResponse.Append($"The {target.Name} is locked.");
+                        }
+
+                        else
+                        {
+                            //check if there is enough space in the container
+                            bool itemAdded = chest.AddItem(this);
+
+                            //if so then change the items location to the container and let the player know
+                            if (itemAdded) ActionResponse.Append($"You put the {this.Name} in the {target.Name}");
+                            //if not let the player know the item did not fit
+                            else ActionResponse.Append($"The {this.Name} doesn't fit in the {target.Name}");
+                        }
+                    }
+
+                }
+
+                else
+                {
+                    ActionResponse.Append($"I don't see {target.Name} here.");
+                }
+
+            }
+
+            else
+            {
+                ActionResponse.Append($"There is no {this.Name} here!");
+            }
+
+
+            return ActionResponse.ToString();
+
         }
 
-        public string Look()
+        public virtual string Look(GameObject target)
         {
-            throw new NotImplementedException();
+
+            ActionResponse.Clear();
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+
+
+            if (LocationKey == "inventory")
+            {
+                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);              
+            }
+
+            else if (LocationKey == player.LocationKey)
+            {
+                ActionResponse.Append(Description);
+            }
+
+
+            else
+            {
+                ActionResponse.Append($"There is no {Name} here.\n");
+            }
+
+            return ActionResponse.ToString();
+            
         }
 
-        public string Examine()
+        public virtual string Examine(GameObject target)
         {
-            throw new NotImplementedException();
+            ActionResponse.Clear();
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+            string response;
+
+            if (ExamineResponse == "" || ExamineResponse == null)
+            {
+                response = Description;
+            }
+
+            else { response = ExamineResponse; }
+
+            if (LocationKey == "inventory")
+            {
+                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
+            }
+
+            else if (LocationKey == player.LocationKey)
+            {
+                ActionResponse.Append(response);
+            }
+
+            else
+            {
+                ActionResponse.AppendFormat($"There is no {Name} here.\n");
+            }
+
+            return ActionResponse.ToString();
         }
-        /*
-void dropItem(ParseTree tokens)
-{
-  Player player = GameObject.GetComponent<Player>("player");
-
-  if (LocationKey == "inventory")
-  {
-      LocationKey = player.PlayerLocation.KeyValue;
-      player.PlayerLocation.RoomItems.Add(this);
-      GameController.InputResponse.AppendFormat($"You dropped the {Name} like it's hot.\n");
-      player.BackPack.ItemCount -= 1;
-  }
-
-  else
-  {
-      GameController.InputResponse.AppendFormat($"You don't have a {Name} to drop.\n");
-  }
-}
-
-void putItem(ParseTree tokens)
-{
-  Player player = GameObject.GetComponent<Player>("player");
-  Room currentLocation = player.PlayerLocation;
-  Room inventory = player.BackPack;
-  GameObject target = GameObject.GetComponent<GameObject>(tokens.IndirectObjectKeyValue);
 
 
-
-
-
-  //check if the direct object is in the players possesion or the current room
-  if (LocationKey == player.BackPack.KeyValue || LocationKey == currentLocation.KeyValue)
-  {
-      //check if the indirect object is in the room and not locked
-      if(target.LocationKey == currentLocation.KeyValue)
-      {
-          if(target is Container)
-          {
-              Container chest = (Container)target;
-              if (chest.IsLocked)
-              {
-                  GameController.InputResponse.Append($"The {tokens.IndirectObject} is locked.");
-              }
-
-              else
-              {
-                  //check if there is enough space in the container
-                  bool itemAdded = chest.AddItem(this);
-
-                  //if so then change the items location to the container and let the player know
-                  if (itemAdded) GameController.InputResponse.Append($"You put the {this.Name} in the {tokens.IndirectObject}");
-                  //if not let the player know the item did not fit
-                  else GameController.InputResponse.Append($"The {this.Name} doesn't fit in the {tokens.IndirectObject}");
-              }
-          }
-
-      }
-
-  }
-  //GameController.InputResponse.AppendFormat($"put {tokens.DirectObject} in the {tokens.IndirectObject}?\n");
-
-}
-*/
 
     }
 }
