@@ -19,7 +19,6 @@ namespace Texticle.Environment
         //The item is on the bed the item is on the floor etc.
         public string ContextualDescription { get; set; }
         public int SlotsOccupied { get; private set; }
-        public string ExamineResponse { get; set; }
         private string _locationKey;
         public override string LocationKey
         {
@@ -70,8 +69,7 @@ namespace Texticle.Environment
             Commands["take"] = Take;
             Commands["drop"] = Drop;
             Commands["put"] = Put;
-            //Commands["look"] = Look;
-           // Commands["examine"] = Examine;
+
 
             
         }
@@ -230,66 +228,6 @@ namespace Texticle.Environment
 
             return ActionResponse.ToString();
 
-        }
-
-        public virtual string Look(GameObject target)
-        {
-
-            ActionResponse.Clear();
-            Player player = GameObject.GetComponent<Player>("player");
-            Room currentLocation = player.PlayerLocation;
-
-
-            if (LocationKey == "inventory")
-            {
-                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);              
-            }
-
-            else if (LocationKey == player.LocationKey)
-            {
-                ActionResponse.Append(Description);
-            }
-
-
-            else
-            {
-                ActionResponse.Append($"There is no {Name} here.\n");
-            }
-
-            return ActionResponse.ToString();
-            
-        }
-
-        public virtual string Examine(GameObject target)
-        {
-            ActionResponse.Clear();
-            Player player = GameObject.GetComponent<Player>("player");
-            Room currentLocation = player.PlayerLocation;
-            string response;
-
-            if (ExamineResponse == "" || ExamineResponse == null)
-            {
-                response = Description;
-            }
-
-            else { response = ExamineResponse; }
-
-            if (LocationKey == "inventory")
-            {
-                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
-            }
-
-            else if (LocationKey == player.LocationKey)
-            {
-                ActionResponse.Append(response);
-            }
-
-            else
-            {
-                ActionResponse.AppendFormat($"There is no {Name} here.\n");
-            }
-
-            return ActionResponse.ToString();
         }
 
 

@@ -123,11 +123,11 @@ namespace Texticular.Environment.Tests
             //Act
             
 
-            Console.Write(chest.Open());
+            Console.Write(chest.Open(chest));
             
             Console.Write(chest.Unlock(chest.Key));
 
-            Console.Write(chest.Open());
+            Console.Write(chest.Open(chest));
 
             chest.AddItem( new StoryItem
             (
@@ -152,11 +152,11 @@ namespace Texticular.Environment.Tests
                 keyValue: "vapePen"
             ));
 
-            Console.Write(chest.Close());
+            Console.Write(chest.Close(chest));
 
             Console.WriteLine(chest.ToString());
 
-            Console.Write(chest.Open());
+            Console.Write(chest.Open(chest));
             chest.RemoveItem("gumStick");
             chest.AddItem((GameObject.Objects["vapePen"] as StoryItem));
             Console.WriteLine(chest.ToString());
@@ -194,7 +194,7 @@ namespace Texticular.Environment.Tests
                 itemCount += 1;
             }
 
-            testInventory.Open();
+            testInventory.Open(testInventory);
 
             Console.Write(GameLog.DisplayResponse());
             testInventory.AddItem

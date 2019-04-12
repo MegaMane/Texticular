@@ -19,7 +19,7 @@ namespace Texticle.Environment
         }
 
 
-        public override string Open()
+        public override string Open(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -38,7 +38,7 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public override string Close()
+        public override string Close(GameObject Target)
         {
             ActionResponse.Clear();
 

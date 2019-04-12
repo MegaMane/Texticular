@@ -50,7 +50,7 @@ namespace Texticular.ParserTests.Tests
 
             Chest chest = new Chest("masterBedroom", "Sentry Safe", "a digital safe for keeping things tucked away", "sentrySafe", 5);
 
-            chest.Open();
+            chest.Open(chest);
 
             chest.AddItem(new StoryItem
             (

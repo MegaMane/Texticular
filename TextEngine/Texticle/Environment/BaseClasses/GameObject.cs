@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-
+using Texticle.Actors;
 
 namespace Texticle.Environment
 {
@@ -65,7 +64,7 @@ namespace Texticle.Environment
         public string Name { get; set; }
         public List<string> Adjectives { get; set; }
         public string Description { get; set; }
-
+        public string ExamineResponse { get; set; }
         public Dictionary<string, GameActionDelegate> Commands { get; set; }
 
 
@@ -88,10 +87,15 @@ namespace Texticle.Environment
             Description = description;
 
             Adjectives = new List<string>();
+
             Commands = new Dictionary<string, GameActionDelegate>();
-            Objects[this.KeyValue] = this;
+            Commands["look"] = Look;
+            Commands["examine"] = Examine;
 
             IsVisible = true;
+
+            Objects[this.KeyValue] = this;
+
         }
 
         public int GetRandomInt(int startNumberInclusive=0, int endNumberExclusive=int.MaxValue)
@@ -145,6 +149,83 @@ namespace Texticle.Environment
         }
 
 
+        public virtual string Look(GameObject target)
+        {
+            if (!IsVisible)
+            {
+                return $"You don't see {Name} here.";
+            }
+
+
+            ActionResponse.Clear();
+
+
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+
+
+            if (LocationKey == "inventory")
+            {
+                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", Description);
+            }
+
+            else if (LocationKey == player.LocationKey)
+            {
+                ActionResponse.Append(Description);
+            }
+
+
+            else
+            {
+                ActionResponse.Append($"There is no {Name} here.\n");
+            }
+
+            return ActionResponse.ToString();
+
+        }
+
+        public virtual string Examine(GameObject target)
+        {
+            if (!IsVisible)
+            {
+                return $"You don't see {Name} here.";
+            }
+
+            ActionResponse.Clear();
+            Player player = GameObject.GetComponent<Player>("player");
+            Room currentLocation = player.PlayerLocation;
+            string response;
+
+            if (ExamineResponse == "" || ExamineResponse == null)
+            {
+                response = Description;
+            }
+
+            else { response = ExamineResponse; }
+
+            if (LocationKey == "inventory")
+            {
+                ActionResponse.AppendFormat("You look in your trusty backpack and you see {0}.\n\n", response);
+            }
+
+            else if (LocationKey == player.LocationKey)
+            {
+                ActionResponse.Append(response);
+            }
+
+            else
+            {
+                ActionResponse.AppendFormat($"There is no {Name} here.\n");
+            }
+
+            return ActionResponse.ToString();
+        }
+
+
 
     }
+
+
+
 }
+

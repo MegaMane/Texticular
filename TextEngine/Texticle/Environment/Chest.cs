@@ -9,7 +9,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Chest : Container, IUnlockable
+    public class Chest : Container
     {
 
 
@@ -27,7 +27,7 @@ namespace Texticle.Environment
         }
 
 
-        public override string Open()
+        public override string Open(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -64,8 +64,9 @@ namespace Texticle.Environment
                 Player player = GameObject.GetComponent<Player>("player");
                 player.BackPack.RemoveItem(Key);
                 ActionResponse.Append(Key.Consume());
-                ActionResponse.Append($"{Name} opens...");
+                ActionResponse.Append($"{Name} is unlocked...");
                 IsLocked = false;
+
 
             }
 

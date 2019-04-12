@@ -9,7 +9,7 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Container : GameObject, IOpenable, IEnumerable<StoryItem>
+    public class Container : GameObject, IEnumerable<StoryItem>
     {
         public List<StoryItem> Items;
         public virtual bool IsOpen { get; set; }
@@ -32,7 +32,7 @@ namespace Texticle.Environment
         }
 
 
-        public virtual string Open()
+        public virtual string Open(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -47,7 +47,7 @@ namespace Texticle.Environment
 
 
         }
-        public virtual string Close()
+        public virtual string Close(GameObject target)
         {
             ActionResponse.Clear();
 

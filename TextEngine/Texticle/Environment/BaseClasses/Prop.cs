@@ -8,11 +8,9 @@ using Texticle.Engine;
 
 namespace Texticle.Environment
 {
-    public class Prop: GameObject, IViewable, ITakeable
+    public class Prop: GameObject
     {
 
-        //public string LocationKey { get; private set; }
-        public string ExamineResponse { get; set; }
 
 
         public Prop (string name, string description, string locationKey, string keyValue = "", string examineResponse="")
@@ -22,15 +20,6 @@ namespace Texticle.Environment
             ExamineResponse = examineResponse;
         }
 
-        public string Examine()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Look()
-        {
-            throw new NotImplementedException();
-        }
 
         public string Take(GameObject target=null)
         {

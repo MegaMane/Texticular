@@ -73,7 +73,7 @@ namespace Texticle.Actors
 
         public void OpenBackpack()
         {
-            BackPack.Open();
+            BackPack.Open(BackPack);
         }
 
 
