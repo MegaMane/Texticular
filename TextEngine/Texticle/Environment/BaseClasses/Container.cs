@@ -29,6 +29,9 @@ namespace Texticle.Environment
             MaxSlots = maxSlots;
             LocationKey = locationKey;
             IsOpen = false;
+
+            Commands["open"] = Open;
+            Commands["close"] = Close;
         }
 
 

@@ -62,6 +62,7 @@ namespace Texticle.Environment
 
         public string KeyValue { get; set; }
         public string Name { get; set; }
+        public string FullName { get { return (String.Join(" ",Adjectives) + " " + Name).Trim(); } }
         public List<string> Adjectives { get; set; }
         public string Description { get; set; }
         public string ExamineResponse { get; set; }

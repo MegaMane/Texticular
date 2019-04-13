@@ -29,10 +29,16 @@ namespace Texticle.Environment
             :base(locationKey, name, description, keyValue, examine)
         {
             TurnOffResponse = "The TV flickers then goes black\n ";
-            
+
+            Commands["turn on"] = TurnOn;
+            Commands["turn off"] = TurnOff;
+
+            Commands["change channel"] = ChangeChannel;
+
+
         }
 
-        public string TurnOn ()
+        public string TurnOn (GameObject tv)
         {
             ActionResponse.Clear();
 
@@ -43,7 +49,7 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public string TurnOff()
+        public string TurnOff(GameObject tv)
         {
             ActionResponse.Append(TurnOffResponse + "\n ");
             isON = false;
@@ -51,7 +57,7 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public string ChangeChannel()
+        public string ChangeChannel(GameObject tv)
         {
             ActionResponse.Clear();
 

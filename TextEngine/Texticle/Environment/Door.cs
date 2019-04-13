@@ -14,7 +14,7 @@ namespace Texticle.Environment
     /// the destination Room or State is determined based on the context
     /// of the players current location. Both Rooms reference the same door that connects them.
     /// </summary>
-    public class Door : GameObject, IUnlockable, IOpenable
+    public class Door : GameObject
     {
 
         /// <summary>
@@ -29,12 +29,9 @@ namespace Texticle.Environment
         public Key Key{ get; set; }
 
 
-        public Door() :
-            base(name:"Exit", description:"Exit")
+        public Door():this(new Dictionary<string, Room> (), "Exit", "Exit",isLocked:false)           
         {
-            IsLocked = false;
-            Key = null;
-            Destinations = new Dictionary<string, Room>();
+
                  
         }
 
@@ -46,10 +43,14 @@ namespace Texticle.Environment
             IsLocked = isLocked;
             Key = key;
 
+            Commands["open"] = Open;
+            Commands["close"] = Close;
+            Commands["unlock"] = Unlock;
+
         }
 
 
-        public string Open()
+        public virtual string Open(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -106,26 +107,26 @@ namespace Texticle.Environment
         }
 
 
-        public string Close()
+        public virtual string Close(GameObject target)
         {
             ActionResponse.Clear();
 
             if(IsOpen)
             {
-                ActionResponse.Append($"Wow! You really weren't raised in a barn. You politely close the {Name}. \n");
+                ActionResponse.Append($"Wow! You really weren't raised in a barn. You politely close {FullName}. \n");
                 IsOpen = false;
             }
 
             else
             {
-                ActionResponse.Append($"The {Name} isn't open.\n");
+                ActionResponse.Append($"{FullName} isn't open.\n");
             }
 
             return ActionResponse.ToString();
         }
 
 
-        public string Unlock(Key key)
+        public virtual string Unlock(GameObject key)
         {
             ActionResponse.Clear();
 
@@ -133,7 +134,7 @@ namespace Texticle.Environment
             {
                 Player player = GameObject.GetComponent<Player>("player");
                 player.BackPack.RemoveItem(Key);
-                Key.Consume();
+                ActionResponse.Append(Key.Consume());
                 ActionResponse.Append($"{Name} opens...");
                 IsLocked = false;
 

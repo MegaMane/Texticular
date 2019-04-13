@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Texticle.Engine;
+using Texticle.Actors;
 
 namespace Texticle.Environment
 {
@@ -18,6 +19,11 @@ namespace Texticle.Environment
 
 
         public Dictionary<string, Door> Exits { get; set; }
+
+        public Room(string keyValue) :this("room", "room", keyValue:keyValue)
+        {
+
+        }
 
         public Room(string name, string description, string keyValue)
             : base(name, description, keyValue)
@@ -59,7 +65,9 @@ namespace Texticle.Environment
             return base.ToString();
         }
 
-        public string Look()
+
+
+        public override string Look(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -78,6 +86,11 @@ namespace Texticle.Environment
             }
 
             return ActionResponse.ToString();
+        }
+
+        public override string Examine(GameObject target)
+        {
+            return Look(target);
         }
 
         public IEnumerator<GameObject> GetEnumerator()

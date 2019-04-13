@@ -24,6 +24,8 @@ namespace Texticle.Environment
         {
             IsOpen = false;
             IsLocked = false;
+
+            Commands["unlock"] = Unlock;
         }
 
 
@@ -55,7 +57,7 @@ namespace Texticle.Environment
 
 
 
-        public virtual string Unlock(Key key)
+        public virtual string Unlock(GameObject key)
         {
             ActionResponse.Clear();
 

@@ -18,6 +18,9 @@ namespace Texticle.Environment
         {
             LocationKey = locationKey;
             ExamineResponse = examineResponse;
+
+            Commands["take"] = Take;
+            Commands["put"] = Put;
         }
 
 

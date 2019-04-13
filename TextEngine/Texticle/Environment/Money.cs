@@ -8,19 +8,17 @@ using Texticle.Actors;
 
 namespace Texticle.Environment
 {
-    public class Money:GameObject, ITakeable, IViewable, IConsumable
+    public class Money:GameObject
     {
         //public string LocationKey { get; set; }
         public int Value { get; set; }
-        public string ExamineResponse { get; set; }
         public string ConsumeText { get; set; }
 
-        public Money()
-            : base(name:"Money", description:"Some money. You can buy stuff with it!\n ")
+        public Money(): this(locationKey:null, value:0, name:"Money", description: "Some money. You can buy stuff with it!\n ")
         {
             Value = GetRandomInt(1, 20);
             ExamineResponse = $"{Value} dollars that seem to have a strong urge to jump into your wallet.\n ";
-            ConsumeText = "You happily stuff the money in your wallet, after all it's what the money would have wanted.\n ";
+
         }
 
         public Money(string locationKey, int value, string name= "Money", string description= "Money", string keyValue = "")
@@ -28,10 +26,14 @@ namespace Texticle.Environment
         {
             LocationKey = LocationKey;
             Value = value;
+            ExamineResponse = $"{Value} dollars that seem to have a strong urge to jump into your wallet.\n ";
             ConsumeText = "You happily stuff the money in your wallet, after all it's what the money would have wanted.\n ";
+
+            Commands["take"] = Take;
+            Commands["put"] = Put;
         }
 
-        public string Take(GameObject target=null)
+        public string Take(GameObject target)
         {
             ActionResponse.Clear();
 
@@ -47,7 +49,7 @@ namespace Texticle.Environment
             else
             {
 
-                ActionResponse.Append($"There is no {Name} here to take.\n ");
+                ActionResponse.Append($"There is no {FullName} here to take.\n ");
             }
 
             return ActionResponse.ToString();
@@ -59,7 +61,7 @@ namespace Texticle.Environment
 
             if(target.KeyValue.ToLower() == "inventory")
             {
-                Take();
+                Take(target);
             }
 
             else
@@ -70,15 +72,6 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public string Look()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string Examine()
-        {
-            return ExamineResponse.ToString();
-        }
 
         public string Consume()
         {

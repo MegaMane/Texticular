@@ -57,8 +57,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Commands\GameTests.cs" />
+    <Compile Include="Environment\BaseClasses\PropTests.cs" />
     <Compile Include="Environment\BaseClasses\StoryItemTests.cs" />
+    <Compile Include="Environment\ChestTests.cs" />
+    <Compile Include="Environment\DoorTests.cs" />
     <Compile Include="Environment\GameTests.cs" />
+    <Compile Include="Environment\RoomTests.cs" />
     <Compile Include="Parser\ObjectFinderTests.cs" />
     <Compile Include="Parser\ParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

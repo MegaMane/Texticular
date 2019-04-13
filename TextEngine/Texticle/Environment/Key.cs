@@ -26,7 +26,7 @@ namespace Texticle.Environment
             return ActionResponse.ToString();
         }
 
-        public string Use()
+        public virtual string Use(GameObject target)
         {
             ActionResponse.Clear();
 

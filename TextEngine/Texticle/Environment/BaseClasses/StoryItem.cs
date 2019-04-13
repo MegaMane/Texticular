@@ -93,7 +93,7 @@ namespace Texticle.Environment
 
                 if (LocationKey == player.BackPack.KeyValue)
                 {
-                    ActionResponse.Append($"You already have the item {Name}.\n");
+                    ActionResponse.Append($"You already have the item {FullName}.\n");
                     return ActionResponse.ToString();
                 }
 
@@ -109,13 +109,13 @@ namespace Texticle.Environment
                         {
                             chest.RemoveItem(this);
                             player.BackPack.AddItem(this);
-                            ActionResponse.Append($"{Name} taken.\n");
+                            ActionResponse.Append($"{FullName} taken.\n");
                             
                         }
 
                         else
                         {
-                            ActionResponse.Append($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                            ActionResponse.Append($"You don't have any space for {FullName} in your inventory! Try dropping something you don't need.\n");
                         }
 
                         return ActionResponse.ToString();
@@ -133,19 +133,19 @@ namespace Texticle.Environment
                 {
                     player.PlayerLocation.RemoveItem((GameObject)this);
                     player.BackPack.AddItem(this);
-                    ActionResponse.Append($"{Name} taken.\n");
+                    ActionResponse.Append($"{FullName} taken.\n");
                    
                 }
 
                 else
                 {
-                    ActionResponse.Append($"You don't have any space for {Name} in your inventory! Try dropping something you don't need.\n");
+                    ActionResponse.Append($"You don't have any space for {FullName} in your inventory! Try dropping something you don't need.\n");
                 }
             }
 
             else
             {
-                ActionResponse.Append($"You try to take {Name} but it won't budge!\n");
+                ActionResponse.Append($"You try to take {FullName} but it won't budge!\n");
             }
 
             return ActionResponse.ToString();

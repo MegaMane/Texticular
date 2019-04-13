@@ -16,20 +16,41 @@ namespace Texticle.Environment.Tests
         Room TestRoom;
         Dictionary<string, GameObject> Items;
 
-        [TestClass()]
-        public class TheTakeMethod
-        {
-            [TestMethod()]
-            public void CantTakeWhenYouAlreadyHaveItem()
-            {
 
-                //$"You already have the item {Name}.\n"
-                Assert.Fail();
-            }
+        [TestMethod()]
+        public void CantTakeWhenYouAlreadyHaveItem()
+        {
+
+            Player.BackPack.AddItem((StoryItem)Items["1"]);
+            var results = (Items["1"] as StoryItem).Take(null);
+            Console.WriteLine(results);
+            Assert.AreEqual(results, $"You already have the item {Items["1"].FullName}.\n");
         }
 
-        [ClassInitialize()]
-        public void MyClassInitialize()
+        [TestMethod()]
+        public void CantTakeItemInDifferentLocation()
+        {
+
+            StoryItem item = (Items["1"] as StoryItem);
+            Console.WriteLine(item.Take(item));
+            Assert.IsTrue(item.LocationKey != Player.BackPack.LocationKey);
+        }
+
+
+
+        [TestMethod()]
+        public void CanTakeItem()
+        {
+
+            StoryItem item = (Items["1"] as StoryItem);
+            Player.PlayerLocation.AddItem(item);
+            Console.WriteLine(item.Take(item));
+            Assert.IsTrue(item.LocationKey == Player.BackPack.KeyValue);
+        }
+
+
+
+        public StoryItemTests()
         {
 
             TestRoom = new Room("Otis Office", "A hot stuffy little office that smells faintly of farts.", "otis");
